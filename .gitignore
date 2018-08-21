@@ -9,7 +9,10 @@
 .idea/
 *.iml
 *.iws
- 
+
+# JADE
+*.txt
+
 # Mac
 .DS_Store
 
@@ -25,6 +28,17 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+.classpath
+.project
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
 # External tool builders
 .externalToolBuilders/
