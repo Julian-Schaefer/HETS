@@ -6,6 +6,7 @@ import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import ui.HomeAgentController;
 
 /**
  * Hello world!
@@ -15,8 +16,13 @@ public class App
 {
     public static void main( String[] args )
     {
-        Runtime runtime = Runtime.instance();
-        		
+        HomeAgentController controller = new HomeAgentController();
+        launchJade();
+    }
+    
+    private static void launchJade() {
+    	Runtime runtime = Runtime.instance();
+		
 		System.out.println("MyJadeStarter Launching the Main Platform container...");
 		
 		Profile pMain = new ProfileImpl(null, 8888, null);
