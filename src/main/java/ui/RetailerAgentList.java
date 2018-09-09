@@ -7,8 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import org.cos30018.hets.RetailerAgent;
-import org.cos30018.hets.RetailerAgentImpl;
+import org.cos30018.hets.retailer.RetailerAgent;
+import org.cos30018.hets.retailer.RetailerAgent;
 
 public class RetailerAgentList extends JPanel {	
 	
@@ -19,11 +19,11 @@ public class RetailerAgentList extends JPanel {
 
 	public RetailerAgentList() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		addRetailerAgent(new RetailerAgentImpl());
-		addRetailerAgent(new RetailerAgentImpl());
-		addRetailerAgent(new RetailerAgentImpl());
-		addRetailerAgent(new RetailerAgentImpl());
-		addRetailerAgent(new RetailerAgentImpl());
+		addRetailerAgent(new RetailerAgent());
+		addRetailerAgent(new RetailerAgent());
+		addRetailerAgent(new RetailerAgent());
+		addRetailerAgent(new RetailerAgent());
+		addRetailerAgent(new RetailerAgent());
 	}
 	
 	public void addRetailerAgent(RetailerAgent agent) {
