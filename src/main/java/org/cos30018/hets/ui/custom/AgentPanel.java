@@ -1,6 +1,7 @@
-package ui;
+package org.cos30018.hets.ui.custom;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -10,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 public class AgentPanel extends JPanel {
 
 	private String name;
+	
+	private JButton showButton;
 	
 	public AgentPanel(String name) {
 		this.name = name;
@@ -23,11 +26,13 @@ public class AgentPanel extends JPanel {
 		JLabel nameLbl = new JLabel(name);
 		container.add(nameLbl, BorderLayout.CENTER);
 
-		JButton openBtn = new JButton("Show Agent");
-		container.add(openBtn, BorderLayout.SOUTH);
+		showButton = new JButton("Show Agent");
+		container.add(showButton, BorderLayout.SOUTH);
 		
 		add(container);
 	}
 	
-	
+	public void addShowAgentClickListener(ActionListener listener) {
+		showButton.addActionListener(listener);
+	}
 }

@@ -1,4 +1,4 @@
-package org.cos30018.hets.appliance;
+package org.cos30018.hets.logic.retailer;
 
 import jade.core.Agent;
 import jade.domain.FIPANames;
@@ -9,7 +9,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREResponder;
 
-public class ApplianceResponderBehaviour extends AchieveREResponder {
+public class RetailerResponderBehaviour extends AchieveREResponder {
 
 	/**
 	 * 
@@ -21,7 +21,7 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 			MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
 
 
-	public ApplianceResponderBehaviour(Agent a) {
+	public RetailerResponderBehaviour(Agent a) {
 		super(a, template);
 	}
 	
@@ -30,7 +30,7 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 		System.out.println(myAgent.getLocalName() + ": REQUEST received from "
 				+ request.getSender().getName() + ". Query is " + request.getContent());
 		
-		if(request.getContent().equals("USAGE")) {
+		if(request.getContent().equals("OFFER")) {
 			ACLMessage agreeMessage = request.createReply();
 			agreeMessage.setPerformative(ACLMessage.AGREE);
 			return agreeMessage;

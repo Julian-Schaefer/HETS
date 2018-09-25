@@ -1,7 +1,9 @@
-package org.cos30018.hets.home;
+package org.cos30018.hets.logic.home;
 
 import java.util.Date;
 import java.util.Vector;
+
+import org.cos30018.hets.logic.MessageConstants;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -9,24 +11,24 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
 
-public class RetailerRequestBehaviour extends AchieveREInitiator {
+public class ApplianceRequestBehaviour extends AchieveREInitiator {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2422652535325745455L;
 
-	public static RetailerRequestBehaviour create(Agent a) {
+	public static ApplianceRequestBehaviour create(Agent a, AID applianceAID) {
 		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-		msg.addReceiver(new AID("retailer1", AID.ISLOCALNAME));
+		msg.addReceiver(applianceAID);
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 		msg.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
-		msg.setContent("OFFER");
+		msg.setContent(MessageConstants.USAGE);
 		
-		return new RetailerRequestBehaviour(a, msg);
+		return new ApplianceRequestBehaviour(a, msg);
 	}
 	
-	private RetailerRequestBehaviour(Agent a, ACLMessage msg) {
+	private ApplianceRequestBehaviour(Agent a, ACLMessage msg) {
 		super(a, msg);
 	}
 

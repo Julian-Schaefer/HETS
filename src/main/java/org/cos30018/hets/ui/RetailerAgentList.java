@@ -1,4 +1,4 @@
-package ui;
+package org.cos30018.hets.ui;
 
 import java.awt.Color;
 
@@ -7,8 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import org.cos30018.hets.retailer.RetailerAgent;
-import org.cos30018.hets.retailer.RetailerAgent;
+import org.cos30018.hets.logic.retailer.RetailerAgent;
+import org.cos30018.hets.ui.custom.AgentPanel;
 
 public class RetailerAgentList extends JPanel {	
 	

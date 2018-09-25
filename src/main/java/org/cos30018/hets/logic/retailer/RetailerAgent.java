@@ -1,4 +1,4 @@
-package org.cos30018.hets.retailer;
+package org.cos30018.hets.logic.retailer;
 
 import jade.core.Agent;
 
