@@ -2,9 +2,12 @@ package org.cos30018.hets.ui;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.JadeController.JadeControllerListener;
+import org.cos30018.hets.logic.appliance.ApplianceAgent;
+import org.cos30018.hets.logic.retailer.RetailerAgent;
+import org.cos30018.hets.ui.HomeAgentInterface.HomeAgentListener;
 import org.cos30018.hets.ui.appliance.AppliancePanelController;
 
-public class HomeAgentController implements JadeControllerListener {
+public class HomeAgentController implements HomeAgentListener {
 
 	private HomeAgentWindow view;
 	
@@ -13,11 +16,12 @@ public class HomeAgentController implements JadeControllerListener {
 	private AppliancePanelController appliancePanelController;
 	
 	public HomeAgentController() {
-		JadeController jadeController = new JadeController();
-		jadeController.setListener(this);
-		jadeController.launchPlattform();
-		
 		setupAppliancePanel();
+		
+		HomeAgentInterface homeAgentInterface = new HomeAgentInterface();
+		homeAgentInterface.setListener(this);
+		
+		homeAgentInterface.addAppliance(new ApplianceAgent());
 	}
 	
 	private void setupAppliancePanel() {
@@ -27,6 +31,26 @@ public class HomeAgentController implements JadeControllerListener {
 	}
 
 	@Override
-	public void onApplianceAgentAdded(String name) {
+	public void onApplianceAdded(ApplianceAgent appliance) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onApplianceRemoved(ApplianceAgent appliance) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRetailerAdded(RetailerAgent retailer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRetailerRemoved(RetailerAgent retailer) {
+		// TODO Auto-generated method stub
+		
 	}
 }
