@@ -1,7 +1,6 @@
 package org.cos30018.hets.ui;
 
 import org.cos30018.hets.logic.JadeController;
-import org.cos30018.hets.logic.JadeController.JadeControllerListener;
 import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.logic.retailer.RetailerAgent;
 import org.cos30018.hets.ui.HomeAgentInterface.HomeAgentListener;
@@ -12,14 +11,14 @@ public class HomeAgentController implements HomeAgentListener {
 	private HomeAgentWindow view;
 	
 	private JadeController jadeController;
+	private HomeAgentInterface homeAgentInterface;
 	
 	private AppliancePanelController appliancePanelController;
 	
-	public HomeAgentController() {
+	public HomeAgentController(HomeAgentInterface homeAgentInterface) {
 		setupAppliancePanel();
 		
-		HomeAgentInterface homeAgentInterface = new HomeAgentInterface();
-		homeAgentInterface.setListener(this);
+		this.homeAgentInterface = homeAgentInterface;
 		
 		homeAgentInterface.addAppliance(new ApplianceAgent());
 	}

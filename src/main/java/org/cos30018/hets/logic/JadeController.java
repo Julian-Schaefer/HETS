@@ -46,7 +46,7 @@ public class JadeController {
 	}
 	
 	public void addApplianceAgent(String name) {
-		addAgent(name, ApplianceAgent.class);
+		addAgent("appliance_" + name, ApplianceAgent.class);
 	}
 	
 	public void removeApplianceAgent() {

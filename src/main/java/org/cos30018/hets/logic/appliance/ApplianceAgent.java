@@ -20,7 +20,7 @@ public class ApplianceAgent extends Agent {
 	@Override
 	protected void setup() {
 		AID homeAgentAID = getService(HomeAgent.HOME_AGENT_SERVICE)[0].getName();
-		addBehaviour(ApplianceRegisterRequestBehaviour.create(this, homeAgentAID));
+		addBehaviour(ApplianceRegisterBehaviour.create(this, homeAgentAID));
 		
 		addBehaviour(new ApplianceResponderBehaviour(this));
 	}
