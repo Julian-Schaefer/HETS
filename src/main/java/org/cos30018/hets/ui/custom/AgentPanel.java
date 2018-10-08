@@ -10,9 +10,15 @@ import javax.swing.border.EmptyBorder;
 
 public class AgentPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4879082512248930600L;
+
 	private String name;
 	
 	private JButton showButton;
+	private JButton deleteButton;
 	
 	public AgentPanel(String name) {
 		this.name = name;
@@ -26,10 +32,17 @@ public class AgentPanel extends JPanel {
 		JLabel nameLbl = new JLabel(name);
 		container.add(nameLbl, BorderLayout.CENTER);
 
-		showButton = new JButton("Show Agent");
-		container.add(showButton, BorderLayout.SOUTH);
-		
 		add(container);
+		
+		JPanel bottom = new JPanel();
+		
+		showButton = new JButton("Show Details");
+		bottom.add(showButton);
+
+		deleteButton = new JButton("Delete");
+		bottom.add(deleteButton);		
+
+		add(bottom, BorderLayout.SOUTH);
 	}
 	
 	public void addShowAgentClickListener(ActionListener listener) {

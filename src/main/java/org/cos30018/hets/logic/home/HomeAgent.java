@@ -113,4 +113,10 @@ public class HomeAgent extends Agent implements Home {
 		this.listener = listener;
 	}
 
+	@Override
+	public double getTotalUsageForecast() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
