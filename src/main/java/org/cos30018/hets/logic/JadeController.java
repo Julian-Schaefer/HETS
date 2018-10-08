@@ -1,6 +1,7 @@
 package org.cos30018.hets.logic;
 
 import org.cos30018.hets.logic.appliance.ApplianceAgent;
+import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.HomeAgent;
 
 import jade.core.Agent;
@@ -18,7 +19,7 @@ public class JadeController {
 	private Runtime runtime = Runtime.instance();
 	private AgentContainer mainContainer;
 	
-	private JadeControllerListener listener;
+	private Home home;
 	
 	public static JadeController getInstance() {
 		if(instance == null) {
@@ -42,11 +43,24 @@ public class JadeController {
 			//Ignore
 		}
 		
-        addAgent("homeAgent", HomeAgent.class);		
+		setupHomeAgent();
 	}
 	
-	public void addApplianceAgent(String name) {
-		addAgent("appliance_" + name, ApplianceAgent.class);
+	private void setupHomeAgent() {
+		try {
+			AgentController homeAgentController = addAgent("homeAgent", HomeAgent.class);
+			this.home = homeAgentController.getO2AInterface(Home.class);
+		} catch (StaleProxyException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public Home getHome() {
+		return home;
+	}
+	
+	public void addApplianceAgent(String name, int forecastingMethod) throws StaleProxyException {
+		addAgent("appliance_" + name, ApplianceAgent.class, new Object[] { forecastingMethod });
 	}
 	
 	public void removeApplianceAgent() {
@@ -64,31 +78,17 @@ public class JadeController {
 	public void setInterval() {
 		
 	}
+
+    private AgentController addAgent(String name, Class<? extends Agent> agentClass) throws StaleProxyException {
+    	return addAgent(name, agentClass, new Object[0]);
+    }
     
-    private void addAgent(String name, Class<? extends Agent> agentClass) {
+    private AgentController addAgent(String name, Class<? extends Agent> agentClass, Object[] arguments) throws StaleProxyException {
 		System.out.println(getClass().getSimpleName() + ": Starting up Agent: " + name);
 		
-		try {
-			AgentController agentController = mainContainer.createNewAgent(name, agentClass.getName(), new Object[0]);
-			agentController.start();
-		} catch (StaleProxyException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			Thread.sleep(300);
-		} catch (InterruptedException interruptedException) {
-			//Ignore
-		}
+		AgentController agentController = mainContainer.createNewAgent(name, agentClass.getName(), arguments);
+		agentController.start();
 		
-		if(listener != null) listener.onApplianceAgentAdded(name);
-    }
-    
-    public void setListener(JadeControllerListener listener) {
-    	this.listener = listener;
-    }
-    
-    public interface JadeControllerListener {
-    	void onApplianceAgentAdded(String name);
+		return agentController;
     }
 }

@@ -10,7 +10,7 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
-public class HomeAgent extends Agent {
+public class HomeAgent extends Agent implements Home {
 
 	public static final String HOME_AGENT_SERVICE = "home_agent";
 
@@ -19,9 +19,16 @@ public class HomeAgent extends Agent {
 	 */
 	private static final long serialVersionUID = -4685491195096413651L;
 	
+	private HomeListener listener;
+	
 	private List<AID> applianceAIDs = new ArrayList<>();
 	private PeriodicApplianceRequestBehaviour periodicApplianceRequestBehaviour;
 
+	
+	public HomeAgent() {
+		registerO2AInterface(Home.class, this);
+	}
+	
 	@Override
 	protected void setup() {
 		ServiceDescription sd = new ServiceDescription();
@@ -37,6 +44,7 @@ public class HomeAgent extends Agent {
 	
 	public void registerAppliance(AID applianceAID) {
 		applianceAIDs.add(applianceAID);
+		listener.onApplianceAdded(applianceAID);
 	}
 	
 	public List<AID> getApplianceAIDs() {
@@ -60,6 +68,29 @@ public class HomeAgent extends Agent {
 			DFService.deregister(this);
 		} catch (Exception e) {
 		}
+	}
+
+	@Override
+	public List<AID> getAppliances() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void setCheckInterval() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setForecastPeriodCount() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setListener(HomeListener listener) {
+		this.listener = listener;
 	}
 
 }

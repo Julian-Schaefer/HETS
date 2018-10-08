@@ -15,6 +15,8 @@ import javax.swing.border.LineBorder;
 import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.ui.custom.AgentPanel;
 
+import jade.core.AID;
+
 public class AppliancePanel extends JPanel implements ActionListener {
 
 	/**
@@ -31,6 +33,7 @@ public class AppliancePanel extends JPanel implements ActionListener {
 	public AppliancePanel() {
 		setLayout(new BorderLayout());
 		setup();
+		new AppliancePanelController(this);
 	}
 	
 	private void setup() {
@@ -45,11 +48,11 @@ public class AppliancePanel extends JPanel implements ActionListener {
 		add(scrollPane, BorderLayout.CENTER);
 	}
 	
-	public void addApplianceAgent(ApplianceAgent agent) {
+	public void addApplianceAgent(String name) {
 		JPanel container = new JPanel();
 		container.setBorder(new EmptyBorder(14, 14, 14, 14));
 		
-		AgentPanel agentPanel = new AgentPanel("Test-Agent");
+		AgentPanel agentPanel = new AgentPanel(name);
 		agentPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
 		container.add(agentPanel);
 		

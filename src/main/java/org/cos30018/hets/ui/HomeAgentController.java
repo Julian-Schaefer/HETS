@@ -1,54 +1,48 @@
 package org.cos30018.hets.ui;
 
-import org.cos30018.hets.logic.JadeController;
-import org.cos30018.hets.logic.appliance.ApplianceAgent;
-import org.cos30018.hets.logic.retailer.RetailerAgent;
-import org.cos30018.hets.ui.HomeAgentInterface.HomeAgentListener;
+import org.cos30018.hets.logic.home.Home;
+import org.cos30018.hets.logic.home.Home.HomeListener;
 import org.cos30018.hets.ui.appliance.AppliancePanelController;
 
-public class HomeAgentController implements HomeAgentListener {
+import jade.core.AID;
+
+public class HomeAgentController implements HomeListener {
 
 	private HomeAgentWindow view;
 	
-	private JadeController jadeController;
-	private HomeAgentInterface homeAgentInterface;
+	private Home home;
+
 	
-	private AppliancePanelController appliancePanelController;
-	
-	public HomeAgentController(HomeAgentInterface homeAgentInterface) {
+	public HomeAgentController(Home home) {
+		this.home = home;
+		this.home.setListener(this);
 		setupAppliancePanel();
 		
-		this.homeAgentInterface = homeAgentInterface;
-		
-		homeAgentInterface.addAppliance(new ApplianceAgent());
 	}
 	
 	private void setupAppliancePanel() {
-		view = new HomeAgentWindow();
-		appliancePanelController = new AppliancePanelController(view.getAppliancePanel());
-		
+		view = new HomeAgentWindow();		
 	}
 
 	@Override
-	public void onApplianceAdded(ApplianceAgent appliance) {
+	public void onApplianceAdded(AID applianceAID) {
+		view.getAppliancePanel().addApplianceAgent(applianceAID.getLocalName());
+	}
+
+	@Override
+	public void onApplianceRemoved(AID applianceAID) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onApplianceRemoved(ApplianceAgent appliance) {
+	public void onRetailerAdded(AID retailerAID) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onRetailerAdded(RetailerAgent retailer) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onRetailerRemoved(RetailerAgent retailer) {
+	public void onRetailerRemoved(AID retailerAID) {
 		// TODO Auto-generated method stub
 		
 	}

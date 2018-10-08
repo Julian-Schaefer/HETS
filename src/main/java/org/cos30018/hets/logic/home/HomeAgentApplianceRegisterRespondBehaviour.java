@@ -1,6 +1,6 @@
 package org.cos30018.hets.logic.home;
 
-import org.cos30018.hets.logic.appliance.ApplianceRegisterBehaviour;
+import org.cos30018.hets.logic.appliance.behaviour.ApplianceRegisterBehaviour;
 
 import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;

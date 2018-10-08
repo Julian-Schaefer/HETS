@@ -1,4 +1,4 @@
-package org.cos30018.hets.logic.appliance;
+package org.cos30018.hets.logic.appliance.behaviour;
 
 import jade.core.Agent;
 import jade.domain.FIPANames;
