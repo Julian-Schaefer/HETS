@@ -24,14 +24,21 @@ public class ApplianceAgent extends Agent implements Appliance {
 	private static final long serialVersionUID = -2702213410686638092L;
 	
 	private UsageForecast usageForecast;
-
+	private ApplianceType applianceType;
+	
+	
+	public ApplianceAgent() {
+		registerO2AInterface(Appliance.class, this);
+	}
+	
 	@Override
 	protected void setup() {
 		AID homeAgentAID = getService(HomeAgent.HOME_AGENT_SERVICE)[0].getName();
 		addBehaviour(ApplianceRegisterBehaviour.create(this, homeAgentAID));
 		
 		Object[] arguments = getArguments();
-		int forecastingMethod = (int) arguments[0];
+		applianceType = (ApplianceType) arguments[0];
+		int forecastingMethod = (int) arguments[1];
 		setForecastingMethod(forecastingMethod);
 		
 		addBehaviour(new ApplianceResponderBehaviour(this));
@@ -54,8 +61,25 @@ public class ApplianceAgent extends Agent implements Appliance {
 	}
 
 	@Override
+	public void setApplianceType(ApplianceType applianceType) {
+		this.applianceType = applianceType;
+	}
+
+	@Override
+	public ApplianceType getType() {
+		return applianceType;
+	}
+	
+	@Override
 	public double getLastActualUsage() {
-		// TODO Auto-generated method stub
+		switch(applianceType) {
+		case DISHWASHER: return 10;
+		case HIFI: return 5;
+		case LIGHTBULB: return 1;
+		case PC: return 6;
+		case TV: return 7;
+		}
+		
 		return 0;
 	}
 

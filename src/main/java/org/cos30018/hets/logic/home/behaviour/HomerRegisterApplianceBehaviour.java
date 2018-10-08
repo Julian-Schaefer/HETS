@@ -1,6 +1,7 @@
-package org.cos30018.hets.logic.home;
+package org.cos30018.hets.logic.home.behaviour;
 
-import org.cos30018.hets.logic.appliance.behaviour.ApplianceRegisterBehaviour;
+import org.cos30018.hets.logic.appliance.ApplianceMessage;
+import org.cos30018.hets.logic.home.HomeAgent;
 
 import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -9,7 +10,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREResponder;
 
-public class HomeAgentApplianceRegisterRespondBehaviour extends AchieveREResponder {
+public class HomerRegisterApplianceBehaviour extends AchieveREResponder {
 
 	/**
 	 * 
@@ -23,20 +24,19 @@ public class HomeAgentApplianceRegisterRespondBehaviour extends AchieveRERespond
 
 	private HomeAgent homeAgent;
 	
-	public HomeAgentApplianceRegisterRespondBehaviour(HomeAgent homeAgent) {
+	public HomerRegisterApplianceBehaviour(HomeAgent homeAgent) {
 		super(homeAgent, template);
 		this.homeAgent = homeAgent;
 	}
 	
 	@Override
 	protected ACLMessage handleRequest(ACLMessage request) throws NotUnderstoodException, RefuseException {
-		if(request.getContent().equals(ApplianceRegisterBehaviour.MSG_REGISTER)) {
+		if(request.getContent().equals(ApplianceMessage.REGISTER)) {
 			homeAgent.registerAppliance(request.getSender());
-			System.out.println(myAgent.getLocalName() + ": Appliance registered");
 			
 			ACLMessage agreeMessage = request.createReply();
 			agreeMessage.setPerformative(ACLMessage.INFORM);
-			agreeMessage.setContent(ApplianceRegisterBehaviour.MSG_ACCEPTED);
+			agreeMessage.setContent(ApplianceMessage.ACCEPTED);
 			return agreeMessage;
 		} else {
 			throw new RefuseException("Wrong content");

@@ -1,6 +1,7 @@
-package org.cos30018.hets.logic.home;
+package org.cos30018.hets.logic.home.behaviour;
 
-import jade.core.AID;
+import org.cos30018.hets.logic.home.HomeAgent;
+
 import jade.core.behaviours.TickerBehaviour;
 
 public class PeriodicApplianceRequestBehaviour extends TickerBehaviour {
@@ -19,8 +20,6 @@ public class PeriodicApplianceRequestBehaviour extends TickerBehaviour {
 
 	@Override
 	protected void onTick() {
-		for(AID applianceAID : homeAgent.getApplianceAIDs()) {
-			homeAgent.addBehaviour(ApplianceRequestBehaviour.create(myAgent, applianceAID));
-		}
+		homeAgent.addBehaviour(ApplianceUsageRequestBehaviour.create(homeAgent, homeAgent.getAppliances()));
 	}
 }

@@ -1,10 +1,11 @@
 package org.cos30018.hets.logic.appliance.behaviour;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.cos30018.hets.logic.appliance.ApplianceMessage;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -13,9 +14,6 @@ import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
 
 public class ApplianceRegisterBehaviour extends AchieveREInitiator {
-
-	public static final String MSG_REGISTER = "REGISTER";
-	public static final String MSG_ACCEPTED = "ACCEPTED";
 	
 	/**
 	 * 
@@ -27,7 +25,7 @@ public class ApplianceRegisterBehaviour extends AchieveREInitiator {
 		msg.addReceiver(homeAgentAID);
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 		msg.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
-		msg.setContent(MSG_REGISTER);
+		msg.setContent(ApplianceMessage.REGISTER);
 		
 		return new ApplianceRegisterBehaviour(a, msg);
 	}
@@ -40,7 +38,7 @@ public class ApplianceRegisterBehaviour extends AchieveREInitiator {
 
 	@Override
 	protected void handleInform(ACLMessage inform) {
-		if(MSG_ACCEPTED.equals(inform.getContent())) {
+		if(ApplianceMessage.ACCEPTED.equals(inform.getContent())) {
 			logMessage("Appliance has been registered by HomeAgent.");
 		} else {
 			myAgent.doDelete();

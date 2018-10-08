@@ -7,11 +7,15 @@ import jade.core.AID;
 public interface Home {
 
 	List<AID> getAppliances();
-	void setCheckInterval();
-	void setForecastPeriodCount();
+	void setCheckInterval(long period);
+	void setForecastPeriodCount(int forecastPeriodCount);
+	int getForecastPeriodCount();
+	void setTotalUsageForecast(double totalUsageForecast);
+	double getTotalUsageForecast();
 	void setListener(HomeListener listener);
 	
 	public interface HomeListener {
+		void onTotalUsageForecastUpdated(double totalUsageForecast);
 		void onApplianceAdded(AID applianceAID);
 		void onApplianceRemoved(AID applianceAID);
 		void onRetailerAdded(AID retailerAID);

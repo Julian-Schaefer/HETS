@@ -3,6 +3,9 @@ package org.cos30018.hets.logic.home;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cos30018.hets.logic.home.behaviour.HomerRegisterApplianceBehaviour;
+import org.cos30018.hets.logic.home.behaviour.PeriodicApplianceRequestBehaviour;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -24,6 +27,8 @@ public class HomeAgent extends Agent implements Home {
 	private List<AID> applianceAIDs = new ArrayList<>();
 	private PeriodicApplianceRequestBehaviour periodicApplianceRequestBehaviour;
 
+	private int forecastPeriodCount;
+	private double totalUsageForecast;
 	
 	public HomeAgent() {
 		registerO2AInterface(Home.class, this);
@@ -36,19 +41,15 @@ public class HomeAgent extends Agent implements Home {
 		sd.setName(getLocalName());
 		register(sd);
 		
-		addBehaviour(new HomeAgentApplianceRegisterRespondBehaviour(this));
+		addBehaviour(new HomerRegisterApplianceBehaviour(this));
 
-		periodicApplianceRequestBehaviour = new PeriodicApplianceRequestBehaviour(this, 500);
+		periodicApplianceRequestBehaviour = new PeriodicApplianceRequestBehaviour(this, 5000);
 		addBehaviour(periodicApplianceRequestBehaviour);
 	}
 	
 	public void registerAppliance(AID applianceAID) {
 		applianceAIDs.add(applianceAID);
 		listener.onApplianceAdded(applianceAID);
-	}
-	
-	public List<AID> getApplianceAIDs() {
-		return applianceAIDs;
 	}
 
 	private void register(ServiceDescription serviceDescription) {
@@ -72,20 +73,33 @@ public class HomeAgent extends Agent implements Home {
 
 	@Override
 	public List<AID> getAppliances() {
-		// TODO Auto-generated method stub
-		return null;
+		return applianceAIDs;
 	}
 	
 	@Override
-	public void setCheckInterval() {
-		// TODO Auto-generated method stub
-		
+	public void setCheckInterval(long period) {
+		periodicApplianceRequestBehaviour.reset(period);
 	}
 
 	@Override
-	public void setForecastPeriodCount() {
-		// TODO Auto-generated method stub
-		
+	public void setForecastPeriodCount(int forecastPeriodCount) {
+		this.forecastPeriodCount = forecastPeriodCount;
+	}
+	
+	@Override
+	public int getForecastPeriodCount() {
+		return forecastPeriodCount;
+	}
+
+	@Override
+	public void setTotalUsageForecast(double totalUsageForecast) {
+		this.totalUsageForecast = totalUsageForecast;
+		listener.onTotalUsageForecastUpdated(totalUsageForecast);
+	}
+	
+	@Override
+	public double getTotalUsageForecast() {
+		return totalUsageForecast;
 	}
 
 	@Override
