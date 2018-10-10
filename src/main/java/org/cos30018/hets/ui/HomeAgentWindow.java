@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import org.cos30018.hets.ui.appliance.AppliancePanel;
-import org.cos30018.hets.ui.appliance.AppliancePanelController;
 
 public class HomeAgentWindow extends JFrame {
 
@@ -20,7 +19,7 @@ public class HomeAgentWindow extends JFrame {
 	private JScrollPane rightScrollPane;
 	
 	public HomeAgentWindow() {
-		super("Home Agent Controller");
+		super("HETS");
 		setSize(1000, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());

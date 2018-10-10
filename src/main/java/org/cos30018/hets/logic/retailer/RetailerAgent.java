@@ -1,6 +1,13 @@
 package org.cos30018.hets.logic.retailer;
 
+import org.cos30018.hets.logic.home.HomeAgent;
+import org.cos30018.hets.logic.retailer.behaviour.RetailerRegisterBehaviour;
+
+import jade.core.AID;
 import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 public class RetailerAgent extends Agent {
 	/**
@@ -10,6 +17,25 @@ public class RetailerAgent extends Agent {
 
 	@Override
 	protected void setup() {
+		AID homeAgentAID = getService(HomeAgent.HOME_AGENT_SERVICE)[0].getName();
+		addBehaviour(RetailerRegisterBehaviour.create(this, homeAgentAID));
+		
 		addBehaviour(new RetailerResponderBehaviour(this));
+	}
+	
+	private DFAgentDescription[] getService(String service) {
+		DFAgentDescription dfAgentDescription = new DFAgentDescription();
+		ServiceDescription serviceDescription = new ServiceDescription();
+		serviceDescription.setType(service);
+		dfAgentDescription.addServices(serviceDescription);
+		
+		try {
+			DFAgentDescription[] result = DFService.search(this, dfAgentDescription);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

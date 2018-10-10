@@ -37,8 +37,7 @@ public class HomeAgentController implements HomeListener {
 
 	@Override
 	public void onRetailerAdded(AID retailerAID) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Retailer added to GUI");
 	}
 
 	@Override

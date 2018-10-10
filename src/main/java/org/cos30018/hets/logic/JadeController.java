@@ -2,6 +2,7 @@ package org.cos30018.hets.logic;
 
 import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
+import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.HomeAgent;
 
@@ -60,7 +61,7 @@ public class JadeController {
 		return home;
 	}
 	
-	public void addApplianceAgent(String name, ApplianceType applianceType, int forecastingMethod) throws StaleProxyException {
+	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod) throws StaleProxyException {
 		addAgent("appliance_" + name, ApplianceAgent.class, new Object[] { applianceType, forecastingMethod });
 	}
 	

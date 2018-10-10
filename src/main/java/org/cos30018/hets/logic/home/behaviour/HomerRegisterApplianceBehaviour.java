@@ -2,6 +2,7 @@ package org.cos30018.hets.logic.home.behaviour;
 
 import org.cos30018.hets.logic.appliance.ApplianceMessage;
 import org.cos30018.hets.logic.home.HomeAgent;
+import org.cos30018.hets.logic.retailer.RetailerMessage;
 
 import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -37,6 +38,13 @@ public class HomerRegisterApplianceBehaviour extends AchieveREResponder {
 			ACLMessage agreeMessage = request.createReply();
 			agreeMessage.setPerformative(ACLMessage.INFORM);
 			agreeMessage.setContent(ApplianceMessage.ACCEPTED);
+			return agreeMessage;
+		} if(request.getContent().equals(RetailerMessage.REGISTER)) {
+			homeAgent.registerRetailer(request.getSender());
+			
+			ACLMessage agreeMessage = request.createReply();
+			agreeMessage.setPerformative(ACLMessage.INFORM);
+			agreeMessage.setContent(RetailerMessage.ACCEPTED);
 			return agreeMessage;
 		} else {
 			throw new RefuseException("Wrong content");

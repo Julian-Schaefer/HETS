@@ -70,6 +70,5 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 		}
 		
 		homeAgent.setTotalUsageForecast(totalUsageForecast);
-		System.out.println("All handled!");
 	}
 }

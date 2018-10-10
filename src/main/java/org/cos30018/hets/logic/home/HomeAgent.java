@@ -23,8 +23,9 @@ public class HomeAgent extends Agent implements Home {
 	private static final long serialVersionUID = -4685491195096413651L;
 	
 	private HomeListener listener;
-	
+
 	private List<AID> applianceAIDs = new ArrayList<>();
+	private List<AID> retailerAIDs = new ArrayList<>();
 	private PeriodicApplianceRequestBehaviour periodicApplianceRequestBehaviour;
 
 	private int forecastPeriodCount;
@@ -50,6 +51,11 @@ public class HomeAgent extends Agent implements Home {
 	public void registerAppliance(AID applianceAID) {
 		applianceAIDs.add(applianceAID);
 		listener.onApplianceAdded(applianceAID);
+	}
+	
+	public void registerRetailer(AID retailerAID) {
+		retailerAIDs.add(retailerAID);
+		listener.onRetailerAdded(retailerAID);
 	}
 
 	private void register(ServiceDescription serviceDescription) {

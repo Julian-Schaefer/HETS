@@ -38,7 +38,7 @@ public class ApplianceAgent extends Agent implements Appliance {
 		
 		Object[] arguments = getArguments();
 		applianceType = (ApplianceType) arguments[0];
-		int forecastingMethod = (int) arguments[1];
+		ForecastingMethod forecastingMethod = (ForecastingMethod) arguments[1];
 		setForecastingMethod(forecastingMethod);
 		
 		addBehaviour(new ApplianceResponderBehaviour(this));
@@ -95,9 +95,9 @@ public class ApplianceAgent extends Agent implements Appliance {
 	}
 
 	@Override
-	public void setForecastingMethod(int forecastingMethod) {
+	public void setForecastingMethod(ForecastingMethod forecastingMethod) {
 		switch(forecastingMethod) {
-		case FORECASTING_SIMPLE: usageForecast = new SimpleUsageForecast(this); break;
+		case SIMPLE: usageForecast = new SimpleUsageForecast(this); break;
 		}
 	}
 

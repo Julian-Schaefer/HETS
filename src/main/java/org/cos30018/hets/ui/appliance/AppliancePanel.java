@@ -12,10 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.ui.custom.AgentPanel;
-
-import jade.core.AID;
 
 public class AppliancePanel extends JPanel implements ActionListener {
 
