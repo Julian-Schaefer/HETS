@@ -20,9 +20,10 @@ public class HomeAgentWindow extends JFrame {
 	
 	public HomeAgentWindow() {
 		super("HETS");
-		setSize(1000, 500);
+		setSize(1200, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		setLocationRelativeTo(null);
 		setup();
 		setVisible(true);
 	}

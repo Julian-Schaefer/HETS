@@ -30,13 +30,19 @@ public class AppliancePanel extends JPanel implements ActionListener {
 	public AppliancePanel() {
 		setLayout(new BorderLayout());
 		setup();
+		setBorder(new EmptyBorder(10, 10, 10, 10));
 		new AppliancePanelController(this);
 	}
 	
 	private void setup() {
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
 		addApplianceButton = new JButton("Add Appliance");
 		addApplianceButton.addActionListener(this);
-		add(addApplianceButton, BorderLayout.NORTH);
+		buttonPanel.add(addApplianceButton);
+		
+		add(buttonPanel, BorderLayout.NORTH);
 		
 		listPanel = new JPanel();
 		listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
