@@ -1,5 +1,6 @@
 package org.cos30018.hets.logic;
 
+import org.cos30018.hets.logic.appliance.Appliance;
 import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
 import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
@@ -67,8 +68,18 @@ public class JadeController {
 		addAgent("appliance_" + name, ApplianceAgent.class, new Object[] { applianceType, forecastingMethod });
 	}
 	
-	public void addRetailerAgent() {
+	public Appliance getAppliance(AID aid) {
+		try {
+			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
+			return agentController.getO2AInterface(Appliance.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		return null;
+	}
+	
+	public void addRetailerAgent() {
 	}
 	
 	public void removeAgent(AID aid) {

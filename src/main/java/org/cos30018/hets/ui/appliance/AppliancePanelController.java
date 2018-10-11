@@ -50,6 +50,7 @@ public class AppliancePanelController implements AppliancePanelListener, AgentPa
 
 	@Override
 	public void onShowDetailsClicked(AID aid) {
+		new ApplianceDetails(aid);
 	}
 
 	@Override
