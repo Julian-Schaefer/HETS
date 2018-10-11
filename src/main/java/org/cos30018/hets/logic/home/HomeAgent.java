@@ -112,11 +112,4 @@ public class HomeAgent extends Agent implements Home {
 	public void setListener(HomeListener listener) {
 		this.listener = listener;
 	}
-
-	@Override
-	public double getTotalUsageForecast() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

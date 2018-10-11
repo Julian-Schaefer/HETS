@@ -31,10 +31,6 @@ public class ApplianceAgent extends Agent implements Appliance {
 		registerO2AInterface(Appliance.class, this);
 	}
 	
-	public ApplianceAgent() {
-		registerO2AInterface(Appliance.class, this);
-	}
-	
 	@Override
 	protected void setup() {
 		AID homeAgentAID = getService(HomeAgent.HOME_AGENT_SERVICE)[0].getName();
