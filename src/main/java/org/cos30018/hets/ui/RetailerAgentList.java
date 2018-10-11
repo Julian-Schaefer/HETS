@@ -30,9 +30,9 @@ public class RetailerAgentList extends JPanel {
 		JPanel container = new JPanel();
 		container.setBorder(new EmptyBorder(14, 14, 14, 14));
 		
-		AgentPanel agentPanel = new AgentPanel("Test-Agent");
-		agentPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
-		container.add(agentPanel);
+		//AgentPanel agentPanel = new AgentPanel(agent.getAID());
+		//agentPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
+		//container.add(agentPanel);
 		
 		add(container);
 	}

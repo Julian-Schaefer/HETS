@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.cos30018.hets.logic.appliance.ApplianceMessage;
+import org.cos30018.hets.logic.home.HomeMessage;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -38,7 +39,7 @@ public class RetailerRegisterBehaviour extends AchieveREInitiator {
 
 	@Override
 	protected void handleInform(ACLMessage inform) {
-		if(ApplianceMessage.ACCEPTED.equals(inform.getContent())) {
+		if(HomeMessage.ACCEPTED.equals(inform.getContent())) {
 			logMessage("Appliance has been registered by HomeAgent.");
 		} else {
 			myAgent.doDelete();

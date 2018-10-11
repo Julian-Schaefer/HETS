@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,6 +16,8 @@ import javax.swing.border.LineBorder;
 
 import org.cos30018.hets.ui.custom.AgentPanel;
 
+import jade.core.AID;
+
 public class AppliancePanel extends JPanel implements ActionListener {
 
 	/**
@@ -21,17 +25,19 @@ public class AppliancePanel extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = -8249612384152137579L;
 
+	private AppliancePanelController controller;
 	private AppliancePanelListener listener;
 	
 	private JButton addApplianceButton;
 	private JScrollPane scrollPane;
 	private JPanel listPanel;
 	
+	private Map<AID, JPanel> agentPanelForAID = new HashMap<>();
+	
 	public AppliancePanel() {
 		setLayout(new BorderLayout());
 		setup();
-		setBorder(new EmptyBorder(10, 10, 10, 10));
-		new AppliancePanelController(this);
+		this.controller = new AppliancePanelController(this);
 	}
 	
 	private void setup() {
@@ -46,21 +52,27 @@ public class AppliancePanel extends JPanel implements ActionListener {
 		
 		listPanel = new JPanel();
 		listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		scrollPane = new JScrollPane(listPanel);
+		scrollPane = new JScrollPane(listPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		add(scrollPane, BorderLayout.CENTER);
 	}
 	
-	public void addApplianceAgent(String name) {
-		JPanel container = new JPanel();
-		container.setBorder(new EmptyBorder(14, 14, 14, 14));
-		
-		AgentPanel agentPanel = new AgentPanel(name);
+	public void addApplianceAgent(AID aid) {		
+		AgentPanel agentPanel = new AgentPanel(aid);
+		agentPanel.setAgentPanelListener(controller);
 		agentPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
-		container.add(agentPanel);
 		
-		listPanel.add(container);
+		agentPanelForAID.put(aid, agentPanel);
+		listPanel.add(agentPanel);
 
+		updateUI();
+	}
+	
+	public void removeApplianceAgent(AID aid) {
+		listPanel.remove(agentPanelForAID.get(aid));
+		agentPanelForAID.remove(aid);
 		updateUI();
 	}
 
@@ -75,6 +87,5 @@ public class AppliancePanel extends JPanel implements ActionListener {
 	
 	public interface AppliancePanelListener {
 		void onApplianceAddButtonClick();
-		void onShowAgentClicked(String name);
 	}
 }

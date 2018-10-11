@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import jade.core.AID;
+
 public class AgentPanel extends JPanel {
 
 	/**
@@ -15,13 +17,15 @@ public class AgentPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 4879082512248930600L;
 
-	private String name;
+	private AID aid;
 	
-	private JButton showButton;
+	private JButton showDetailsButton;
 	private JButton deleteButton;
 	
-	public AgentPanel(String name) {
-		this.name = name;
+	private AgentPanelListener agentPanelListener;
+	
+	public AgentPanel(AID aid) {
+		this.aid = aid;
 		setup();
 	}
 	
@@ -29,23 +33,39 @@ public class AgentPanel extends JPanel {
 		JPanel container = new JPanel(new BorderLayout());
 		container.setBorder(new EmptyBorder(14, 14, 14, 14));
 		
-		JLabel nameLbl = new JLabel(name);
+		JLabel nameLbl = new JLabel(aid.getLocalName());
 		container.add(nameLbl, BorderLayout.CENTER);
 
 		add(container);
 		
 		JPanel bottom = new JPanel();
 		
-		showButton = new JButton("Show Details");
-		bottom.add(showButton);
+		showDetailsButton = new JButton("Show Details");
+		showDetailsButton.addActionListener(showDetailsButtonActionListener);
+		bottom.add(showDetailsButton);
 
 		deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(deleteButtonActionListener);
 		bottom.add(deleteButton);		
 
-		add(bottom, BorderLayout.SOUTH);
+		container.add(bottom, BorderLayout.SOUTH);
+		add(container);
+	}
+
+	private ActionListener showDetailsButtonActionListener = (e) -> {
+		if(agentPanelListener != null) agentPanelListener.onShowDetailsClicked(aid);
+	};
+	
+	private ActionListener deleteButtonActionListener = (e) -> {
+		if(agentPanelListener != null) agentPanelListener.onDeleteClicked(aid);
+	};
+	
+	public void setAgentPanelListener(AgentPanelListener agentPanelListener) {
+		this.agentPanelListener = agentPanelListener;
 	}
 	
-	public void addShowAgentClickListener(ActionListener listener) {
-		showButton.addActionListener(listener);
+	public interface AgentPanelListener {
+		void onShowDetailsClicked(AID aid);
+		void onDeleteClicked(AID aid);
 	}
 }

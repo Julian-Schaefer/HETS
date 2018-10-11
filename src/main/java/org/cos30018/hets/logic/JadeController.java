@@ -6,12 +6,14 @@ import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.HomeAgent;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 
 public class JadeController {
@@ -65,16 +67,17 @@ public class JadeController {
 		addAgent("appliance_" + name, ApplianceAgent.class, new Object[] { applianceType, forecastingMethod });
 	}
 	
-	public void removeApplianceAgent() {
-		
-	}
-	
 	public void addRetailerAgent() {
 		
 	}
 	
-	public void removeRetailerAgent() {
-		
+	public void removeAgent(AID aid) {
+		try {
+			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
+			agentController.kill();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void setInterval() {

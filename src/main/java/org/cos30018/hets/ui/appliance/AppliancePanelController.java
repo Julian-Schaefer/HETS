@@ -8,21 +8,19 @@ import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
 import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
 import org.cos30018.hets.ui.appliance.AppliancePanel.AppliancePanelListener;
+import org.cos30018.hets.ui.custom.AgentPanel.AgentPanelListener;
 
+import jade.core.AID;
 import jade.wrapper.StaleProxyException;
 
-public class AppliancePanelController implements AppliancePanelListener {
-
-	private AppliancePanel appliancePanel;
+public class AppliancePanelController implements AppliancePanelListener, AgentPanelListener {
 	
 	public AppliancePanelController(AppliancePanel appliancePanel) {
-		this.appliancePanel = appliancePanel;
 		appliancePanel.setAppliancePanelListener(this);
 	}
 	
 	@Override
 	public void onApplianceAddButtonClick() {
-
         JTextField applianceNameField = new JTextField();
         JComboBox<ApplianceType> typeCombo = new JComboBox<ApplianceType>(ApplianceType.values());
         JComboBox<ForecastingMethod> forecastCombo = new JComboBox<ForecastingMethod>(ForecastingMethod.values());
@@ -51,7 +49,11 @@ public class AppliancePanelController implements AppliancePanelListener {
 	}
 
 	@Override
-	public void onShowAgentClicked(String name) {
-		
+	public void onShowDetailsClicked(AID aid) {
+	}
+
+	@Override
+	public void onDeleteClicked(AID aid) {
+		JadeController.getInstance().removeAgent(aid);		
 	}
 }

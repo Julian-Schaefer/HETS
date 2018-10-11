@@ -2,7 +2,6 @@ package org.cos30018.hets.ui;
 
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
-import org.cos30018.hets.ui.appliance.AppliancePanelController;
 
 import jade.core.AID;
 
@@ -26,13 +25,12 @@ public class HomeAgentController implements HomeListener {
 
 	@Override
 	public void onApplianceAdded(AID applianceAID) {
-		view.getAppliancePanel().addApplianceAgent(applianceAID.getLocalName());
+		view.getAppliancePanel().addApplianceAgent(applianceAID);
 	}
 
 	@Override
 	public void onApplianceRemoved(AID applianceAID) {
-		// TODO Auto-generated method stub
-		
+		view.getAppliancePanel().removeApplianceAgent(applianceAID);
 	}
 
 	@Override

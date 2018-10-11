@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import org.cos30018.hets.logic.appliance.ApplianceMessage;
 import org.cos30018.hets.logic.home.HomeAgent;
+import org.cos30018.hets.logic.home.HomeMessage;
 
 import jade.core.AID;
 import jade.domain.FIPANames;
@@ -27,6 +28,7 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 		}		
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 		msg.setContent(ApplianceMessage.USAGE);
+		msg.setOntology(HomeMessage.ONTOLOGY_USAGE);
 		
 		return new ApplianceUsageRequestBehaviour(homeAgent, msg);
 	}
@@ -63,9 +65,11 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 		for(Object o : resultNotifications) {
 			if(o instanceof ACLMessage) {
 				ACLMessage message = (ACLMessage) o;
-				String usageText = message.getContent().replace(ApplianceMessage.USAGE, "").trim();
-				double usage = Double.valueOf(usageText);
-				totalUsageForecast += usage;
+				if(message.getContent().startsWith(ApplianceMessage.USAGE)) {
+					String usageText = message.getContent().replace(ApplianceMessage.USAGE, "").trim();
+					double usage = Double.valueOf(usageText);
+					totalUsageForecast += usage;
+				}
 			}
 		}
 		

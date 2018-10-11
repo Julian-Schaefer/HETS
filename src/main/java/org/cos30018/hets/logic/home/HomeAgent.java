@@ -3,7 +3,7 @@ package org.cos30018.hets.logic.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cos30018.hets.logic.home.behaviour.HomerRegisterApplianceBehaviour;
+import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
 import org.cos30018.hets.logic.home.behaviour.PeriodicApplianceRequestBehaviour;
 
 import jade.core.AID;
@@ -42,7 +42,7 @@ public class HomeAgent extends Agent implements Home {
 		sd.setName(getLocalName());
 		register(sd);
 		
-		addBehaviour(new HomerRegisterApplianceBehaviour(this));
+		addBehaviour(new HomeAgentRegisterRespondBehaviour(this));
 
 		periodicApplianceRequestBehaviour = new PeriodicApplianceRequestBehaviour(this, 5000);
 		addBehaviour(periodicApplianceRequestBehaviour);
@@ -53,9 +53,19 @@ public class HomeAgent extends Agent implements Home {
 		listener.onApplianceAdded(applianceAID);
 	}
 	
+	public void unregisterAppliance(AID applianceAID) {
+		applianceAIDs.remove(applianceAID);
+		listener.onApplianceRemoved(applianceAID);
+	}
+		
 	public void registerRetailer(AID retailerAID) {
 		retailerAIDs.add(retailerAID);
 		listener.onRetailerAdded(retailerAID);
+	}
+	
+	public void unregisterRetailer(AID retailerAID) {
+		retailerAIDs.remove(retailerAID);
+		listener.onRetailerRemoved(retailerAID);
 	}
 
 	private void register(ServiceDescription serviceDescription) {

@@ -2,8 +2,8 @@ package org.cos30018.hets.logic.appliance.behaviour;
 
 import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.logic.appliance.ApplianceMessage;
+import org.cos30018.hets.logic.home.HomeMessage;
 
-import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -21,7 +21,9 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 	
 	private static MessageTemplate template = MessageTemplate.and(
 			MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
-			MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+			MessageTemplate.and(
+					MessageTemplate.MatchOntology(HomeMessage.ONTOLOGY_USAGE),
+					MessageTemplate.MatchPerformative(ACLMessage.REQUEST)));
 
 
 	private ApplianceAgent applianceAgent;
@@ -42,14 +44,10 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 		}
 	}
 	
-	
-	
 	@Override
 	protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
 		response.setPerformative(ACLMessage.INFORM);
 		response.setContent(ApplianceMessage.USAGE + " " + applianceAgent.getUsageForecast(1)[0]);
 		return response;
-	}
-	
-	
+	}	
 }
