@@ -19,7 +19,7 @@ public class HomeAgent extends Agent {
 	 */
 	private static final long serialVersionUID = -4685491195096413651L;
 	
-	private List<AID> applianceAIDs = new ArrayList<>();
+	private List<AID> applianceAIDs = new ArrayList<AID>();
 	private PeriodicApplianceRequestBehaviour periodicApplianceRequestBehaviour;
 
 	@Override

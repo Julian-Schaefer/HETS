@@ -1,11 +1,11 @@
 package org.cos30018.hets.ui;
 
-import ui.panels.Appliances.AppliancesController;
-import ui.panels.Appliances.AppliancesPanel;
-import ui.panels.Home.HomePanel;
-import ui.panels.Home.HomePanelController;
-import ui.panels.Retailers.RetailersPanel;
-import ui.panels.Retailers.RetailersPanelController;
+import org.cos30018.hets.ui.panels.Appliances.AppliancesController;
+import org.cos30018.hets.ui.panels.Appliances.AppliancesPanel;
+import org.cos30018.hets.ui.panels.Home.HomePanel;
+import org.cos30018.hets.ui.panels.Home.HomePanelController;
+import org.cos30018.hets.ui.panels.Retailers.RetailersPanel;
+import org.cos30018.hets.ui.panels.Retailers.RetailersPanelController;
 
 import javax.swing.*;
 import java.awt.*;
