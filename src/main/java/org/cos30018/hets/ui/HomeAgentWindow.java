@@ -21,14 +21,15 @@ public class HomeAgentWindow extends JFrame {
 	public HomeAgentWindow() {
 		super("HETS");
 		setSize(1200, 700);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
-		setup();
+        setDefaultLookAndFeelDecorated(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setUp();
 		setVisible(true);
 	}
 	
-	private void setup() {
+	private void setUp() {
 		appliancePanel = new AppliancePanel();
 		appliancePanel.setPreferredSize(new Dimension(350, 0));
 		add(appliancePanel, BorderLayout.WEST);
