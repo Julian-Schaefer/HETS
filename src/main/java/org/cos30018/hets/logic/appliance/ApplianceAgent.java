@@ -2,22 +2,13 @@ package org.cos30018.hets.logic.appliance;
 
 import java.util.List;
 
-import org.cos30018.hets.logic.appliance.behaviour.ApplianceRegisterBehaviour;
 import org.cos30018.hets.logic.appliance.behaviour.ApplianceResponderBehaviour;
 import org.cos30018.hets.logic.appliance.forecast.SimpleUsageForecast;
 import org.cos30018.hets.logic.appliance.forecast.UsageForecast;
+import org.cos30018.hets.logic.common.RegisteringAgent;
 import org.cos30018.hets.logic.home.HomeAgent;
-import org.cos30018.hets.logic.home.HomeMessage;
 
-import jade.core.AID;
-import jade.core.Agent;
-import jade.domain.DFService;
-import jade.domain.FIPANames;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.lang.acl.ACLMessage;
-
-public class ApplianceAgent extends Agent implements Appliance {
+public class ApplianceAgent extends RegisteringAgent implements Appliance {
 
 	public static final int FORECASTING_SIMPLE = 1;
 	
@@ -25,20 +16,18 @@ public class ApplianceAgent extends Agent implements Appliance {
 	 * 
 	 */
 	private static final long serialVersionUID = -2702213410686638092L;
-
-	private AID homeAgentAID;
 	
 	private UsageForecast usageForecast;
 	private ApplianceType applianceType;
 	
 	public ApplianceAgent() {
+		super(HomeAgent.HOME_AGENT_SERVICE, ApplianceMessage.REGISTER, ApplianceMessage.UNREGISTER);
 		registerO2AInterface(Appliance.class, this);
 	}
 	
 	@Override
 	protected void setup() {
-		homeAgentAID = getService(HomeAgent.HOME_AGENT_SERVICE)[0].getName();
-		addBehaviour(ApplianceRegisterBehaviour.create(this, homeAgentAID));
+		super.setup();
 		
 		Object[] arguments = getArguments();
 		applianceType = (ApplianceType) arguments[0];
@@ -46,22 +35,6 @@ public class ApplianceAgent extends Agent implements Appliance {
 		setForecastingMethod(forecastingMethod);
 		
 		addBehaviour(new ApplianceResponderBehaviour(this));
-	}
-
-	private DFAgentDescription[] getService(String service) {
-		DFAgentDescription dfAgentDescription = new DFAgentDescription();
-		ServiceDescription serviceDescription = new ServiceDescription();
-		serviceDescription.setType(service);
-		dfAgentDescription.addServices(serviceDescription);
-		
-		try {
-			DFAgentDescription[] result = DFService.search(this, dfAgentDescription);
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return null;
 	}
 
 	@Override
@@ -85,16 +58,6 @@ public class ApplianceAgent extends Agent implements Appliance {
 		}
 		
 		return 0;
-	}
-	
-	@Override
-	protected void takeDown() {			
-		ACLMessage unregisterMessage = new ACLMessage(ACLMessage.REQUEST);
-		unregisterMessage.addReceiver(homeAgentAID);
-		unregisterMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-		unregisterMessage.setOntology(HomeMessage.ONTOLOGY_REGISTRATION);
-		unregisterMessage.setContent(ApplianceMessage.UNREGISTER);
-		send(unregisterMessage);
 	}
 
 	@Override

@@ -1,10 +1,9 @@
-package org.cos30018.hets.logic.appliance.behaviour;
+package org.cos30018.hets.logic.common;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.cos30018.hets.logic.appliance.ApplianceMessage;
 import org.cos30018.hets.logic.home.HomeMessage;
 
 import jade.core.AID;
@@ -13,33 +12,33 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
 
-public class ApplianceRegisterBehaviour extends AchieveREInitiator {
+public class HomeAgentRegisterBehaviour extends AchieveREInitiator {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5927343857776372041L;
 
-	public static ApplianceRegisterBehaviour create(Agent a, AID homeAgentAID) {
+	public static HomeAgentRegisterBehaviour create(Agent a, AID homeAgentAID, String content) {
 		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 		msg.addReceiver(homeAgentAID);
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 		msg.setOntology(HomeMessage.ONTOLOGY_REGISTRATION);
-		msg.setContent(ApplianceMessage.REGISTER);
+		msg.setContent(content);
 		
-		return new ApplianceRegisterBehaviour(a, msg);
+		return new HomeAgentRegisterBehaviour(a, msg);
 	}
 	
 	private List<String> logMessages = new LinkedList<>();
 	
-	private ApplianceRegisterBehaviour(Agent a, ACLMessage msg) {
+	private HomeAgentRegisterBehaviour(Agent a, ACLMessage msg) {
 		super(a, msg);
 	}
 
 	@Override
 	protected void handleInform(ACLMessage inform) {
 		if(HomeMessage.ACCEPTED.equals(inform.getContent())) {
-			logMessage("Appliance has been registered by HomeAgent.");
+			logMessage("Agent has been registered by HomeAgent.");
 		} else {
 			myAgent.doDelete();
 		}
