@@ -1,4 +1,4 @@
-package org.cos30018.hets.logic.home;
+package org.cos30018.hets.logic.home.behaviour;
 
 import java.util.Date;
 import java.util.Vector;

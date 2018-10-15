@@ -1,4 +1,4 @@
-package org.cos30018.hets.ui.appliance;
+package org.cos30018.hets.ui.retailer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -18,45 +18,45 @@ import org.cos30018.hets.ui.custom.JPanelList;
 
 import jade.core.AID;
 
-public class AppliancePanel extends JPanel implements ActionListener {
+public class RetailerPanel extends JPanel implements ActionListener {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8249612384152137579L;
+	private static final long serialVersionUID = 417841290515799971L;
 
-	private AppliancePanelController controller;
-	private AppliancePanelListener listener;
-	
+	private RetailerPanelController controller;
+	private RetailerPanelListener listener;
+
 	private JButton addApplianceButton;
 	private JPanelList panelList;
-	
+
 	private Map<AID, JPanel> agentPanelForAID = new HashMap<>();
-	
-	public AppliancePanel() {
+
+	public RetailerPanel() {
 		setLayout(new BorderLayout());
 		setup();
-		this.controller = new AppliancePanelController(this);
+		this.controller = new RetailerPanelController(this);
 	}
-	
+
 	private void setup() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		
-		addApplianceButton = new JButton("Add Appliance");
+
+		addApplianceButton = new JButton("Add Retailer");
 		addApplianceButton.addActionListener(this);
 		buttonPanel.add(addApplianceButton);
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		
+
 		add(buttonPanel, BorderLayout.NORTH);
-		
+
 		panelList = new JPanelList();
-        
+
 		JScrollPane scrollPane = new JScrollPane(panelList);
 		add(scrollPane, BorderLayout.CENTER);
 	}
 	
-	public void addApplianceAgent(AID aid) {			
+	public void addRetailerAgent(AID aid) {			
 		AgentPanel agentPanel = new AgentPanel(aid);
 		agentPanel.setAgentPanelListener(controller);
 		agentPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
@@ -64,7 +64,7 @@ public class AppliancePanel extends JPanel implements ActionListener {
 		agentPanelForAID.put(aid, panelList.addJPanel(agentPanel));
 	}
 	
-	public void removeApplianceAgent(AID aid) {
+	public void removeRetailerAgent(AID aid) {
 		panelList.remove(agentPanelForAID.get(aid));
 		agentPanelForAID.remove(aid);
 		updateUI();
@@ -72,14 +72,14 @@ public class AppliancePanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		listener.onApplianceAddButtonClick();
+		listener.onRetailerAddButtonClick();
 	}
 	
-	public void setAppliancePanelListener(AppliancePanelListener listener) {
+	public void setRetailerPanelListener(RetailerPanelListener listener) {
 		this.listener = listener;
 	}
 	
-	public interface AppliancePanelListener {
-		void onApplianceAddButtonClick();
+	public interface RetailerPanelListener {
+		void onRetailerAddButtonClick();
 	}
 }

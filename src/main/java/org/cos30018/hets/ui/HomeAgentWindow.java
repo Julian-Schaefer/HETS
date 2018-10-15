@@ -1,12 +1,14 @@
 package org.cos30018.hets.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 
 import org.cos30018.hets.ui.appliance.AppliancePanel;
-import org.cos30018.hets.ui.appliance.AppliancePanelController;
+import org.cos30018.hets.ui.home.HomePanel;
+import org.cos30018.hets.ui.home.HomePanelController;
+import org.cos30018.hets.ui.retailer.RetailerPanel;
 
 public class HomeAgentWindow extends JFrame {
 
@@ -16,29 +18,37 @@ public class HomeAgentWindow extends JFrame {
 	private static final long serialVersionUID = 4924347209446756399L;
 
 	private AppliancePanel appliancePanel;
-	private JScrollPane rightScrollPane;
+	private RetailerPanel retailerPanel;
 	
 	public HomeAgentWindow() {
-		super("Home Agent Controller");
-		setSize(1000, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		super("HETS");
+		setSize(1200, 700);
 		setLayout(new BorderLayout());
-		setup();
+		setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setUp();
 		setVisible(true);
 	}
 	
-	private void setup() {
+	private void setUp() {
 		appliancePanel = new AppliancePanel();
-		new AppliancePanelController(appliancePanel);
+		appliancePanel.setPreferredSize(new Dimension(350, 0));
 		add(appliancePanel, BorderLayout.WEST);
 		
-		rightScrollPane = new JScrollPane(new RetailerAgentList(), 
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-	            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		add(rightScrollPane, BorderLayout.EAST);
+		HomePanel homePanel = new HomePanel();
+		add(homePanel, BorderLayout.CENTER);
+		new HomePanelController(homePanel);	
+
+		retailerPanel = new RetailerPanel();
+		retailerPanel.setPreferredSize(new Dimension(350, 0));
+		add(retailerPanel, BorderLayout.EAST);
 	}
 	
 	public AppliancePanel getAppliancePanel() {
 		return appliancePanel;
-	}	
+	}
+	
+	public RetailerPanel getRetailerPanel() {
+		return retailerPanel;
+	}
 }

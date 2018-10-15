@@ -1,8 +1,17 @@
 package org.cos30018.hets.logic;
 
+import org.cos30018.hets.logic.appliance.Appliance;
+import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
+import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
 import org.cos30018.hets.logic.appliance.ApplianceAgent;
+import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.HomeAgent;
+import org.cos30018.hets.logic.retailer.Retailer;
+import org.cos30018.hets.logic.retailer.Retailer.NegotiationStrategy;
+import org.cos30018.hets.logic.retailer.Retailer.PricingStrategy;
+import org.cos30018.hets.logic.retailer.RetailerAgent;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -18,7 +27,7 @@ public class JadeController {
 	private Runtime runtime = Runtime.instance();
 	private AgentContainer mainContainer;
 	
-	private JadeControllerListener listener;
+	private Home home;
 	
 	public static JadeController getInstance() {
 		if(instance == null) {
@@ -42,53 +51,75 @@ public class JadeController {
 			//Ignore
 		}
 		
-        addAgent("homeAgent", HomeAgent.class);		
+		setupHomeAgent();
 	}
 	
-	public void addApplianceAgent(String name) {
-		addAgent(name, ApplianceAgent.class);
+	private void setupHomeAgent() {
+		try {
+			AgentController homeAgentController = addAgent("homeAgent", HomeAgent.class);
+			this.home = homeAgentController.getO2AInterface(Home.class);
+		} catch (StaleProxyException e) {
+			e.printStackTrace();
+		}		
 	}
 	
-	public void removeApplianceAgent() {
+	public Home getHome() {
+		return home;
+	}
+	
+	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod) throws StaleProxyException {
+		addAgent("appliance_" + name, ApplianceAgent.class, new Object[] { applianceType, forecastingMethod });
+	}
+	
+	public Appliance getAppliance(AID aid) {
+		try {
+			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
+			return agentController.getO2AInterface(Appliance.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		return null;
 	}
 	
-	public void addRetailerAgent() {
-		
+	public void addRetailerAgent(String name, NegotiationStrategy negotiationStrategy, PricingStrategy pricingStrategy) throws StaleProxyException {
+		addAgent("retailer_" + name, RetailerAgent.class, new Object[] { negotiationStrategy, pricingStrategy });
 	}
 	
-	public void removeRetailerAgent() {
+	public Retailer getRetailer(AID aid) {
+		try {
+			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
+			return agentController.getO2AInterface(Retailer.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		return null;
+	}
+	
+	public void removeAgent(AID aid) {
+		try {
+			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
+			agentController.kill();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void setInterval() {
 		
 	}
+
+    private AgentController addAgent(String name, Class<? extends Agent> agentClass) throws StaleProxyException {
+    	return addAgent(name, agentClass, new Object[0]);
+    }
     
-    private void addAgent(String name, Class<? extends Agent> agentClass) {
+    private AgentController addAgent(String name, Class<? extends Agent> agentClass, Object[] arguments) throws StaleProxyException {
 		System.out.println(getClass().getSimpleName() + ": Starting up Agent: " + name);
 		
-		try {
-			AgentController agentController = mainContainer.createNewAgent(name, agentClass.getName(), new Object[0]);
-			agentController.start();
-		} catch (StaleProxyException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			Thread.sleep(300);
-		} catch (InterruptedException interruptedException) {
-			//Ignore
-		}
+		AgentController agentController = mainContainer.createNewAgent(name, agentClass.getName(), arguments);
+		agentController.start();
 		
-		if(listener != null) listener.onApplianceAgentAdded(name);
-    }
-    
-    public void setListener(JadeControllerListener listener) {
-    	this.listener = listener;
-    }
-    
-    public interface JadeControllerListener {
-    	void onApplianceAgentAdded(String name);
+		return agentController;
     }
 }

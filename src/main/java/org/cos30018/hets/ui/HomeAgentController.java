@@ -1,32 +1,49 @@
 package org.cos30018.hets.ui;
 
-import org.cos30018.hets.logic.JadeController;
-import org.cos30018.hets.logic.JadeController.JadeControllerListener;
-import org.cos30018.hets.ui.appliance.AppliancePanelController;
+import org.cos30018.hets.logic.home.Home;
+import org.cos30018.hets.logic.home.Home.HomeListener;
 
-public class HomeAgentController implements JadeControllerListener {
+import jade.core.AID;
+
+public class HomeAgentController implements HomeListener {
 
 	private HomeAgentWindow view;
 	
-	private JadeController jadeController;
+	private Home home;
+
 	
-	private AppliancePanelController appliancePanelController;
-	
-	public HomeAgentController() {
-		JadeController jadeController = new JadeController();
-		jadeController.setListener(this);
-		jadeController.launchPlattform();
-		
+	public HomeAgentController(Home home) {
+		this.home = home;
+		this.home.setListener(this);
 		setupAppliancePanel();
 	}
 	
 	private void setupAppliancePanel() {
-		view = new HomeAgentWindow();
-		appliancePanelController = new AppliancePanelController(view.getAppliancePanel());
-		
+		view = new HomeAgentWindow();		
 	}
 
 	@Override
-	public void onApplianceAgentAdded(String name) {
+	public void onApplianceAdded(AID applianceAID) {
+		view.getAppliancePanel().addApplianceAgent(applianceAID);
+	}
+
+	@Override
+	public void onApplianceRemoved(AID applianceAID) {
+		view.getAppliancePanel().removeApplianceAgent(applianceAID);
+	}
+
+	@Override
+	public void onRetailerAdded(AID retailerAID) {
+		view.getRetailerPanel().addRetailerAgent(retailerAID);
+	}
+
+	@Override
+	public void onRetailerRemoved(AID retailerAID) {
+		view.getRetailerPanel().removeRetailerAgent(retailerAID);
+	}
+
+	@Override
+	public void onTotalUsageForecastUpdated(double totalUsageForecast) {
+		System.out.println("Total Usage updated: " + totalUsageForecast);
 	}
 }

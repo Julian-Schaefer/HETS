@@ -3,6 +3,9 @@ package org.cos30018.hets.logic.home;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
+import org.cos30018.hets.logic.home.behaviour.PeriodicApplianceRequestBehaviour;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -10,7 +13,7 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
-public class HomeAgent extends Agent {
+public class HomeAgent extends Agent implements Home {
 
 	public static final String HOME_AGENT_SERVICE = "home_agent";
 
@@ -19,9 +22,19 @@ public class HomeAgent extends Agent {
 	 */
 	private static final long serialVersionUID = -4685491195096413651L;
 	
+	private HomeListener listener;
+
 	private List<AID> applianceAIDs = new ArrayList<>();
+	private List<AID> retailerAIDs = new ArrayList<>();
 	private PeriodicApplianceRequestBehaviour periodicApplianceRequestBehaviour;
 
+	private int forecastPeriodCount;
+	private double totalUsageForecast;
+	
+	public HomeAgent() {
+		registerO2AInterface(Home.class, this);
+	}
+	
 	@Override
 	protected void setup() {
 		ServiceDescription sd = new ServiceDescription();
@@ -29,18 +42,30 @@ public class HomeAgent extends Agent {
 		sd.setName(getLocalName());
 		register(sd);
 		
-		addBehaviour(new HomeAgentApplianceRegisterRespondBehaviour(this));
+		addBehaviour(new HomeAgentRegisterRespondBehaviour(this));
 
-		periodicApplianceRequestBehaviour = new PeriodicApplianceRequestBehaviour(this, 500);
+		periodicApplianceRequestBehaviour = new PeriodicApplianceRequestBehaviour(this, 5000);
 		addBehaviour(periodicApplianceRequestBehaviour);
 	}
 	
 	public void registerAppliance(AID applianceAID) {
 		applianceAIDs.add(applianceAID);
+		listener.onApplianceAdded(applianceAID);
 	}
 	
-	public List<AID> getApplianceAIDs() {
-		return applianceAIDs;
+	public void unregisterAppliance(AID applianceAID) {
+		applianceAIDs.remove(applianceAID);
+		listener.onApplianceRemoved(applianceAID);
+	}
+		
+	public void registerRetailer(AID retailerAID) {
+		retailerAIDs.add(retailerAID);
+		listener.onRetailerAdded(retailerAID);
+	}
+	
+	public void unregisterRetailer(AID retailerAID) {
+		retailerAIDs.remove(retailerAID);
+		listener.onRetailerRemoved(retailerAID);
 	}
 
 	private void register(ServiceDescription serviceDescription) {
@@ -62,4 +87,39 @@ public class HomeAgent extends Agent {
 		}
 	}
 
+	@Override
+	public List<AID> getAppliances() {
+		return applianceAIDs;
+	}
+	
+	@Override
+	public void setCheckInterval(long period) {
+		periodicApplianceRequestBehaviour.reset(period);
+	}
+
+	@Override
+	public void setForecastPeriodCount(int forecastPeriodCount) {
+		this.forecastPeriodCount = forecastPeriodCount;
+	}
+	
+	@Override
+	public int getForecastPeriodCount() {
+		return forecastPeriodCount;
+	}
+
+	@Override
+	public void setTotalUsageForecast(double totalUsageForecast) {
+		this.totalUsageForecast = totalUsageForecast;
+		listener.onTotalUsageForecastUpdated(totalUsageForecast);
+	}
+	
+	@Override
+	public double getTotalUsageForecast() {
+		return totalUsageForecast;
+	}
+
+	@Override
+	public void setListener(HomeListener listener) {
+		this.listener = listener;
+	}
 }

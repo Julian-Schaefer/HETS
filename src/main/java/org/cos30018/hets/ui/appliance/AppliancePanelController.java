@@ -1,29 +1,60 @@
 package org.cos30018.hets.ui.appliance;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import org.cos30018.hets.logic.JadeController;
-import org.cos30018.hets.logic.appliance.ApplianceAgent;
+import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
+import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
 import org.cos30018.hets.ui.appliance.AppliancePanel.AppliancePanelListener;
+import org.cos30018.hets.ui.custom.AgentPanel.AgentPanelListener;
 
-public class AppliancePanelController implements AppliancePanelListener {
+import jade.core.AID;
+import jade.wrapper.StaleProxyException;
 
-	private AppliancePanel appliancePanel;
+public class AppliancePanelController implements AppliancePanelListener, AgentPanelListener {
 	
 	public AppliancePanelController(AppliancePanel appliancePanel) {
-		this.appliancePanel = appliancePanel;
 		appliancePanel.setAppliancePanelListener(this);
 	}
-
+	
 	@Override
 	public void onApplianceAddButtonClick() {
-		String name = JOptionPane.showInputDialog("Please enter the Appliance Name");
-		JadeController.getInstance().addApplianceAgent(name);
-		appliancePanel.addApplianceAgent(new ApplianceAgent());
+        JTextField applianceNameField = new JTextField();
+        JComboBox<ApplianceType> typeCombo = new JComboBox<ApplianceType>(ApplianceType.values());
+        JComboBox<ForecastingMethod> forecastCombo = new JComboBox<ForecastingMethod>(ForecastingMethod.values());
+        
+
+        Object[] dialogComponents = {
+                "Name", applianceNameField,
+                "Type", typeCombo,
+                "Forecast Method", forecastCombo
+        };
+
+        JOptionPane.showConfirmDialog(null, dialogComponents, "Add Appliance", JOptionPane.OK_CANCEL_OPTION);
+
+        if (!applianceNameField.getText().isEmpty()) {
+        	try {
+    			JadeController.getInstance().addApplianceAgent(applianceNameField.getText(),
+    					(ApplianceType) typeCombo.getSelectedItem(), 
+    					(ForecastingMethod) forecastCombo.getSelectedItem());
+    		} catch (StaleProxyException e) {
+    			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    		}
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Appliance name is empty");
+        }
 	}
 
 	@Override
-	public void onShowAgentClicked(String name) {
-		
+	public void onShowDetailsClicked(AID aid) {
+		new ApplianceDetailsWindow(aid);
+	}
+
+	@Override
+	public void onDeleteClicked(AID aid) {
+		JadeController.getInstance().removeAgent(aid);
 	}
 }
