@@ -9,4 +9,9 @@ public interface Retailer {
 	public enum PricingStrategy {
 		HIGH, LOW, EFFICIENT
 	}
+	
+	void setNegotiationStrategy(NegotiationStrategy negotiationStrategy);
+	NegotiationStrategy getNegotiationStrategy();
+	void setPricingStrategy(PricingStrategy pricingStrategy);
+	PricingStrategy getPricingStrategy();
 }
