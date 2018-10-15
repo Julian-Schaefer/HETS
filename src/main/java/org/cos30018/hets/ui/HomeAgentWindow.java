@@ -19,15 +19,16 @@ public class HomeAgentWindow extends JFrame {
 	private JScrollPane rightScrollPane;
 	
 	public HomeAgentWindow() {
-		super("Home Agent Controller");
-		setSize(1000, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		super("HETS");
+        setSize(1280, 600);
 		setLayout(new BorderLayout());
-		setup();
+        setDefaultLookAndFeelDecorated(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setUp();
 		setVisible(true);
 	}
 	
-	private void setup() {
+	private void setUp() {
 		appliancePanel = new AppliancePanel();
 		new AppliancePanelController(appliancePanel);
 		add(appliancePanel, BorderLayout.WEST);

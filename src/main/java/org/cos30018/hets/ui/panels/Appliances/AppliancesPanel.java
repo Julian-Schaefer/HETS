@@ -2,6 +2,9 @@ package org.cos30018.hets.ui.panels.Appliances;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import org.cos30018.hets.ui.custom.AgentPanel;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -10,16 +13,27 @@ public class AppliancesPanel extends JPanel {
     private static final String TAG = "AppliancesPanel";
     public Color lightblue = new Color(187,222,251);
     JButton addBtn;
+    
+    private JPanel listPanel;
 
     public AppliancesPanel() {
+    	setLayout(new BorderLayout());
         System.out.println(TAG + " is created");
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        listPanel = new JPanel(new GridBagLayout());   
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        listPanel.add(new JPanel(), gbc);
+        
+        add(new JScrollPane(listPanel), BorderLayout.CENTER);
+        
         setBackground(Color.lightGray);
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
         addBtn = new JButton("Add Appliances");
-        add(addBtn);
+        add(addBtn, BorderLayout.NORTH);
     }
 
 
@@ -69,20 +83,26 @@ public class AppliancesPanel extends JPanel {
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
-        JLabel name = new JLabel(applianceName);
-        name.setFont(name.getFont().deriveFont(14.0f));
-        JLabel usage = new JLabel(applianceType);
-        JButton btnShowDetails = new JButton("Show Details");
-        JButton btnDelete = new JButton("Delete");
+        //JLabel name = new JLabel(applianceName);
+        //name.setFont(name.getFont().deriveFont(14.0f));
+        //JLabel usage = new JLabel(applianceType);
+        //JButton btnShowDetails = new JButton("Show Details");
+        //JButton btnDelete = new JButton("Delete");
 
         container.setBorder(new EmptyBorder(5,5,5,5));
 
-        container.add(name);
-        container.add(usage);
-        container.add(btnShowDetails);
-        container.add(btnDelete);
-
-        add(container);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        
+        container.add(new AgentPanel("ads"));       
+        
+        listPanel.add(container, gbc, 0);
+        
+        validate();
+        repaint();
 
     }
 

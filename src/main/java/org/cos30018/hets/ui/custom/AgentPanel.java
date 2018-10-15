@@ -3,6 +3,7 @@ package org.cos30018.hets.ui.custom;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +17,9 @@ public class AgentPanel extends JPanel {
 	
 	public AgentPanel(String name) {
 		this.name = name;
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setup();
+		setPreferredSize(getPreferredSize());
 	}
 	
 	private void setup() {
