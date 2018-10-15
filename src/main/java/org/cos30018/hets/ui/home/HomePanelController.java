@@ -1,4 +1,4 @@
-package org.cos30018.hets.ui.panels.Home;
+package org.cos30018.hets.ui.home;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

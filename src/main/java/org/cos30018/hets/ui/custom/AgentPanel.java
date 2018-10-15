@@ -1,6 +1,7 @@
 package org.cos30018.hets.ui.custom;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
@@ -28,11 +29,13 @@ public class AgentPanel extends JPanel {
 	public AgentPanel(AID aid) {
 		this.aid = aid;
 		setup();
+		setBackground(Color.WHITE);
 		setPreferredSize(getPreferredSize());
 	}
 	
 	private void setup() {
 		JPanel container = new JPanel(new BorderLayout());
+		container.setBackground(Color.WHITE);
 		container.setBorder(new EmptyBorder(14, 14, 14, 14));
 		
 		JLabel nameLbl = new JLabel(aid.getLocalName());
@@ -41,6 +44,7 @@ public class AgentPanel extends JPanel {
 		add(container);
 		
 		JPanel bottom = new JPanel();
+		bottom.setBackground(Color.WHITE);
 		
 		showDetailsButton = new JButton("Show Details");
 		showDetailsButton.addActionListener(showDetailsButtonActionListener);

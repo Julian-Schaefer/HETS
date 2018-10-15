@@ -1,4 +1,4 @@
-package org.cos30018.hets.ui.panels.Retailers;
+package org.cos30018.hets.ui.retailer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

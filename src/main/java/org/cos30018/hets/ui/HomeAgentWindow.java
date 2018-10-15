@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import org.cos30018.hets.ui.appliance.AppliancePanel;
+import org.cos30018.hets.ui.home.HomePanel;
+import org.cos30018.hets.ui.home.HomePanelController;
 
 public class HomeAgentWindow extends JFrame {
 
@@ -33,6 +35,10 @@ public class HomeAgentWindow extends JFrame {
 		appliancePanel = new AppliancePanel();
 		appliancePanel.setPreferredSize(new Dimension(350, 0));
 		add(appliancePanel, BorderLayout.WEST);
+		
+		HomePanel homePanel = new HomePanel();
+		add(homePanel, BorderLayout.CENTER);
+		new HomePanelController(homePanel);
 		
 		rightScrollPane = new JScrollPane(new RetailerAgentList(), 
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,

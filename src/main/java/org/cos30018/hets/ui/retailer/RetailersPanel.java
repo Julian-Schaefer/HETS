@@ -1,4 +1,4 @@
-package org.cos30018.hets.ui.panels.Retailers;
+package org.cos30018.hets.ui.retailer;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
