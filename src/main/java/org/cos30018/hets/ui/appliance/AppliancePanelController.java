@@ -55,6 +55,6 @@ public class AppliancePanelController implements AppliancePanelListener, AgentPa
 
 	@Override
 	public void onDeleteClicked(AID aid) {
-		JadeController.getInstance().removeAgent(aid);		
+		JadeController.getInstance().removeAgent(aid);
 	}
 }

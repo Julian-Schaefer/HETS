@@ -16,7 +16,6 @@ public class HomeAgentController implements HomeListener {
 		this.home = home;
 		this.home.setListener(this);
 		setupAppliancePanel();
-		
 	}
 	
 	private void setupAppliancePanel() {
@@ -35,13 +34,12 @@ public class HomeAgentController implements HomeListener {
 
 	@Override
 	public void onRetailerAdded(AID retailerAID) {
-		System.out.println("Retailer added to GUI");
+		view.getRetailerPanel().addRetailerAgent(retailerAID);
 	}
 
 	@Override
 	public void onRetailerRemoved(AID retailerAID) {
-		// TODO Auto-generated method stub
-		
+		view.getRetailerPanel().removeRetailerAgent(retailerAID);
 	}
 
 	@Override

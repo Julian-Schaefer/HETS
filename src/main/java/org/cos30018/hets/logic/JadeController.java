@@ -1,11 +1,15 @@
 package org.cos30018.hets.logic;
 
 import org.cos30018.hets.logic.appliance.Appliance;
-import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
 import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
+import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.HomeAgent;
+import org.cos30018.hets.logic.retailer.Retailer;
+import org.cos30018.hets.logic.retailer.Retailer.NegotiationStrategy;
+import org.cos30018.hets.logic.retailer.Retailer.PricingStrategy;
+import org.cos30018.hets.logic.retailer.RetailerAgent;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -14,7 +18,6 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 
 public class JadeController {
@@ -79,7 +82,19 @@ public class JadeController {
 		return null;
 	}
 	
-	public void addRetailerAgent() {
+	public void addRetailerAgent(String name, NegotiationStrategy negotiationStrategy, PricingStrategy pricingStrategy) throws StaleProxyException {
+		addAgent("retailer_" + name, RetailerAgent.class, new Object[] { negotiationStrategy, pricingStrategy });
+	}
+	
+	public Retailer getRetailer(AID aid) {
+		try {
+			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
+			return agentController.getO2AInterface(Retailer.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	public void removeAgent(AID aid) {
