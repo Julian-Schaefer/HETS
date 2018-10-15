@@ -1,13 +1,9 @@
 package org.cos30018.hets.ui.custom;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import jade.core.AID;
@@ -30,6 +26,7 @@ public class AgentPanel extends JPanel {
 		this.aid = aid;
 		setup();
 		setBackground(Color.WHITE);
+		setUI(new StyledJPanelUI());
 		setPreferredSize(getPreferredSize());
 	}
 	
@@ -39,6 +36,7 @@ public class AgentPanel extends JPanel {
 		container.setBorder(new EmptyBorder(14, 14, 14, 14));
 		
 		JLabel nameLbl = new JLabel(aid.getLocalName());
+		nameLbl.setFont(new Font("Raleway", Font.BOLD, 14));
 		container.add(nameLbl, BorderLayout.CENTER);
 
 		add(container);
@@ -47,10 +45,17 @@ public class AgentPanel extends JPanel {
 		bottom.setBackground(Color.WHITE);
 		
 		showDetailsButton = new JButton("Show Details");
+		showDetailsButton.setFont(new Font("Raleway", Font.BOLD, 14));
+		showDetailsButton.setBackground(new Color(0x2dce98));
+		showDetailsButton.setForeground(Color.white);
+		showDetailsButton.setUI(new StyledButtonUI());
 		showDetailsButton.addActionListener(showDetailsButtonActionListener);
 		bottom.add(showDetailsButton);
 
-		deleteButton = new JButton("Delete");
+		deleteButton = new JButton(new ImageIcon(getClass().getResource("/images/delete_outline_18dp.png")));
+		deleteButton.setBackground(Color.red);
+		deleteButton.setForeground(Color.white);
+		deleteButton.setUI(new StyledButtonUI());
 		deleteButton.addActionListener(deleteButtonActionListener);
 		bottom.add(deleteButton);		
 

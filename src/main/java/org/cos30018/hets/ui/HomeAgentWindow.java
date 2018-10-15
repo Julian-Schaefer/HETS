@@ -1,7 +1,6 @@
 package org.cos30018.hets.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 
 import javax.swing.JFrame;
 
@@ -22,7 +21,9 @@ public class HomeAgentWindow extends JFrame {
 	
 	public HomeAgentWindow() {
 		super("HETS");
-		setSize(1200, 700);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setSize(screenSize.width, screenSize.height);
+//		setSize(1200, 700);
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

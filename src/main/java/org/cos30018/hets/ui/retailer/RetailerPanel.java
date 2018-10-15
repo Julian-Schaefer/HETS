@@ -1,7 +1,6 @@
 package org.cos30018.hets.ui.retailer;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -11,12 +10,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import org.cos30018.hets.ui.custom.AgentPanel;
 import org.cos30018.hets.ui.custom.JPanelList;
 
 import jade.core.AID;
+import org.cos30018.hets.ui.custom.StyledButtonUI;
 
 public class RetailerPanel extends JPanel implements ActionListener {
 
@@ -28,7 +27,7 @@ public class RetailerPanel extends JPanel implements ActionListener {
 	private RetailerPanelController controller;
 	private RetailerPanelListener listener;
 
-	private JButton addApplianceButton;
+	private JButton addRetailerButton;
 	private JPanelList panelList;
 
 	private Map<AID, JPanel> agentPanelForAID = new HashMap<>();
@@ -42,10 +41,15 @@ public class RetailerPanel extends JPanel implements ActionListener {
 	private void setup() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		buttonPanel.setBackground(Color.WHITE);
 
-		addApplianceButton = new JButton("Add Retailer");
-		addApplianceButton.addActionListener(this);
-		buttonPanel.add(addApplianceButton);
+		addRetailerButton = new JButton("Add Retailer");
+		addRetailerButton.setFont(new Font("Raleway", Font.BOLD, 18));
+		addRetailerButton.setBackground(new Color(0x2dce98));
+		addRetailerButton.setForeground(Color.white);
+		addRetailerButton.setUI(new StyledButtonUI());
+		addRetailerButton.addActionListener(this);
+		buttonPanel.add(addRetailerButton);
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		add(buttonPanel, BorderLayout.NORTH);
@@ -59,7 +63,6 @@ public class RetailerPanel extends JPanel implements ActionListener {
 	public void addRetailerAgent(AID aid) {			
 		AgentPanel agentPanel = new AgentPanel(aid);
 		agentPanel.setAgentPanelListener(controller);
-		agentPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
         
 		agentPanelForAID.put(aid, panelList.addJPanel(agentPanel));
 	}

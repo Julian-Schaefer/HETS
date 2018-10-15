@@ -1,7 +1,6 @@
 package org.cos30018.hets.ui.appliance;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -17,6 +16,8 @@ import org.cos30018.hets.ui.custom.AgentPanel;
 import org.cos30018.hets.ui.custom.JPanelList;
 
 import jade.core.AID;
+import org.cos30018.hets.ui.custom.StyledButtonUI;
+import org.cos30018.hets.ui.custom.StyledJPanelUI;
 
 public class AppliancePanel extends JPanel implements ActionListener {
 
@@ -42,27 +43,41 @@ public class AppliancePanel extends JPanel implements ActionListener {
 	private void setup() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		buttonPanel.setBackground(Color.WHITE);
 		
 		addApplianceButton = new JButton("Add Appliance");
+		addApplianceButton.setFont(new Font("Raleway", Font.BOLD, 18));
+		addApplianceButton.setBackground(new Color(0x2dce98));
+		addApplianceButton.setForeground(Color.white);
+		addApplianceButton.setUI(new StyledButtonUI());
 		addApplianceButton.addActionListener(this);
 		buttonPanel.add(addApplianceButton);
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		add(buttonPanel, BorderLayout.NORTH);
-		
+
 		panelList = new JPanelList();
-        
+
 		JScrollPane scrollPane = new JScrollPane(panelList);
 		add(scrollPane, BorderLayout.CENTER);
 	}
+
+	/**
+	 * Function to ADDING an Appliance Agent
+	 * @param aid: appliance agent ID
+	 */
 	
 	public void addApplianceAgent(AID aid) {			
 		AgentPanel agentPanel = new AgentPanel(aid);
 		agentPanel.setAgentPanelListener(controller);
-		agentPanel.setBorder(new LineBorder(Color.GRAY, 2, true));
         
 		agentPanelForAID.put(aid, panelList.addJPanel(agentPanel));
 	}
+
+	/**
+	 * Function to REMOVING an Appliance Agent
+	 * @param aid: appliance agent ID
+	 */
 	
 	public void removeApplianceAgent(AID aid) {
 		panelList.remove(agentPanelForAID.get(aid));

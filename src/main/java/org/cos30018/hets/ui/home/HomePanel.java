@@ -1,6 +1,7 @@
 package org.cos30018.hets.ui.home;
 
 import net.miginfocom.swing.MigLayout;
+import org.cos30018.hets.ui.custom.StyledButtonUI;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -46,15 +47,19 @@ public class HomePanel extends JPanel {
         homeContentLayout.setBackground(Color.white);
 
         JLabel titleHome = new JLabel("Home");
-        titleHome.setFont(titleHome.getFont().deriveFont(40.0f));
+        titleHome.setFont(new Font("Raleway", Font.BOLD, 40));
+
         btnSettings = new JButton();
-        btnSettings.setIcon(new ImageIcon(getClass().getResource("/settings_18dp.png")));
+        btnSettings.setIcon(new ImageIcon(getClass().getResource("/images/settings_outline_2x_18dp.png")));
+        btnSettings.setBackground(new Color(0x2dce98));
+        btnSettings.setForeground(Color.white);
+        btnSettings.setUI(new StyledButtonUI());
 
         homeContentLayout.add(titleHome);
         homeContentLayout.add(btnSettings, "wrap 30");
 
         JPanel content = new JPanel(new MigLayout("center"));
-        content.setPreferredSize(new Dimension(1280, 800));
+      //  content.setPreferredSize(new Dimension(1280, 800));
 
 
         homeContentLayout.add(GraphChartPanel());
@@ -64,11 +69,12 @@ public class HomePanel extends JPanel {
 
     private JPanel GraphChartPanel() {
         JPanel graphChartPanel = new JPanel(new MigLayout());
-        graphChartPanel.setPreferredSize(new Dimension(850, 600));
+        graphChartPanel.setBackground(Color.WHITE);
+        graphChartPanel.setPreferredSize(new Dimension(800, 600));
 
         /* Title of the chart */
         JLabel title = new JLabel("Energy Usage Actual vs Forecast");
-        title.setFont(title.getFont().deriveFont(20.0f));
+        title.setFont(new Font("Raleway", Font.PLAIN, 20));
 
         graphChartPanel.add(title, "wrap");
         graphChartPanel.add(Graph());
@@ -83,10 +89,10 @@ public class HomePanel extends JPanel {
         XYDataset dataset = createDataset();
         JFreeChart chart = createChart(dataset);
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(700, 400));
+        chartPanel.setPreferredSize(new Dimension(520, 400));
 
         chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        chartPanel.setBackground(Color.blue);
+        chartPanel.setBackground(Color.WHITE);
         chartContent.add(chartPanel);
 
         return chartContent;
@@ -166,24 +172,43 @@ public class HomePanel extends JPanel {
         settingsLayout.setBackground(Color.white);
 
         JLabel titleSettings = new JLabel("Settings");
-        titleSettings.setFont(titleSettings.getFont().deriveFont(40.0f));
+        titleSettings.setFont(new Font("Raleway", Font.BOLD, 40));
+
+        JLabel subTitleGeneral = new JLabel("General");
+        subTitleGeneral.setFont(new Font("Raleway", Font.BOLD, 24));
+
         btnHome = new JButton();
-        btnHome.setIcon(new ImageIcon(getClass().getResource("/home_18dp.png")));
+        btnHome.setIcon(new ImageIcon(getClass().getResource("/images/home_outline_2x_18dp.png")));
+        btnHome.setBackground(new Color(0x2dce98));
+        btnHome.setForeground(Color.white);
+        btnHome.setUI(new StyledButtonUI());
 
         settingsLayout.add(titleSettings);
-        settingsLayout.add(btnHome, "wrap 30");
+        settingsLayout.add(btnHome, "wrap 40");
+
+        settingsLayout.add(subTitleGeneral,"wrap 20");
+
+
 
 
         JPanel content = new JPanel(new MigLayout("center"));
         content.setPreferredSize(new Dimension(1280, 800));
         content.setBackground(Color.white);
-        btnHome.setIcon(new ImageIcon(getClass().getResource("/home_18dp.png")));
 
-        //JLabel background = new JLabel(new ImageIcon(getClass().getResource("/settings_icon.png")));
+        JLabel subTitle = new JLabel("General");
+        subTitle.setFont(new Font("Raleway", Font.PLAIN, 20));
+
         JLabel lblTimeInterval = new JLabel("Current Time Interval");
+        lblTimeInterval.setFont(new Font("Raleway", Font.PLAIN, 16));
+
         JLabel lblForecast = new JLabel("Forecast for the next n periods");
+        lblForecast.setFont(new Font("Raleway", Font.PLAIN, 16));
+
         JLabel lblRegisterApps = new JLabel("Currently Registered Appliances");
+        lblRegisterApps.setFont(new Font("Raleway", Font.PLAIN, 16));
+
         JLabel lblRegisterRetailers = new JLabel("Currently Registered Retailers");
+        lblRegisterRetailers.setFont(new Font("Raleway", Font.PLAIN, 16));
 
         JTextField tfTimeInterval = new JTextField("10 Seconds", 8);
         JTextField tfForecast = new JTextField("1", 8);
@@ -191,19 +216,31 @@ public class HomePanel extends JPanel {
         JButton btnTimeChange = new JButton("Change");
         JButton btnForecastChange = new JButton("Change");
 
+        btnTimeChange.setBackground(new Color(0x2dce98));
+        btnTimeChange.setFont(new Font("Raleway", Font.BOLD, 14));
+        btnTimeChange.setForeground(Color.white);
+        btnTimeChange.setUI(new StyledButtonUI());
+
+        btnForecastChange.setBackground(new Color(0x2dce98));
+        btnForecastChange.setFont(new Font("Raleway", Font.BOLD, 14));
+        btnForecastChange.setForeground(Color.white);
+        btnForecastChange.setUI(new StyledButtonUI());
+
         JLabel valRegisteredApps = new JLabel("12");
         JLabel valRegisteredRetailers = new JLabel("5");
 
+//        content.add(subTitle, "wrap");
+
         content.add(lblTimeInterval, "span 1");
         content.add(tfTimeInterval, "span 1");
-        content.add(btnTimeChange, "span 1, wrap");
+        content.add(btnTimeChange, "span 3, wrap 5");
 
         content.add(lblForecast);
         content.add(tfForecast);
-        content.add(btnForecastChange, "wrap");
+        content.add(btnForecastChange, "wrap 5");
 
         content.add(lblRegisterApps);
-        content.add(valRegisteredApps, "wrap");
+        content.add(valRegisteredApps, "wrap 5");
 
         content.add(lblRegisterRetailers);
         content.add(valRegisteredRetailers, "wrap");
