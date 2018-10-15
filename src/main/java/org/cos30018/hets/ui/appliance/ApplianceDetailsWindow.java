@@ -1,5 +1,6 @@
 package org.cos30018.hets.ui.appliance;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
@@ -7,6 +8,7 @@ import javax.swing.JFrame;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance;
+import org.cos30018.hets.ui.custom.ForecastAndActualGraph;
 
 import jade.core.AID;
 
@@ -22,6 +24,7 @@ public class ApplianceDetailsWindow extends JFrame {
 	public ApplianceDetailsWindow(AID aid) {
 		super("Appliance: " + aid.getLocalName());
 		this.appliance = JadeController.getInstance().getAppliance(aid);
+		setLayout(new BorderLayout());
 		setSize(new Dimension(600, 400));
 		setLocationRelativeTo(null);
 		setUp();
@@ -29,7 +32,13 @@ public class ApplianceDetailsWindow extends JFrame {
 	}
 	
 	private void setUp() {
-		JButton button = new JButton(appliance.getType().name());
-		add(button);
+		ForecastAndActualGraph graph = new ForecastAndActualGraph();
+		add(graph);
+		
+		JButton add = new JButton("Add");
+		add.addActionListener((e) -> {
+			graph.update(Math.random()*100, Math.random()*100);;
+		});
+		add(add, BorderLayout.SOUTH);
 	}
 }
