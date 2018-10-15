@@ -25,7 +25,6 @@ public class HomeAgentWindow extends JFrame {
 		setSize(1200, 700);
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
-        setDefaultLookAndFeelDecorated(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setUp();
 		setVisible(true);

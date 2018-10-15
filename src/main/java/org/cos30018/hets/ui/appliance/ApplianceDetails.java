@@ -24,7 +24,6 @@ public class ApplianceDetails extends JFrame {
 		this.appliance = JadeController.getInstance().getAppliance(aid);
 		setSize(new Dimension(600, 400));
 		setLocationRelativeTo(null);
-        setDefaultLookAndFeelDecorated(true);
 		setup();
 		setVisible(true);
 	}
