@@ -10,7 +10,7 @@ import org.cos30018.hets.logic.appliance.Appliance;
 
 import jade.core.AID;
 
-public class ApplianceDetails extends JFrame {
+public class ApplianceDetailsWindow extends JFrame {
 
 	/**
 	 * 
@@ -19,16 +19,16 @@ public class ApplianceDetails extends JFrame {
 
 	private Appliance appliance;
 	
-	public ApplianceDetails(AID aid) {
+	public ApplianceDetailsWindow(AID aid) {
 		super("Appliance: " + aid.getLocalName());
 		this.appliance = JadeController.getInstance().getAppliance(aid);
 		setSize(new Dimension(600, 400));
 		setLocationRelativeTo(null);
-		setup();
+		setUp();
 		setVisible(true);
 	}
 	
-	private void setup() {
+	private void setUp() {
 		JButton button = new JButton(appliance.getType().name());
 		add(button);
 	}

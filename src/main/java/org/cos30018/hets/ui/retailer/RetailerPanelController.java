@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.retailer.Retailer.NegotiationStrategy;
 import org.cos30018.hets.logic.retailer.Retailer.PricingStrategy;
+import org.cos30018.hets.ui.appliance.ApplianceDetailsWindow;
 import org.cos30018.hets.ui.custom.AgentPanel.AgentPanelListener;
 import org.cos30018.hets.ui.retailer.RetailerPanel.RetailerPanelListener;
 
@@ -46,8 +47,7 @@ public class RetailerPanelController implements RetailerPanelListener, AgentPane
 
 	@Override
 	public void onShowDetailsClicked(AID aid) {
-		// TODO Auto-generated method stub
-
+		new RetailerDetailsWindow(aid);
 	}
 
 	@Override
