@@ -29,18 +29,10 @@ public class HomePanelController {
 
             try{
                 if (e.getSource() == homePanel.btnSettings){
-                    System.out.println("Setting is Clicked");
                     layout.next(homePanel);
-
                 } else if (e.getSource() == homePanel.btnHome) {
-                    System.out.println("Home is Clicked");
                     layout.previous(homePanel);
-
-                } else {
-                    System.out.println("Nothing is Clicked");
                 }
-
-
             }catch (RuntimeException ex) {
                 System.out.println("Error occurred: " + ex);
             }
