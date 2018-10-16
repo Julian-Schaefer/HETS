@@ -1,12 +1,13 @@
 package org.cos30018.hets.ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
 import org.cos30018.hets.ui.appliance.AppliancePanel;
 import org.cos30018.hets.ui.home.HomePanel;
-import org.cos30018.hets.ui.home.HomePanelController;
 import org.cos30018.hets.ui.retailer.RetailerPanel;
 
 public class HomeAgentWindow extends JFrame {
@@ -21,9 +22,7 @@ public class HomeAgentWindow extends JFrame {
 	
 	public HomeAgentWindow() {
 		super("HETS");
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize(screenSize.width, screenSize.height);
-//		setSize(1200, 700);
+		setSize(1280, 700);
 		setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +37,6 @@ public class HomeAgentWindow extends JFrame {
 		
 		HomePanel homePanel = new HomePanel();
 		add(homePanel, BorderLayout.CENTER);
-		new HomePanelController(homePanel);	
 
 		retailerPanel = new RetailerPanel();
 		retailerPanel.setPreferredSize(new Dimension(350, 0));

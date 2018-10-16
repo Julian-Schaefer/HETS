@@ -14,4 +14,8 @@ public interface Retailer {
 	NegotiationStrategy getNegotiationStrategy();
 	void setPricingStrategy(PricingStrategy pricingStrategy);
 	PricingStrategy getPricingStrategy();
+	void setVolumeCharge(double volumeCharge);
+	double getVolumeCharge();
+	void setFeedInRate(double feedInRate);
+	double getFeedInRate();
 }

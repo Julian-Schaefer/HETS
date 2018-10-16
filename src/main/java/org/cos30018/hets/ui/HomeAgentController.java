@@ -14,7 +14,7 @@ public class HomeAgentController implements HomeListener {
 	
 	public HomeAgentController(Home home) {
 		this.home = home;
-		this.home.setListener(this);
+		this.home.addListener(this);
 		setupAppliancePanel();
 	}
 	

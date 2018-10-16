@@ -1,6 +1,17 @@
 package org.cos30018.hets.ui.home;
 
-import net.miginfocom.swing.MigLayout;
+import java.awt.BasicStroke;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.cos30018.hets.ui.custom.StyledButtonUI;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -10,32 +21,43 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.TextTitle;
-import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
+import net.miginfocom.swing.MigLayout;
 
 public class HomePanel extends JPanel {
-        //implements ActionListener {
 
-    private static final String HOME_SUB_PANEL = "Home Sub Panel";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3735404041724070782L;
+	
+	private static final String HOME_SUB_PANEL = "Home Sub Panel";
     private static final String SETTINGS_PANEL = "Settings Panel";
 
-    public CardLayout homeLayout = new CardLayout();
-    JButton btnSettings;
-    JButton btnHome;
+    private CardLayout homeLayout = new CardLayout();
+
+    private SettingsPanel settingsPanel;
+    private JButton btnSettings;
+    
+    private HomePanelController controller;
 
 
     public HomePanel() {
         setLayout(homeLayout);
-
+        this.controller = new HomePanelController(this);
+        setUp();
+    }
+    
+    private void setUp() {
         add(HomeContentPanel(), HOME_SUB_PANEL);
-        add(SettingsPanel(), SETTINGS_PANEL);
-
+        
+        settingsPanel = new SettingsPanel();
+        settingsPanel.setSettingsPanelListener(controller);
+        add(settingsPanel, SETTINGS_PANEL);
+    	
     }
 
     public JPanel HomeContentPanel() {
@@ -54,13 +76,12 @@ public class HomePanel extends JPanel {
         btnSettings.setBackground(new Color(0x2dce98));
         btnSettings.setForeground(Color.white);
         btnSettings.setUI(new StyledButtonUI());
+        btnSettings.addActionListener((e) -> {
+        	showSettingsPanel();
+        });
 
         homeContentLayout.add(titleHome);
         homeContentLayout.add(btnSettings, "wrap 30");
-
-        JPanel content = new JPanel(new MigLayout("center"));
-      //  content.setPreferredSize(new Dimension(1280, 800));
-
 
         homeContentLayout.add(GraphChartPanel());
 
@@ -156,103 +177,12 @@ public class HomePanel extends JPanel {
 
         return chart;
     }
-
-
-
-    public JPanel SettingsPanel(){
-
-        /**
-         * ui components for settingsContent Layout
-         * @param titleSettings -> JLabel for title of the content
-         * @param btnHome -> JButton to go to the Home Panel
-         * @param settingsLayout -> JPanel main content which has all ui components for settings
-         * @param content -> sub JPanel which has settings features
-         */
-        JPanel settingsLayout = new JPanel(new MigLayout("insets 20 20 20 20"));
-        settingsLayout.setBackground(Color.white);
-
-        JLabel titleSettings = new JLabel("Settings");
-        titleSettings.setFont(new Font("Raleway", Font.BOLD, 40));
-
-        JLabel subTitleGeneral = new JLabel("General");
-        subTitleGeneral.setFont(new Font("Raleway", Font.BOLD, 24));
-
-        btnHome = new JButton();
-        btnHome.setIcon(new ImageIcon(getClass().getResource("/images/home_outline_2x_18dp.png")));
-        btnHome.setBackground(new Color(0x2dce98));
-        btnHome.setForeground(Color.white);
-        btnHome.setUI(new StyledButtonUI());
-
-        settingsLayout.add(titleSettings);
-        settingsLayout.add(btnHome, "wrap 40");
-
-        settingsLayout.add(subTitleGeneral,"wrap 20");
-
-
-
-
-        JPanel content = new JPanel(new MigLayout("center"));
-        content.setPreferredSize(new Dimension(1280, 800));
-        content.setBackground(Color.white);
-
-        JLabel subTitle = new JLabel("General");
-        subTitle.setFont(new Font("Raleway", Font.PLAIN, 20));
-
-        JLabel lblTimeInterval = new JLabel("Current Time Interval");
-        lblTimeInterval.setFont(new Font("Raleway", Font.PLAIN, 16));
-
-        JLabel lblForecast = new JLabel("Forecast for the next n periods");
-        lblForecast.setFont(new Font("Raleway", Font.PLAIN, 16));
-
-        JLabel lblRegisterApps = new JLabel("Currently Registered Appliances");
-        lblRegisterApps.setFont(new Font("Raleway", Font.PLAIN, 16));
-
-        JLabel lblRegisterRetailers = new JLabel("Currently Registered Retailers");
-        lblRegisterRetailers.setFont(new Font("Raleway", Font.PLAIN, 16));
-
-        JTextField tfTimeInterval = new JTextField("10 Seconds", 8);
-        JTextField tfForecast = new JTextField("1", 8);
-
-        JButton btnTimeChange = new JButton("Change");
-        JButton btnForecastChange = new JButton("Change");
-
-        btnTimeChange.setBackground(new Color(0x2dce98));
-        btnTimeChange.setFont(new Font("Raleway", Font.BOLD, 14));
-        btnTimeChange.setForeground(Color.white);
-        btnTimeChange.setUI(new StyledButtonUI());
-
-        btnForecastChange.setBackground(new Color(0x2dce98));
-        btnForecastChange.setFont(new Font("Raleway", Font.BOLD, 14));
-        btnForecastChange.setForeground(Color.white);
-        btnForecastChange.setUI(new StyledButtonUI());
-
-        JLabel valRegisteredApps = new JLabel("12");
-        JLabel valRegisteredRetailers = new JLabel("5");
-
-//        content.add(subTitle, "wrap");
-
-        content.add(lblTimeInterval, "span 1");
-        content.add(tfTimeInterval, "span 1");
-        content.add(btnTimeChange, "span 3, wrap 5");
-
-        content.add(lblForecast);
-        content.add(tfForecast);
-        content.add(btnForecastChange, "wrap 5");
-
-        content.add(lblRegisterApps);
-        content.add(valRegisteredApps, "wrap 5");
-
-        content.add(lblRegisterRetailers);
-        content.add(valRegisteredRetailers, "wrap");
-
-        settingsLayout.add(content);
-
-
-        return settingsLayout;
+    
+    public void showHomePanel() {
+        homeLayout.previous(this);    	
     }
-
-    void addHomePanelListener(ActionListener listener) {
-        btnSettings.addActionListener(listener);
-        btnHome.addActionListener(listener);
+    
+    public void showSettingsPanel() {
+        homeLayout.next(this);
     }
 }

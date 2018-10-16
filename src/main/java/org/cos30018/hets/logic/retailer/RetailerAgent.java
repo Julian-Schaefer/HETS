@@ -5,6 +5,7 @@ import org.cos30018.hets.logic.home.HomeAgent;
 import org.cos30018.hets.logic.retailer.behaviour.RetailerResponderBehaviour;
 
 public class RetailerAgent extends RegisteringAgent implements Retailer {
+
 	/**
 	 * 
 	 */
@@ -47,5 +48,29 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 	@Override
 	public PricingStrategy getPricingStrategy() {
 		return pricingStrategy;
+	}
+
+	@Override
+	public void setVolumeCharge(double volumeCharge) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getVolumeCharge() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setFeedInRate(double feedInRate) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getFeedInRate() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
