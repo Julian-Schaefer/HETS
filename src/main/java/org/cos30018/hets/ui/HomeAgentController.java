@@ -8,18 +8,17 @@ import jade.core.AID;
 public class HomeAgentController implements HomeListener {
 
 	private HomeAgentWindow view;
-	
+
 	private Home home;
 
-	
 	public HomeAgentController(Home home) {
 		this.home = home;
 		this.home.addListener(this);
 		setupAppliancePanel();
 	}
-	
+
 	private void setupAppliancePanel() {
-		view = new HomeAgentWindow();		
+		view = new HomeAgentWindow();
 	}
 
 	@Override
@@ -45,5 +44,11 @@ public class HomeAgentController implements HomeListener {
 	@Override
 	public void onTotalUsageForecastUpdated(double totalUsageForecast) {
 		System.out.println("Total Usage updated: " + totalUsageForecast);
+	}
+
+	@Override
+	public void onLastActualTotalUsageUpdated(double lastActualTotalUsage) {
+		// TODO Auto-generated method stub
+
 	}
 }

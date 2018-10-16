@@ -38,8 +38,8 @@ public class SettingsPanel extends JPanel {
 	
 	private Home home;
 	
-	public SettingsPanel() {
-		this.home = JadeController.getInstance().getHome();
+	public SettingsPanel(Home home) {
+		this.home = home;
 		this.controller = new SettingsPanelController(this, home);
 		setUp();
 		update();

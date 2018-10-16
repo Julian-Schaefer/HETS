@@ -33,11 +33,14 @@ public class ApplianceDetailsWindow extends JFrame {
 	
 	private void setUp() {
 		ForecastAndActualGraph graph = new ForecastAndActualGraph();
+		graph.addForecastValue(Math.random()*100);
 		add(graph);
 		
 		JButton add = new JButton("Add");
 		add.addActionListener((e) -> {
-			graph.update(Math.random()*100, Math.random()*100);;
+			graph.addActualValue(Math.random()*100);
+			graph.nextPeriod();
+			graph.addForecastValue(Math.random()*100);
 		});
 		add(add, BorderLayout.SOUTH);
 	}

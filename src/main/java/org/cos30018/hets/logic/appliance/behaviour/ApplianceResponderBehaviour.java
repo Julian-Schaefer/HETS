@@ -18,24 +18,23 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 	 * 
 	 */
 	private static final long serialVersionUID = -6960196745935851735L;
-	
+
 	private static MessageTemplate template = MessageTemplate.and(
 			MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
-			MessageTemplate.and(
-					MessageTemplate.MatchOntology(HomeMessage.ONTOLOGY_USAGE),
+			MessageTemplate.and(MessageTemplate.MatchOntology(HomeMessage.ONTOLOGY_USAGE),
 					MessageTemplate.MatchPerformative(ACLMessage.REQUEST)));
 
-
 	private ApplianceAgent applianceAgent;
-	
+
 	public ApplianceResponderBehaviour(ApplianceAgent applianceAgent) {
 		super(applianceAgent, template);
 		this.applianceAgent = applianceAgent;
 	}
-	
+
 	@Override
-	protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {		
-		if(request.getContent().equals(ApplianceMessage.USAGE)) {
+	protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
+		if (request.getContent().equals(ApplianceMessage.LAST_USAGE)
+				|| request.getContent().equals(ApplianceMessage.FORECAST)) {
 			ACLMessage agreeMessage = request.createReply();
 			agreeMessage.setPerformative(ACLMessage.AGREE);
 			return agreeMessage;
@@ -43,11 +42,16 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 			throw new RefuseException("Wrong content");
 		}
 	}
-	
+
 	@Override
 	protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
-		response.setPerformative(ACLMessage.INFORM);
-		response.setContent(ApplianceMessage.USAGE + " " + applianceAgent.getUsageForecast(1)[0]);
+		if (request.getContent().equals(ApplianceMessage.LAST_USAGE)) {
+			response.setPerformative(ACLMessage.INFORM);
+			response.setContent(ApplianceMessage.LAST_USAGE + " " + applianceAgent.getLastActualUsage());
+		} else if (request.getContent().equals(ApplianceMessage.FORECAST)) {
+			response.setPerformative(ACLMessage.INFORM);
+			response.setContent(ApplianceMessage.FORECAST + " " + applianceAgent.getUsageForecast(1)[0]);
+		}
 		return response;
-	}	
+	}
 }

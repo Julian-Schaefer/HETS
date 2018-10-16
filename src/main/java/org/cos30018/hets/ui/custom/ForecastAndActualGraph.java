@@ -23,50 +23,60 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 public class ForecastAndActualGraph extends JPanel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8072911533849731056L;
-	
+
 	private int period = 1;
 	private Map<Integer, Double> actualValues = new HashMap<>();
 	private Map<Integer, Double> forecastValues = new HashMap<>();
-	
+
 	private ChartPanel chartPanel;
-	
+
 	public ForecastAndActualGraph() {
 		setUp();
 	}
-	
+
 	private void setUp() {
 		JFreeChart chart = createChart();
 		chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new Dimension(700, 400));
 
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 		chartPanel.setBackground(Color.blue);
 		add(chartPanel);
 	}
-	
-	public void update(double actual, double forecast) {
+
+	@Override
+	public void setPreferredSize(Dimension preferredSize) {
+		super.setPreferredSize(preferredSize);
+		chartPanel.setPreferredSize(preferredSize);
+	}
+
+	public void addActualValue(double actual) {
 		actualValues.put(period, actual);
-		forecastValues.put(period, forecast);
-		
-		period++;
-		
 		chartPanel.setChart(createChart());
+	}
+
+	public void addForecastValue(double forecast) {
+		forecastValues.put(period, forecast);
+		chartPanel.setChart(createChart());
+	}
+
+	public void nextPeriod() {
+		period++;
 	}
 
 	private XYDataset createDataset() {
 
 		XYSeries actual = new XYSeries("Actual");
-		for(Map.Entry<Integer, Double> actualValue : actualValues.entrySet()) {
+		for (Map.Entry<Integer, Double> actualValue : actualValues.entrySet()) {
 			actual.add(actualValue.getKey(), actualValue.getValue());
 		}
 
 		XYSeries forecast = new XYSeries("Forecast");
-		for(Map.Entry<Integer, Double> forecastValue : forecastValues.entrySet()) {
+		for (Map.Entry<Integer, Double> forecastValue : forecastValues.entrySet()) {
 			forecast.add(forecastValue.getKey(), forecastValue.getValue());
 		}
 
@@ -78,8 +88,8 @@ public class ForecastAndActualGraph extends JPanel {
 	}
 
 	private JFreeChart createChart() {
-		JFreeChart chart = ChartFactory.createXYLineChart("Forecast Energy usage", "Time", "Energy (Kwh)", createDataset(),
-				PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart chart = ChartFactory.createXYLineChart("Forecast Energy usage", "Time", "Energy (Kwh)",
+				createDataset(), PlotOrientation.VERTICAL, true, true, false);
 
 		XYPlot plot = chart.getXYPlot();
 

@@ -12,7 +12,7 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
 
-public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
+public class ApplianceForecastRequestBehaviour extends AchieveREInitiator {
 
 	/**
 	 * 
@@ -21,19 +21,19 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 
 	private HomeAgent homeAgent;
 
-	public static ApplianceUsageRequestBehaviour create(HomeAgent homeAgent, List<AID> applianceAIDs) {
+	public static ApplianceForecastRequestBehaviour create(HomeAgent homeAgent, List<AID> applianceAIDs) {
 		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 		for (AID applianceAID : applianceAIDs) {
 			msg.addReceiver(applianceAID);
 		}
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-		msg.setContent(ApplianceMessage.LAST_USAGE);
+		msg.setContent(ApplianceMessage.FORECAST);
 		msg.setOntology(HomeMessage.ONTOLOGY_USAGE);
 
-		return new ApplianceUsageRequestBehaviour(homeAgent, msg);
+		return new ApplianceForecastRequestBehaviour(homeAgent, msg);
 	}
 
-	private ApplianceUsageRequestBehaviour(HomeAgent homeAgent, ACLMessage msg) {
+	private ApplianceForecastRequestBehaviour(HomeAgent homeAgent, ACLMessage msg) {
 		super(homeAgent, msg);
 		this.homeAgent = homeAgent;
 	}
@@ -62,19 +62,19 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 	@SuppressWarnings("rawtypes")
 	@Override
 	protected void handleAllResultNotifications(Vector resultNotifications) {
-		double lastActualTotalUsage = 0;
+		double totalUsageForecast = 0;
 		for (Object o : resultNotifications) {
 			if (o instanceof ACLMessage) {
 				ACLMessage message = (ACLMessage) o;
 				if (message.getPerformative() == ACLMessage.INFORM
-						&& message.getContent().startsWith(ApplianceMessage.LAST_USAGE)) {
-					String usageText = message.getContent().replace(ApplianceMessage.LAST_USAGE, "").trim();
+						&& message.getContent().startsWith(ApplianceMessage.FORECAST)) {
+					String usageText = message.getContent().replace(ApplianceMessage.FORECAST, "").trim();
 					double usage = Double.valueOf(usageText);
-					lastActualTotalUsage += usage;
+					totalUsageForecast += usage;
 				}
 			}
 		}
 
-		homeAgent.setLastActualTotalUsage(lastActualTotalUsage);
+		homeAgent.setTotalUsageForecast(totalUsageForecast);
 	}
 }
