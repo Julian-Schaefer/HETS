@@ -40,9 +40,14 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 	}
 
 	public void addNegotiationMessage(ACLMessage message) {
-		StringBuilder stringBuilder = new StringBuilder().append(message.getSender().getLocalName()).append("send a ")
-				.append(ACLMessage.getAllPerformativeNames()[message.getPerformative()]).append(": ")
-				.append(message.getContent());
+		StringBuilder stringBuilder = new StringBuilder().append(message.getSender().getLocalName()).append(" send a ")
+				.append(ACLMessage.getAllPerformativeNames()[message.getPerformative()]).append(": ");
+
+		if (message.getContent() != null) {
+			stringBuilder.append(message.getContent());
+		} else {
+			stringBuilder.append(" - ");
+		}
 
 		String negotiationMessage = stringBuilder.toString();
 

@@ -33,6 +33,7 @@ public class RetailerResponderBehaviour extends ContractNetResponder {
 		retailerAgent.addNegotiationMessage(cfp);
 
 		ACLMessage reply = cfp.createReply();
+		reply.setSender(getAgent().getAID());
 		reply.setPerformative(ACLMessage.PROPOSE);
 		retailerAgent.addNegotiationMessage(reply);
 		return reply;
