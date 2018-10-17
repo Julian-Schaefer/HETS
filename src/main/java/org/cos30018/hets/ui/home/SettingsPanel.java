@@ -11,14 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.ui.custom.StyledButtonUI;
 
 import net.miginfocom.swing.MigLayout;
 
 public class SettingsPanel extends JPanel {
-	
+
 	public static final String PERIOD_CHANGE = "period_change";
 	public static final String FORECAST_PERIODS_CHANGE = "forecast_periods_change";
 
@@ -29,17 +28,17 @@ public class SettingsPanel extends JPanel {
 
 	private SettingsPanelListener listener;
 	private SettingsPanelController controller;
-	
+
 	private JButton homeButton;
 	private JLabel registeredAppliancesLabel;
 	private JLabel registeredRetailersLabel;
 	private JTextField periodIntervalTextField;
 	private JTextField forecastPeriodsTextField;
-	
+
 	private Home home;
-	
-	public SettingsPanel() {
-		this.home = JadeController.getInstance().getHome();
+
+	public SettingsPanel(Home home) {
+		this.home = home;
 		this.controller = new SettingsPanelController(this, home);
 		setUp();
 		update();
@@ -127,18 +126,18 @@ public class SettingsPanel extends JPanel {
 
 		add(content);
 	}
-	
+
 	public void update() {
 		registeredAppliancesLabel.setText(String.valueOf(home.getAppliances().size()));
 		registeredRetailersLabel.setText(String.valueOf(home.getRetailers().size()));
-		
+
 		String forecastPeriod = String.valueOf(home.getForecastPeriodCount());
-		if(!forecastPeriod.equals(forecastPeriodsTextField.getText()) && !forecastPeriodsTextField.hasFocus()) {
+		if (!forecastPeriod.equals(forecastPeriodsTextField.getText()) && !forecastPeriodsTextField.hasFocus()) {
 			forecastPeriodsTextField.setText(forecastPeriod);
 		}
-		
-		String periodInterval = String.valueOf(home.getIntervalPeriod()/1000);
-		if(!periodInterval.equals(periodIntervalTextField.getText()) && !periodIntervalTextField.hasFocus()) {
+
+		String periodInterval = String.valueOf(home.getIntervalPeriod() / 1000);
+		if (!periodInterval.equals(periodIntervalTextField.getText()) && !periodIntervalTextField.hasFocus()) {
 			periodIntervalTextField.setText(periodInterval);
 		}
 	}
@@ -150,15 +149,15 @@ public class SettingsPanel extends JPanel {
 	public JTextField getForecastPeriodsTextField() {
 		return forecastPeriodsTextField;
 	}
-	
+
 	public void setSettingsPanelListener(SettingsPanelListener listener) {
 		this.listener = listener;
 	}
-	
+
 	private ActionListener homeButtonActionListener = (e) -> {
-		listener.onHomeButtonClicked();		
+		listener.onHomeButtonClicked();
 	};
-	
+
 	public interface SettingsPanelListener {
 		void onHomeButtonClicked();
 	}
