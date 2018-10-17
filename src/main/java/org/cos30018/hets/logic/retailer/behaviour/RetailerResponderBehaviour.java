@@ -1,6 +1,7 @@
 package org.cos30018.hets.logic.retailer.behaviour;
 
-import jade.core.Agent;
+import org.cos30018.hets.logic.retailer.RetailerAgent;
+
 import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -20,30 +21,38 @@ public class RetailerResponderBehaviour extends ContractNetResponder {
 			MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
 			MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
 
-	public RetailerResponderBehaviour(Agent a) {
-		super(a, createMessageTemplate(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET));
+	private RetailerAgent retailerAgent;
+
+	public RetailerResponderBehaviour(RetailerAgent retailerAgent) {
+		super(retailerAgent, createMessageTemplate(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET));
+		this.retailerAgent = retailerAgent;
 	}
 
 	@Override
 	protected ACLMessage handleCfp(ACLMessage cfp) throws RefuseException, FailureException, NotUnderstoodException {
-		System.out.println(cfp.getContent());
+		retailerAgent.addNegotiationMessage(cfp);
+
 		ACLMessage reply = cfp.createReply();
 		reply.setPerformative(ACLMessage.PROPOSE);
+		retailerAgent.addNegotiationMessage(reply);
 		return reply;
 	}
 
 	@Override
 	protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept)
 			throws FailureException {
-		System.out.println("Ive been accepted!");
+		retailerAgent.addNegotiationMessage(accept);
+
 		ACLMessage reply = accept.createReply();
 		reply.setPerformative(ACLMessage.INFORM);
+		retailerAgent.addNegotiationMessage(accept);
+
 		return reply;
 	}
 
 	@Override
 	protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
-		System.out.println("Ive been rejected");
+		retailerAgent.addNegotiationMessage(reject);
 	}
 
 	@Override

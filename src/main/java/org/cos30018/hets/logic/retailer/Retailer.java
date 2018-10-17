@@ -1,5 +1,7 @@
 package org.cos30018.hets.logic.retailer;
 
+import java.util.List;
+
 public interface Retailer {
 
 	public enum NegotiationStrategy {
@@ -26,6 +28,12 @@ public interface Retailer {
 
 	double getFeedInRate();
 
-	void addNegotiationLogMessage();
+	List<String> getNegotiationMessages();
+
+	void addRetailerListener(RetailerListener listener);
+
+	public interface RetailerListener {
+		void onNegotiationMessageAdded(String message);
+	}
 
 }
