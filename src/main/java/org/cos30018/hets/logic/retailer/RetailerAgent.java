@@ -13,20 +13,20 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 
 	private NegotiationStrategy negotiationStrategy;
 	private PricingStrategy pricingStrategy;
-	
+
 	public RetailerAgent() {
 		super(HomeAgent.HOME_AGENT_SERVICE, RetailerMessage.REGISTER, RetailerMessage.UNREGISTER);
 		registerO2AInterface(Retailer.class, this);
 	}
-	
+
 	@Override
 	protected void setup() {
 		super.setup();
-	
+
 		Object[] arguments = getArguments();
 		negotiationStrategy = (NegotiationStrategy) arguments[0];
 		pricingStrategy = (PricingStrategy) arguments[1];
-		
+
 		addBehaviour(new RetailerResponderBehaviour(this));
 	}
 
@@ -53,7 +53,7 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 	@Override
 	public void setVolumeCharge(double volumeCharge) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -65,12 +65,18 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 	@Override
 	public void setFeedInRate(double feedInRate) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public double getFeedInRate() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void addNegotiationLogMessage() {
+		// TODO Auto-generated method stub
+
 	}
 }
