@@ -166,7 +166,7 @@ public class HomeAgent extends Agent implements Home {
 
 	@Override
 	public void nextPeriod() {
-		setPeriod(period++);
+		setPeriod(period + 1);
 	}
 
 	@Override
