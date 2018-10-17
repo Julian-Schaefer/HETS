@@ -16,7 +16,6 @@ import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.ui.custom.StyledButtonUI;
 
 import net.miginfocom.swing.MigLayout;
-import org.cos30018.hets.ui.custom.StyledRoundButtonUI;
 
 public class SettingsPanel extends JPanel {
 	
@@ -39,8 +38,8 @@ public class SettingsPanel extends JPanel {
 	
 	private Home home;
 	
-	public SettingsPanel(Home home) {
-		this.home = home;
+	public SettingsPanel() {
+		this.home = JadeController.getInstance().getHome();
 		this.controller = new SettingsPanelController(this, home);
 		setUp();
 		update();
@@ -60,7 +59,7 @@ public class SettingsPanel extends JPanel {
 		homeButton.setIcon(new ImageIcon(getClass().getResource("/images/home_outline_2x_18dp.png")));
 		homeButton.setBackground(new Color(0x2dce98));
 		homeButton.setForeground(Color.white);
-		homeButton.setUI(new StyledRoundButtonUI());
+		homeButton.setUI(new StyledButtonUI());
 		homeButton.addActionListener(homeButtonActionListener);
 
 		add(titleSettings);
