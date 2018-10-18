@@ -1,4 +1,4 @@
-package prediction;
+package org.cos30018.hets.prediction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ public class Neuron {
 
     public Neuron()
     {
-       inputConnections  = new ArrayList< >();
-       outputConnections  = new ArrayList< >();
+       inputConnections  = new ArrayList<>();
+       outputConnections  = new ArrayList<>();
 
        activationFunction = new SigmoidFunction();
        inputSummingFunction = new WeightedSumFunction();
@@ -33,13 +33,13 @@ public class Neuron {
 
 
     public void Fire(){
-        double totalInput = inputSummingFunction.GetOutput(inputConnections);
+        double totalInput = inputSummingFunction.getOutput(inputConnections);
 
         value = activationFunction.calculateOutput(totalInput);
     }
 
     public double Final(){
-        double totalInput = inputSummingFunction.GetOutput(inputConnections);
+        double totalInput = inputSummingFunction.getOutput(inputConnections);
         value = totalInput;
         return value;
     }

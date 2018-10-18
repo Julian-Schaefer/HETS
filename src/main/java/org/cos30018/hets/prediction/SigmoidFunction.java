@@ -1,4 +1,4 @@
-package prediction;
+package org.cos30018.hets.prediction;
 
 public final class SigmoidFunction implements ActivationFunction{
     @Override

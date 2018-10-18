@@ -1,4 +1,4 @@
-package prediction;
+package org.cos30018.hets.prediction;
 
 import java.util.ArrayList;
 import java.util.List;

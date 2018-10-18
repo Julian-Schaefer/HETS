@@ -1,23 +1,23 @@
-package prediction;
+package org.cos30018.hets.prediction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NeuralNetwork {
     private List<NeuronLayer> layers;
-    private List<Integer> trainingData;
-    private List<List<Integer>> input;
+    private List<Double> trainingDataActual;
+    private List<List<Double>> input;
 
     private List<List<Double>> CostValues = new ArrayList<>();
 
 
-    public void Train(List<Integer> lTrainingData, List<List<Integer>> lInput, int hiddenLayers, int layerSize){
+    public void Train(List<Double> lTrainingData, List<List<Double>> lInput, int hiddenLayers, int layerSize){
         //reset the neural network
-        trainingData = new ArrayList<>();
+        trainingDataActual = new ArrayList<>();
         input = new ArrayList<>();
         layers = new ArrayList<>();
 
-        trainingData = lTrainingData;
+        trainingDataActual = lTrainingData;
         input = lInput;
 
         //set hiddenLayer size + input and output layers
@@ -48,10 +48,10 @@ public class NeuralNetwork {
 
        // NeuronLayer initialTemp = layers.get(0);
 
-        for (int i = 0; i < trainingData.size(); i++) {
+        for (int i = 0; i < trainingDataActual.size(); i++) {
 
                 for (int j = 0; j < lInput.size(); j++) {
-                    for (List<Integer> inData : input) {
+                    for (List<Double> inData : input) {
 
                         //initialTemp.UpdateNeuronValue(j, inData.get(j));
                         layers.get(0).GetNeurons().get(j).SetValue(inData.get(j));
@@ -70,7 +70,7 @@ public class NeuralNetwork {
         }
     }
 
-    public Integer Run(List<Integer> inputs){
+    public Double Run(List<Double> inputs){
 
         for (int i = 0; i < inputs.size(); i++) {
             layers.get(0).GetNeurons().get(i).SetValue(inputs.get(i));
@@ -85,7 +85,7 @@ public class NeuralNetwork {
 
         List<Double> finalValues = layers.get(layers.size()-1).Final();
 
-        return (int)Math.round(finalValues.get(0));
+        return finalValues.get(0);
 
     }
     //input training data, the data for the input layer, and the number of hidden layers required

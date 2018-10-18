@@ -1,7 +1,7 @@
 package org.cos30018.hets.logic.appliance.forecast;
 
 import org.cos30018.hets.logic.appliance.Appliance;
-import org.cos30018.hets.prediction.Predictor;
+import org.cos30018.hets.prediction.NeuralNetworkManager;
 
 public class NeuralNetworkForecast extends UsageForecast {
 
@@ -11,8 +11,9 @@ public class NeuralNetworkForecast extends UsageForecast {
 
 	@Override
 	public double[] calculateForecast(int numberOfPeriods) {
-		Predictor predictor = new Predictor(appliance.getType());
-		predictor.RunNeuralNetwork(period);
-		return new double[]  { predictor.newp };
+		int period = 0;
+		NeuralNetworkManager neuralNetworkManager = new NeuralNetworkManager(appliance.getType());
+		neuralNetworkManager.runNeuralNetwork(period);
+		return new double[]  { neuralNetworkManager.newPrediction};
 	}	
 }

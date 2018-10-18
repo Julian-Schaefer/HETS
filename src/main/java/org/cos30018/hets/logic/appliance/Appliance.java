@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Appliance {	
 	public enum ApplianceType {
-		DISHWASHER, LIGHTBULB, TV, HIFI, PC
+		DISHWASHER, FRIDGE, WASHING_MACHINE, DRYER, HEAT_PUMP, HOT_WATER_SYSTEM, HIFI
 	}
 
 	public enum ForecastingMethod {

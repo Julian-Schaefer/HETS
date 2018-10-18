@@ -49,12 +49,16 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 	
 	@Override
 	public double getLastActualUsage() {
+
+		//DISHWASHER, FRIDGE, WASHING_MACHINE, DRYER, HEAT_PUMP, HOT_WATER_SYSTEM, HIFI
 		switch(applianceType) {
 		case DISHWASHER: return 10;
 		case HIFI: return 5;
-		case LIGHTBULB: return 1;
-		case PC: return 6;
-		case TV: return 7;
+		case FRIDGE: return 6;
+		case WASHING_MACHINE: return 12;
+		case DRYER: return 4;
+		case HEAT_PUMP: return 20;
+		case HOT_WATER_SYSTEM: return 3;
 		}
 		
 		return 0;
