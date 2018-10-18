@@ -28,7 +28,22 @@
   </properties>
 	
   <dependencies>
-	<dependency>  
+
+
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>4.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.8.1</version>
+    </dependency>
+
+
+    <dependency>
 	  <groupId>com.tilab.jade</groupId> 
 	  <artifactId>jade</artifactId> 
 	  <version>4.5.0</version>  
@@ -52,6 +67,8 @@
           <version>1.5.0</version>
       </dependency>
   </dependencies>
+
+
   
   <repositories>
     <repository> 
