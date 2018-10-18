@@ -7,6 +7,7 @@ import java.util.List;
 import org.cos30018.hets.logic.home.behaviour.ApplianceForecastRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.ApplianceUsageRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
+import org.cos30018.hets.logic.home.behaviour.RetailerRequestBehaviour;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -130,6 +131,7 @@ public class HomeAgent extends Agent implements Home {
 		for (HomeListener listener : listeners) {
 			listener.onTotalUsageForecastUpdated(totalUsageForecast);
 		}
+		addBehaviour(RetailerRequestBehaviour.create(this));
 	}
 
 	@Override
@@ -164,7 +166,7 @@ public class HomeAgent extends Agent implements Home {
 
 	@Override
 	public void nextPeriod() {
-		setPeriod(period++);
+		setPeriod(period + 1);
 	}
 
 	@Override
