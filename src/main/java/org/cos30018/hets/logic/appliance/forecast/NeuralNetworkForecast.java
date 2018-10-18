@@ -10,10 +10,9 @@ public class NeuralNetworkForecast extends UsageForecast {
 	}
 
 	@Override
-	public double[] calculateForecast(int numberOfPeriods) {
-		int period = 0;
+	public double[] calculateForecast(int period, int numberOfPeriods) {
 		NeuralNetworkManager neuralNetworkManager = new NeuralNetworkManager(appliance.getType());
 		neuralNetworkManager.runNeuralNetwork(period);
-		return new double[]  { neuralNetworkManager.newPrediction};
-	}	
+		return new double[] { neuralNetworkManager.newPrediction };
+	}
 }

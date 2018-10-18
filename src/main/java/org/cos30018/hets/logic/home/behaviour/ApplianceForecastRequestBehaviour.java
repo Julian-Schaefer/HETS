@@ -27,7 +27,7 @@ public class ApplianceForecastRequestBehaviour extends AchieveREInitiator {
 			msg.addReceiver(applianceAID);
 		}
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-		msg.setContent(ApplianceMessage.FORECAST);
+		msg.setContent(ApplianceMessage.FORECAST + homeAgent.getPeriod());
 		msg.setOntology(HomeMessage.ONTOLOGY_USAGE);
 
 		return new ApplianceForecastRequestBehaviour(homeAgent, msg);

@@ -33,8 +33,8 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 
 	@Override
 	protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
-		if (request.getContent().equals(ApplianceMessage.LAST_USAGE)
-				|| request.getContent().equals(ApplianceMessage.FORECAST)) {
+		if (request.getContent().startsWith(ApplianceMessage.LAST_USAGE)
+				|| request.getContent().startsWith(ApplianceMessage.FORECAST)) {
 			ACLMessage agreeMessage = request.createReply();
 			agreeMessage.setPerformative(ACLMessage.AGREE);
 			return agreeMessage;
@@ -45,12 +45,15 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 
 	@Override
 	protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
-		if (request.getContent().equals(ApplianceMessage.LAST_USAGE)) {
+		if (request.getContent().startsWith(ApplianceMessage.LAST_USAGE)) {
 			response.setPerformative(ACLMessage.INFORM);
 			response.setContent(ApplianceMessage.LAST_USAGE + " " + applianceAgent.getLastActualUsage());
-		} else if (request.getContent().equals(ApplianceMessage.FORECAST)) {
+		} else if (request.getContent().startsWith(ApplianceMessage.FORECAST)) {
+			String periodText = request.getContent().replace(ApplianceMessage.FORECAST, "").trim();
+			int period = Integer.valueOf(periodText);
+
 			response.setPerformative(ACLMessage.INFORM);
-			response.setContent(ApplianceMessage.FORECAST + " " + applianceAgent.getUsageForecast(1)[0]);
+			response.setContent(ApplianceMessage.FORECAST + applianceAgent.getUsageForecast(period, 1)[0]);
 		}
 		return response;
 	}
