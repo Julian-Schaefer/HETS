@@ -1,13 +1,12 @@
 package org.cos30018.hets.ui.custom;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -36,22 +35,14 @@ public class ForecastAndActualGraph extends JPanel {
 	private ChartPanel chartPanel;
 
 	public ForecastAndActualGraph() {
+		setLayout(new BorderLayout());
 		setUp();
 	}
 
 	private void setUp() {
 		JFreeChart chart = createChart();
 		chartPanel = new ChartPanel(chart);
-
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-		chartPanel.setBackground(Color.blue);
-		add(chartPanel);
-	}
-
-	@Override
-	public void setPreferredSize(Dimension preferredSize) {
-		super.setPreferredSize(preferredSize);
-		chartPanel.setPreferredSize(preferredSize);
+		add(chartPanel, BorderLayout.CENTER);
 	}
 
 	public void addActualValue(double actual) {

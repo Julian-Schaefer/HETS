@@ -1,6 +1,5 @@
 package org.cos30018.hets.ui.home.dashboard;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -26,7 +25,6 @@ public class InformationPanel extends JPanel {
 	public InformationPanel(Home home) {
 		this.home = home;
 		setLayout(new GridBagLayout());
-		setPreferredSize(new Dimension(500, 500));
 		setUp();
 		update();
 	}

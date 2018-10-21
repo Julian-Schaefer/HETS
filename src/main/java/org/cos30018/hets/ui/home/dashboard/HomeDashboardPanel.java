@@ -34,17 +34,16 @@ public class HomeDashboardPanel extends JPanel {
 
 	private void setUp() {
 		JPanel periodContainer = new JPanel(new BorderLayout());
-		periodContainer.setBorder(new EmptyBorder(20, 20, 20, 20));
+		periodContainer.setBorder(new EmptyBorder(20, 0, 20, 0));
 		periodControllerPanel = new PeriodControllerPanel(home);
 		periodControllerPanel.setBorder(LineBorder.createGrayLineBorder());
 		periodContainer.add(periodControllerPanel);
 		add(periodContainer, BorderLayout.NORTH);
 
 		JPanel mainContainer = new JPanel(new GridLayout(2, 1, 20, 20));
-		mainContainer.setPreferredSize(new Dimension(1000, 800));
+		mainContainer.setPreferredSize(new Dimension(0, 800));
 
 		forecastAndActualGraph = new ForecastAndActualGraph();
-		forecastAndActualGraph.setPreferredSize(new Dimension(960, 340));
 		forecastAndActualGraph.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(forecastAndActualGraph);

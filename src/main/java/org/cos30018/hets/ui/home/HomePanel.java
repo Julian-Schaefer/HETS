@@ -53,7 +53,6 @@ public class HomePanel extends JPanel {
 
 	public JPanel getHomeContentPanel() {
 		JPanel homeContentLayout = new JPanel(new BorderLayout());
-		homeContentLayout.setBackground(Color.WHITE);
 
 		JPanel titlePanel = new JPanel(new BorderLayout());
 		titlePanel.setBackground(Color.white);
