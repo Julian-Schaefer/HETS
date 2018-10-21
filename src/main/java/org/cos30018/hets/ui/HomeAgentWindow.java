@@ -32,14 +32,14 @@ public class HomeAgentWindow extends JFrame {
 	
 	private void setUp() {
 		appliancePanel = new AppliancePanel();
-		appliancePanel.setPreferredSize(new Dimension(350, 0));
+		appliancePanel.setPreferredSize(new Dimension(300, 0));
 		add(appliancePanel, BorderLayout.WEST);
 		
 		HomePanel homePanel = new HomePanel();
 		add(homePanel, BorderLayout.CENTER);
 
 		retailerPanel = new RetailerPanel();
-		retailerPanel.setPreferredSize(new Dimension(350, 0));
+		retailerPanel.setPreferredSize(new Dimension(300, 0));
 		add(retailerPanel, BorderLayout.EAST);
 	}
 	

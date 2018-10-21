@@ -44,7 +44,8 @@ public class ForecastAndActualGraph extends JPanel {
 		chartPanel = new ChartPanel(chart);
 
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-		chartPanel.setBackground(Color.blue);
+		chartPanel.setBackground(Color.WHITE);
+		chartPanel.setUI(new StyledJPanelUI());
 		add(chartPanel);
 	}
 

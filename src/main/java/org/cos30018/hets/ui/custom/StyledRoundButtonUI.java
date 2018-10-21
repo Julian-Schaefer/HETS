@@ -12,7 +12,7 @@ public class StyledRoundButtonUI extends BasicButtonUI {
         super.installUI(c);
         AbstractButton button = (AbstractButton) c;
         button.setOpaque(false);
-        button.setBorder(new EmptyBorder(5, 15, 5, 15));
+        button.setBorder(new EmptyBorder(5,5, 5, 5));
     }
 
     @Override
@@ -27,9 +27,9 @@ public class StyledRoundButtonUI extends BasicButtonUI {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(c.getBackground().darker());
-        g.fillRoundRect(0, yOffset, size.width, size.height - yOffset, 50, 50);
+        g.fillRoundRect(0, yOffset, size.width, size.height - yOffset, 100, 100);
         g.setColor(c.getBackground());
-        g.fillRoundRect(0, yOffset, size.width, size.height + yOffset - 2, 50, 50);
+        g.fillRoundRect(0, yOffset, size.width, size.height + yOffset - 2, 100, 100);
 
     }
 }

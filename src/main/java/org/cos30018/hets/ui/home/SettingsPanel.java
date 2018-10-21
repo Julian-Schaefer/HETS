@@ -15,6 +15,7 @@ import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.ui.custom.StyledButtonUI;
 
 import net.miginfocom.swing.MigLayout;
+import org.cos30018.hets.ui.custom.StyledRoundButtonUI;
 
 public class SettingsPanel extends JPanel {
 
@@ -46,7 +47,7 @@ public class SettingsPanel extends JPanel {
 
 	private void setUp() {
 		setLayout(new MigLayout("insets 20 20 20 20"));
-		setBackground(Color.white);
+		//setBackground(Color.white);
 
 		JLabel titleSettings = new JLabel("Settings");
 		titleSettings.setFont(new Font("Raleway", Font.BOLD, 40));
@@ -58,11 +59,11 @@ public class SettingsPanel extends JPanel {
 		homeButton.setIcon(new ImageIcon(getClass().getResource("/images/home_outline_2x_18dp.png")));
 		homeButton.setBackground(new Color(0x2dce98));
 		homeButton.setForeground(Color.white);
-		homeButton.setUI(new StyledButtonUI());
+		homeButton.setUI(new StyledRoundButtonUI());
 		homeButton.addActionListener(homeButtonActionListener);
 
 		add(titleSettings);
-		add(homeButton, "wrap 40");
+		add(homeButton, "wrap");
 
 		add(subTitleGeneral, "wrap 20");
 

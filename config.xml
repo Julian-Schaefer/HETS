@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<Agents>
+    <Appliances>
+        <Appliance>
+            <Name>( agent-identifier :name "appliance_Appliance 01@192.168.0.4:8888/JADE"  :addresses (sequence http://MALAKA.home:7778/acc ))</Name>
+        </Appliance>
+        <Appliance>
+            <Name>( agent-identifier :name "appliance_Appliance 02@192.168.0.4:8888/JADE"  :addresses (sequence http://MALAKA.home:7778/acc ))</Name>
+        </Appliance>
+        <Appliance>
+            <Name>( agent-identifier :name "appliance_Appliance 03@192.168.0.4:8888/JADE"  :addresses (sequence http://MALAKA.home:7778/acc ))</Name>
+        </Appliance>
+        <Appliance>
+            <Name>( agent-identifier :name "appliance_Appliance 04@192.168.0.4:8888/JADE"  :addresses (sequence http://MALAKA.home:7778/acc ))</Name>
+        </Appliance>
+    </Appliances>
+</Agents>

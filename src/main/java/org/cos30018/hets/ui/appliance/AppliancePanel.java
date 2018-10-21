@@ -40,7 +40,7 @@ public class AppliancePanel extends JPanel implements ActionListener {
 	private void setup() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		buttonPanel.setBackground(Color.WHITE);
+		//buttonPanel.setBackground(Color.WHITE);
 		
 		addApplianceButton = new JButton("Add Appliance");
 		addApplianceButton.setFont(new Font("Raleway", Font.BOLD, 18));
