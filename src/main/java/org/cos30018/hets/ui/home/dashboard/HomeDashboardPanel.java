@@ -81,4 +81,8 @@ public class HomeDashboardPanel extends JPanel {
 	public ForecastAndActualGraph getForecastAndActualGraph() {
 		return forecastAndActualGraph;
 	}
+
+	public NegotiatedPriceGraph getNegotiatedPriceGraph() {
+		return negotiatedPriceGraph;
+	}
 }

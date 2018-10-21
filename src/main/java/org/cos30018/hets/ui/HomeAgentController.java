@@ -43,12 +43,13 @@ public class HomeAgentController implements HomeListener {
 
 	@Override
 	public void onTotalUsageForecastUpdated(double totalUsageForecast) {
-		System.out.println("Total Usage updated: " + totalUsageForecast);
 	}
 
 	@Override
 	public void onLastActualTotalUsageUpdated(double lastActualTotalUsage) {
-		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void onNegotiatedPriceUpdate(double negotiatedPrice) {
 	}
 }

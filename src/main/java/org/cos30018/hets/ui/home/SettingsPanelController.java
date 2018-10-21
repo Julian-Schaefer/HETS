@@ -49,8 +49,10 @@ public class SettingsPanelController implements HomeListener, ActionListener {
 
 	@Override
 	public void onLastActualTotalUsageUpdated(double lastActualTotalUsage) {
-		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void onNegotiatedPriceUpdate(double negotiatedPrice) {
 	}
 
 	@Override

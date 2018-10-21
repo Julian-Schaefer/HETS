@@ -1,8 +1,10 @@
 package org.cos30018.hets.logic.home;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.cos30018.hets.logic.home.behaviour.ApplianceForecastRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.ApplianceUsageRequestBehaviour;
@@ -35,6 +37,7 @@ public class HomeAgent extends Agent implements Home {
 
 	private double lastActualTotalUsage;
 	private double totalUsageForecast;
+	private Map<Integer, Double> negotiatedPrices = new HashMap<>();
 
 	private long intervalPeriod = 5000;
 
@@ -153,8 +156,16 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public void addListener(HomeListener listener) {
-		listeners.add(listener);
+	public void setNegotiatedPrice(int period, double price) {
+		negotiatedPrices.put(period, price);
+		for (HomeListener listener : listeners) {
+			listener.onNegotiatedPriceUpdate(price);
+		}
+	}
+
+	@Override
+	public Map<Integer, Double> getNegotiatedPrices() {
+		return negotiatedPrices;
 	}
 
 	@Override
@@ -172,5 +183,10 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public int getPeriod() {
 		return period;
+	}
+
+	@Override
+	public void addListener(HomeListener listener) {
+		listeners.add(listener);
 	}
 }

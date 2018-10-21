@@ -60,7 +60,7 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 				ACLMessage acceptance;
 				if (response.getPerformative() == ACLMessage.PROPOSE && currentRound < deadLineRound) {
 					acceptance = response.createReply();
-					acceptance.setPerformative(ACLMessage.REJECT_PROPOSAL);
+					acceptance.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 					acceptances.add(acceptance);
 					newIteration(acceptances);
 				} else {
@@ -75,7 +75,8 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 
 	@Override
 	protected void handleInform(ACLMessage inform) {
-		System.out.println("ive been Informed!");
+		System.out.println("Inform!");
+		homeAgent.setNegotiatedPrice(homeAgent.getPeriod(), Math.random() * 70);
 	}
 
 	@Override
