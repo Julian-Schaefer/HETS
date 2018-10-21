@@ -27,7 +27,7 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 			msg.addReceiver(applianceAID);
 		}
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-		msg.setContent(ApplianceMessage.LAST_USAGE);
+		msg.setContent(ApplianceMessage.ACTUAL_USAGE + homeAgent.getPeriod());
 		msg.setOntology(HomeMessage.ONTOLOGY_USAGE);
 
 		return new ApplianceUsageRequestBehaviour(homeAgent, msg);
@@ -67,8 +67,8 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 			if (o instanceof ACLMessage) {
 				ACLMessage message = (ACLMessage) o;
 				if (message.getPerformative() == ACLMessage.INFORM
-						&& message.getContent().startsWith(ApplianceMessage.LAST_USAGE)) {
-					String usageText = message.getContent().replace(ApplianceMessage.LAST_USAGE, "").trim();
+						&& message.getContent().startsWith(ApplianceMessage.ACTUAL_USAGE)) {
+					String usageText = message.getContent().replace(ApplianceMessage.ACTUAL_USAGE, "").trim();
 					double usage = Double.valueOf(usageText);
 					lastActualTotalUsage += usage;
 				}

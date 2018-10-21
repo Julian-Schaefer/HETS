@@ -13,7 +13,7 @@ public class SimpleUsageForecast extends UsageForecast {
 		double[] forecasts = new double[numberOfPeriods];
 
 		for (int p = 0; p < numberOfPeriods; p++) {
-			forecasts[p] = appliance.getLastActualUsage() + period;
+			forecasts[p] = appliance.getActualUsage(period + p) + period;
 		}
 
 		return forecasts;

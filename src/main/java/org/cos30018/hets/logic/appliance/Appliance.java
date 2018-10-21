@@ -1,6 +1,6 @@
 package org.cos30018.hets.logic.appliance;
 
-import java.util.List;
+import java.util.Map;
 
 public interface Appliance {
 	public enum ApplianceType {
@@ -15,11 +15,23 @@ public interface Appliance {
 
 	ApplianceType getType();
 
-	double getLastActualUsage();
+	double getActualUsage(int period);
 
-	List<Double> getPastActualUsages();
+	Map<Integer, Double> getActualUsages();
 
 	double[] getUsageForecast(int period, int numberOfPeriods);
 
+	Map<Integer, Double> getUsageForecasts();
+
 	void setForecastingMethod(ForecastingMethod forecastingMethod);
+
+	ForecastingMethod getForecastingMethod();
+
+	void addListener(ApplianceListener listener);
+
+	public interface ApplianceListener {
+		void onNewActualUsage(int period, double usage);
+
+		void onNewUsageForecast(int period, double forecast);
+	}
 }

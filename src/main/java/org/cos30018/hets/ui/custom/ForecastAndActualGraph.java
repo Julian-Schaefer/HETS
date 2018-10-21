@@ -50,8 +50,18 @@ public class ForecastAndActualGraph extends JPanel {
 		chartPanel.setChart(createChart());
 	}
 
+	public void setActualValues(Map<Integer, Double> actualValues) {
+		this.actualValues = actualValues;
+		chartPanel.setChart(createChart());
+	}
+
 	public void addForecastValue(double forecast) {
 		forecastValues.put(period, forecast);
+		chartPanel.setChart(createChart());
+	}
+
+	public void setForecastValues(Map<Integer, Double> forecastValues) {
+		this.forecastValues = forecastValues;
 		chartPanel.setChart(createChart());
 	}
 
