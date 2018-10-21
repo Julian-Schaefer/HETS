@@ -76,7 +76,7 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 	@Override
 	protected void handleInform(ACLMessage inform) {
 		System.out.println("Inform!");
-		homeAgent.setNegotiatedPrice(homeAgent.getPeriod(), Math.random() * 70);
+		homeAgent.setNegotiatedPrice(homeAgent.getNextPeriod(), Math.random() * 70);
 	}
 
 	@Override

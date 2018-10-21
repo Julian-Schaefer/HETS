@@ -42,11 +42,11 @@ public class HomeAgentController implements HomeListener {
 	}
 
 	@Override
-	public void onTotalUsageForecastUpdated(double totalUsageForecast) {
+	public void onTotalUsageForecastUpdated(int period, double totalUsageForecast) {
 	}
 
 	@Override
-	public void onLastActualTotalUsageUpdated(double lastActualTotalUsage) {
+	public void onActualTotalUsageUpdated(int period, double lastActualTotalUsage) {
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class HomeAgent extends Agent implements Home {
 	private List<AID> applianceAIDs = new ArrayList<>();
 	private List<AID> retailerAIDs = new ArrayList<>();
 
-	private int period = 0;
+	private int period = START_PERIOD - 1;
 	private int forecastPeriodCount;
 
 	private double lastActualTotalUsage;
@@ -129,10 +129,10 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public void setTotalUsageForecast(double totalUsageForecast) {
+	public void setTotalUsageForecast(int period, double totalUsageForecast) {
 		this.totalUsageForecast = totalUsageForecast;
 		for (HomeListener listener : listeners) {
-			listener.onTotalUsageForecastUpdated(totalUsageForecast);
+			listener.onTotalUsageForecastUpdated(period, totalUsageForecast);
 		}
 		addBehaviour(RetailerRequestBehaviour.create(this));
 	}
@@ -143,10 +143,10 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public void setLastActualTotalUsage(double lastActualTotalUsage) {
+	public void setActualTotalUsage(int period, double lastActualTotalUsage) {
 		this.lastActualTotalUsage = lastActualTotalUsage;
 		for (HomeListener listener : listeners) {
-			listener.onLastActualTotalUsageUpdated(lastActualTotalUsage);
+			listener.onActualTotalUsageUpdated(period, lastActualTotalUsage);
 		}
 	}
 
@@ -171,7 +171,9 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public void setPeriod(int period) {
 		this.period = period;
-		addBehaviour(ApplianceUsageRequestBehaviour.create(this, getAppliances()));
+		if (period > START_PERIOD) {
+			addBehaviour(ApplianceUsageRequestBehaviour.create(this, getAppliances()));
+		}
 		addBehaviour(ApplianceForecastRequestBehaviour.create(this, getAppliances()));
 	}
 
@@ -181,8 +183,13 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public int getPeriod() {
+	public int getCurrentPeriod() {
 		return period;
+	}
+
+	@Override
+	public int getNextPeriod() {
+		return period + 1;
 	}
 
 	@Override

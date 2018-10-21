@@ -43,12 +43,12 @@ public class SettingsPanelController implements HomeListener, ActionListener {
 	}
 
 	@Override
-	public void onTotalUsageForecastUpdated(double totalUsageForecast) {
+	public void onTotalUsageForecastUpdated(int period, double totalUsageForecast) {
 		settingsPanel.update();
 	}
 
 	@Override
-	public void onLastActualTotalUsageUpdated(double lastActualTotalUsage) {
+	public void onActualTotalUsageUpdated(int period, double lastActualTotalUsage) {
 	}
 
 	@Override

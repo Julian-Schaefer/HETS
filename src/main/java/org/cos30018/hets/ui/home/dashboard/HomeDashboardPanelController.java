@@ -17,18 +17,17 @@ public class HomeDashboardPanelController implements HomeListener {
 	}
 
 	@Override
-	public void onTotalUsageForecastUpdated(double totalUsageForecast) {
+	public void onTotalUsageForecastUpdated(int period, double totalUsageForecast) {
 		ForecastAndActualGraph forecastAndActualGraph = homeDashboardPanel.getForecastAndActualGraph();
-		forecastAndActualGraph.addForecastValue(totalUsageForecast);
+		forecastAndActualGraph.addForecastValue(period, totalUsageForecast);
 
 		homeDashboardPanel.update();
 	}
 
 	@Override
-	public void onLastActualTotalUsageUpdated(double lastActualTotalUsage) {
+	public void onActualTotalUsageUpdated(int period, double lastActualTotalUsage) {
 		ForecastAndActualGraph forecastAndActualGraph = homeDashboardPanel.getForecastAndActualGraph();
-		forecastAndActualGraph.addActualValue(lastActualTotalUsage);
-		forecastAndActualGraph.nextPeriod();
+		forecastAndActualGraph.addActualValue(period, lastActualTotalUsage);
 
 		homeDashboardPanel.update();
 	}

@@ -6,12 +6,15 @@ import java.util.Map;
 import jade.core.AID;
 
 public interface Home {
+	public static final int START_PERIOD = 0;
 
 	void setPeriod(int period);
 
 	void nextPeriod();
 
-	int getPeriod();
+	int getCurrentPeriod();
+
+	int getNextPeriod();
 
 	List<AID> getAppliances();
 
@@ -25,11 +28,11 @@ public interface Home {
 
 	int getForecastPeriodCount();
 
-	public void setTotalUsageForecast(double totalUsageForecast);
+	public void setTotalUsageForecast(int period, double totalUsageForecast);
 
 	double getTotalUsageForecast();
 
-	void setLastActualTotalUsage(double lastActualTotalUsage);
+	void setActualTotalUsage(int period, double lastActualTotalUsage);
 
 	double getLastActualTotalUsage();
 
@@ -40,9 +43,9 @@ public interface Home {
 	Map<Integer, Double> getNegotiatedPrices();
 
 	public interface HomeListener {
-		void onTotalUsageForecastUpdated(double totalUsageForecast);
+		void onTotalUsageForecastUpdated(int period, double totalUsageForecast);
 
-		void onLastActualTotalUsageUpdated(double lastActualTotalUsage);
+		void onActualTotalUsageUpdated(int period, double lastActualTotalUsage);
 
 		void onNegotiatedPriceUpdate(double negotiatedPrice);
 
