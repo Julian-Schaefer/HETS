@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 import org.cos30018.hets.logic.home.Home;
 
-public class InformationPanel extends JPanel {
+public class RetailerInformationPanel extends JPanel {
 
 	/**
 	 * 
@@ -22,7 +22,7 @@ public class InformationPanel extends JPanel {
 	private JLabel registeredAppliancesLbl;
 	private JLabel registeredRetailersLbl;
 
-	public InformationPanel(Home home) {
+	public RetailerInformationPanel(Home home) {
 		this.home = home;
 		setLayout(new GridBagLayout());
 		setUp();

@@ -20,7 +20,7 @@ public class HomeDashboardPanelController implements HomeListener {
 		ForecastAndActualGraph forecastAndActualGraph = homeDashboardPanel.getForecastAndActualGraph();
 		forecastAndActualGraph.addForecastValue(totalUsageForecast);
 
-		homeDashboardPanel.getInformationPanel().update();
+		homeDashboardPanel.update();
 	}
 
 	@Override
@@ -29,26 +29,26 @@ public class HomeDashboardPanelController implements HomeListener {
 		forecastAndActualGraph.addActualValue(lastActualTotalUsage);
 		forecastAndActualGraph.nextPeriod();
 
-		homeDashboardPanel.getInformationPanel().update();
+		homeDashboardPanel.update();
 	}
 
 	@Override
 	public void onApplianceAdded(AID applianceAID) {
-		homeDashboardPanel.getInformationPanel().update();
+		homeDashboardPanel.update();
 	}
 
 	@Override
 	public void onApplianceRemoved(AID applianceAID) {
-		homeDashboardPanel.getInformationPanel().update();
+		homeDashboardPanel.update();
 	}
 
 	@Override
 	public void onRetailerAdded(AID retailerAID) {
-		homeDashboardPanel.getInformationPanel().update();
+		homeDashboardPanel.update();
 	}
 
 	@Override
 	public void onRetailerRemoved(AID retailerAID) {
-		homeDashboardPanel.getInformationPanel().update();
+		homeDashboardPanel.update();
 	}
 }

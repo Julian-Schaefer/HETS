@@ -11,6 +11,7 @@ import javax.swing.border.LineBorder;
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.ui.custom.ForecastAndActualGraph;
+import org.cos30018.hets.ui.custom.NegotiatedPriceGraph;
 
 public class HomeDashboardPanel extends JPanel {
 
@@ -23,7 +24,9 @@ public class HomeDashboardPanel extends JPanel {
 
 	private PeriodControllerPanel periodControllerPanel;
 	private ForecastAndActualGraph forecastAndActualGraph;
-	private InformationPanel informationPanel;
+	private NegotiatedPriceGraph negotiatedPriceGraph;
+	private ApplianceInformationPanel applianceInformationPanel;
+	private RetailerInformationPanel retailerInformationPanel;
 
 	public HomeDashboardPanel() {
 		setLayout(new BorderLayout());
@@ -40,7 +43,7 @@ public class HomeDashboardPanel extends JPanel {
 		periodContainer.add(periodControllerPanel);
 		add(periodContainer, BorderLayout.NORTH);
 
-		JPanel mainContainer = new JPanel(new GridLayout(2, 1, 20, 20));
+		JPanel mainContainer = new JPanel(new GridLayout(2, 2, 20, 20));
 		mainContainer.setPreferredSize(new Dimension(0, 800));
 
 		forecastAndActualGraph = new ForecastAndActualGraph();
@@ -48,12 +51,27 @@ public class HomeDashboardPanel extends JPanel {
 
 		mainContainer.add(forecastAndActualGraph);
 
-		informationPanel = new InformationPanel(home);
-		informationPanel.setBorder(LineBorder.createGrayLineBorder());
+		negotiatedPriceGraph = new NegotiatedPriceGraph();
+		negotiatedPriceGraph.setBorder(LineBorder.createGrayLineBorder());
 
-		mainContainer.add(informationPanel);
+		mainContainer.add(negotiatedPriceGraph);
+
+		applianceInformationPanel = new ApplianceInformationPanel(home);
+		applianceInformationPanel.setBorder(LineBorder.createGrayLineBorder());
+
+		mainContainer.add(applianceInformationPanel);
+
+		retailerInformationPanel = new RetailerInformationPanel(home);
+		retailerInformationPanel.setBorder(LineBorder.createGrayLineBorder());
+
+		mainContainer.add(retailerInformationPanel);
 
 		add(mainContainer, BorderLayout.CENTER);
+	}
+
+	public void update() {
+		applianceInformationPanel.update();
+		retailerInformationPanel.update();
 	}
 
 	public PeriodControllerPanel getPeriodControllerPanel() {
@@ -62,9 +80,5 @@ public class HomeDashboardPanel extends JPanel {
 
 	public ForecastAndActualGraph getForecastAndActualGraph() {
 		return forecastAndActualGraph;
-	}
-
-	public InformationPanel getInformationPanel() {
-		return informationPanel;
 	}
 }
