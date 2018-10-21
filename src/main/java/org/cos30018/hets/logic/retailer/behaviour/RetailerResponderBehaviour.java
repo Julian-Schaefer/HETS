@@ -7,7 +7,6 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
 
 public class RetailerResponderBehaviour extends ContractNetResponder {
@@ -17,14 +16,10 @@ public class RetailerResponderBehaviour extends ContractNetResponder {
 	 */
 	private static final long serialVersionUID = -6960196745935851735L;
 
-	private static MessageTemplate template = MessageTemplate.and(
-			MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
-			MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
-
 	private RetailerAgent retailerAgent;
 
 	public RetailerResponderBehaviour(RetailerAgent retailerAgent) {
-		super(retailerAgent, createMessageTemplate(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET));
+		super(retailerAgent, createMessageTemplate(FIPANames.InteractionProtocol.FIPA_ITERATED_CONTRACT_NET));
 		this.retailerAgent = retailerAgent;
 	}
 
@@ -54,19 +49,11 @@ public class RetailerResponderBehaviour extends ContractNetResponder {
 	@Override
 	protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
 		retailerAgent.addNegotiationMessage(reject);
-	}
 
-	@Override
-	protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
-		System.out.println(myAgent.getLocalName() + ": REQUEST received from " + request.getSender().getName()
-				+ ". Query is " + request.getContent());
-
-		if (request.getContent().equals("OFFER")) {
-			ACLMessage agreeMessage = request.createReply();
-			agreeMessage.setPerformative(ACLMessage.AGREE);
-			return agreeMessage;
-		} else {
-			throw new RefuseException("Wrong content");
-		}
+		ACLMessage reply = reject.createReply();
+		reply.setPerformative(ACLMessage.PROPOSE);
+		reply.setContent("Ridiculous offer");
+		getAgent().send(reply);
+		retailerAgent.addNegotiationMessage(reply);
 	}
 }

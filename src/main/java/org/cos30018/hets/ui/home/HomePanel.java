@@ -1,5 +1,6 @@
 package org.cos30018.hets.ui.home;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -9,13 +10,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.ui.custom.StyledButtonUI;
 import org.cos30018.hets.ui.home.dashboard.HomeDashboardPanel;
-
-import net.miginfocom.swing.MigLayout;
 
 public class HomePanel extends JPanel {
 
@@ -44,21 +44,19 @@ public class HomePanel extends JPanel {
 	}
 
 	private void setUp() {
-		add(HomeContentPanel(), HOME_SUB_PANEL);
+		add(getHomeContentPanel(), HOME_SUB_PANEL);
 
 		settingsPanel = new SettingsPanel(home);
 		settingsPanel.setSettingsPanelListener(controller);
 		add(settingsPanel, SETTINGS_PANEL);
 	}
 
-	public JPanel HomeContentPanel() {
+	public JPanel getHomeContentPanel() {
+		JPanel homeContentLayout = new JPanel(new BorderLayout());
 
-		/**
-		 * ui components for homeContent Layout
-		 */
-		JPanel homeContentLayout = new JPanel(new MigLayout("insets 20 20 20 20"));
-		homeContentLayout.setBackground(Color.white);
-
+		JPanel titlePanel = new JPanel(new BorderLayout());
+		titlePanel.setBackground(Color.white);
+		titlePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		JLabel titleHome = new JLabel("Home");
 		titleHome.setFont(new Font("Raleway", Font.BOLD, 40));
 
@@ -71,12 +69,15 @@ public class HomePanel extends JPanel {
 			showSettingsPanel();
 		});
 
-		homeContentLayout.add(titleHome);
-		homeContentLayout.add(btnSettings, "wrap 30");
+		titlePanel.add(titleHome, BorderLayout.CENTER);
+		titlePanel.add(btnSettings, BorderLayout.EAST);
+		homeContentLayout.add(titlePanel, BorderLayout.NORTH);
 
-		JScrollPane scrollPane = new JScrollPane(new HomeDashboardPanel());
+		HomeDashboardPanel homeDashboardPanel = new HomeDashboardPanel();
+		homeDashboardPanel.setBorder(new EmptyBorder(0, 20, 20, 20));
+		JScrollPane scrollPane = new JScrollPane(homeDashboardPanel);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-		homeContentLayout.add(scrollPane);
+		homeContentLayout.add(scrollPane, BorderLayout.CENTER);
 
 		return homeContentLayout;
 	}

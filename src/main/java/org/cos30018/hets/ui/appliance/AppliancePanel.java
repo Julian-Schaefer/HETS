@@ -1,6 +1,8 @@
 package org.cos30018.hets.ui.appliance;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -10,9 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import org.cos30018.hets.ui.custom.*;
+import org.cos30018.hets.ui.custom.StyledButtonUI;
 
 import jade.core.AID;
 
@@ -25,23 +27,23 @@ public class AppliancePanel extends JPanel implements ActionListener {
 
 	private AppliancePanelController controller;
 	private AppliancePanelListener listener;
-	
+
 	private JButton addApplianceButton;
 	private JPanelList panelList;
-	
+
 	private Map<AID, JPanel> agentPanelForAID = new HashMap<>();
-	
+
 	public AppliancePanel() {
 		setLayout(new BorderLayout());
 		setup();
 		this.controller = new AppliancePanelController(this);
 	}
-	
+
 	private void setup() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		buttonPanel.setBackground(Color.WHITE);
-		
+
 		addApplianceButton = new JButton("Add Appliance");
 		addApplianceButton.setFont(new Font("Raleway", Font.BOLD, 18));
 		addApplianceButton.setBackground(new Color(0x2dce98));
@@ -50,7 +52,7 @@ public class AppliancePanel extends JPanel implements ActionListener {
 		addApplianceButton.addActionListener(this);
 		buttonPanel.add(addApplianceButton);
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		
+
 		add(buttonPanel, BorderLayout.NORTH);
 
 		panelList = new JPanelList();
@@ -61,21 +63,23 @@ public class AppliancePanel extends JPanel implements ActionListener {
 
 	/**
 	 * Function to ADDING an Appliance Agent
+	 * 
 	 * @param aid: appliance agent ID
 	 */
-	
-	public void addApplianceAgent(AID aid) {			
+
+	public void addApplianceAgent(AID aid) {
 		AgentPanel agentPanel = new AgentPanel(aid);
 		agentPanel.setAgentPanelListener(controller);
-        
+
 		agentPanelForAID.put(aid, panelList.addJPanel(agentPanel));
 	}
 
 	/**
 	 * Function to REMOVING an Appliance Agent
+	 * 
 	 * @param aid: appliance agent ID
 	 */
-	
+
 	public void removeApplianceAgent(AID aid) {
 		panelList.remove(agentPanelForAID.get(aid));
 		agentPanelForAID.remove(aid);
@@ -86,11 +90,11 @@ public class AppliancePanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		listener.onApplianceAddButtonClick();
 	}
-	
+
 	public void setAppliancePanelListener(AppliancePanelListener listener) {
 		this.listener = listener;
 	}
-	
+
 	public interface AppliancePanelListener {
 		void onApplianceAddButtonClick();
 	}

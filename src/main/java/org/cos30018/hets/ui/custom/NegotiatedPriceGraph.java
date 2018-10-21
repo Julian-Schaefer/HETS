@@ -21,7 +21,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class ForecastAndActualGraph extends JPanel {
+public class NegotiatedPriceGraph extends JPanel {
 
 	/**
 	 * 
@@ -29,12 +29,11 @@ public class ForecastAndActualGraph extends JPanel {
 	private static final long serialVersionUID = 8072911533849731056L;
 
 	private int period = 1;
-	private Map<Integer, Double> actualValues = new HashMap<>();
-	private Map<Integer, Double> forecastValues = new HashMap<>();
+	private Map<Integer, Double> negotiatedPrices = new HashMap<>();
 
 	private ChartPanel chartPanel;
 
-	public ForecastAndActualGraph() {
+	public NegotiatedPriceGraph() {
 		setLayout(new BorderLayout());
 		setUp();
 	}
@@ -45,13 +44,8 @@ public class ForecastAndActualGraph extends JPanel {
 		add(chartPanel, BorderLayout.CENTER);
 	}
 
-	public void addActualValue(double actual) {
-		actualValues.put(period, actual);
-		chartPanel.setChart(createChart());
-	}
-
-	public void addForecastValue(double forecast) {
-		forecastValues.put(period, forecast);
+	public void addNegotiatedPrice(double price) {
+		negotiatedPrices.put(period, price);
 		chartPanel.setChart(createChart());
 	}
 
@@ -61,25 +55,19 @@ public class ForecastAndActualGraph extends JPanel {
 
 	private XYDataset createDataset() {
 
-		XYSeries actual = new XYSeries("Actual");
-		for (Map.Entry<Integer, Double> actualValue : actualValues.entrySet()) {
-			actual.add(actualValue.getKey(), actualValue.getValue());
-		}
-
-		XYSeries forecast = new XYSeries("Forecast");
-		for (Map.Entry<Integer, Double> forecastValue : forecastValues.entrySet()) {
-			forecast.add(forecastValue.getKey(), forecastValue.getValue());
+		XYSeries negotiated = new XYSeries("Negotiated Price");
+		for (Map.Entry<Integer, Double> negotiatedPrice : negotiatedPrices.entrySet()) {
+			negotiated.add(negotiatedPrice.getKey(), negotiatedPrice.getValue());
 		}
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(actual);
-		dataset.addSeries(forecast);
+		dataset.addSeries(negotiated);
 
 		return dataset;
 	}
 
 	private JFreeChart createChart() {
-		JFreeChart chart = ChartFactory.createXYLineChart("Forecast Energy usage", "Time", "Energy (Kwh)",
+		JFreeChart chart = ChartFactory.createXYLineChart("Negotiated Energy prices", "Period", "Price/Kwh (Cent)",
 				createDataset(), PlotOrientation.VERTICAL, true, true, false);
 
 		XYPlot plot = chart.getXYPlot();
@@ -99,7 +87,7 @@ public class ForecastAndActualGraph extends JPanel {
 		plot.setDomainGridlinesVisible(false);
 
 		chart.getLegend().setFrame(BlockBorder.NONE);
-		chart.setTitle(new TextTitle("Forecast Energy usage", new Font("Serif", Font.BOLD, 18)));
+		chart.setTitle(new TextTitle("Negotiated Energy prices", new Font("Serif", Font.BOLD, 18)));
 
 		return chart;
 	}

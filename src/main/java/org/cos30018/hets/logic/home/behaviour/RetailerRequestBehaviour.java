@@ -17,9 +17,12 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 	 */
 	private static final long serialVersionUID = -2422652535325745455L;
 
+	private int currentRound = 0;
+	private int deadLineRound = 20;
+
 	public static RetailerRequestBehaviour create(HomeAgent homeAgent) {
 		ACLMessage msg = new ACLMessage(ACLMessage.CFP);
-		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
+		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_ITERATED_CONTRACT_NET);
 		for (AID retailerAID : homeAgent.getRetailers()) {
 			msg.addReceiver(retailerAID);
 		}
@@ -36,6 +39,18 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 		this.homeAgent = homeAgent;
 	}
 
+//	@Override
+//	protected void handlePropose(ACLMessage propose, Vector acceptances) {
+//		ACLMessage acceptance = propose.createReply();
+//		if (propose.getPerformative() == ACLMessage.PROPOSE && currentRound < deadLineRound) {
+//			acceptance.setPerformative(ACLMessage.REJECT_PROPOSAL);
+//		} else {
+//			acceptance.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+//		}
+//
+//		acceptances.add(acceptance);
+//	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void handleAllResponses(Vector responses, Vector acceptances) {
@@ -43,16 +58,19 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 			if (o instanceof ACLMessage) {
 				ACLMessage response = (ACLMessage) o;
 				ACLMessage acceptance;
-				if (response.getPerformative() == ACLMessage.PROPOSE) {
-					acceptance = response.createReply();
-					acceptance.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-				} else {
+				if (response.getPerformative() == ACLMessage.PROPOSE && currentRound < deadLineRound) {
 					acceptance = response.createReply();
 					acceptance.setPerformative(ACLMessage.REJECT_PROPOSAL);
+					acceptances.add(acceptance);
+					newIteration(acceptances);
+				} else {
+					acceptance = response.createReply();
+					acceptance.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+					acceptances.add(acceptance);
 				}
-				acceptances.add(acceptance);
 			}
 		}
+		currentRound++;
 	}
 
 	@Override
