@@ -2,6 +2,7 @@ package org.cos30018.hets.ui.home.dashboard;
 
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
+import org.cos30018.hets.negotiation.Offer;
 import org.cos30018.hets.ui.custom.ForecastAndActualGraph;
 import org.cos30018.hets.ui.custom.NegotiatedPriceGraph;
 
@@ -33,9 +34,9 @@ public class HomeDashboardPanelController implements HomeListener {
 	}
 
 	@Override
-	public void onNegotiatedPriceUpdate(int period, double negotiatedPrice) {
+	public void onNewNegotiatedOffer(int period, Offer offer) {
 		NegotiatedPriceGraph negotiatedPriceGraph = homeDashboardPanel.getNegotiatedPriceGraph();
-		negotiatedPriceGraph.addNegotiatedPrice(period, negotiatedPrice);
+		negotiatedPriceGraph.addNegotiatedPrice(period, offer.getPrice());
 
 		homeDashboardPanel.update();
 	}

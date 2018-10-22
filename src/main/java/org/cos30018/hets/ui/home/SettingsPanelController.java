@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
+import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
 
@@ -52,7 +53,7 @@ public class SettingsPanelController implements HomeListener, ActionListener {
 	}
 
 	@Override
-	public void onNegotiatedPriceUpdate(int period, double negotiatedPrice) {
+	public void onNewNegotiatedOffer(int period, Offer offer) {
 	}
 
 	@Override

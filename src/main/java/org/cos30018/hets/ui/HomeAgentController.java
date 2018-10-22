@@ -2,6 +2,7 @@ package org.cos30018.hets.ui;
 
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
+import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
 
@@ -50,6 +51,6 @@ public class HomeAgentController implements HomeListener {
 	}
 
 	@Override
-	public void onNegotiatedPriceUpdate(int period, double negotiatedPrice) {
+	public void onNewNegotiatedOffer(int period, Offer offer) {
 	}
 }

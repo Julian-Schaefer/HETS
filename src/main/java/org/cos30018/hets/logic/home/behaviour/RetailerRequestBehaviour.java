@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.cos30018.hets.logic.NegotiationMessage;
 import org.cos30018.hets.logic.home.HomeAgent;
+import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
 import jade.domain.FIPANames;
@@ -76,7 +77,8 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 	@Override
 	protected void handleInform(ACLMessage inform) {
 		System.out.println("Inform!");
-		homeAgent.setNegotiatedPrice(homeAgent.getNextPeriod(), Math.random() * 70);
+		homeAgent.setNegotiatedOffer(homeAgent.getNextPeriod(),
+				new Offer(homeAgent.getRetailers().get(0), Math.random() * 70, homeAgent.getNextPeriod(), 1));
 	}
 
 	@Override

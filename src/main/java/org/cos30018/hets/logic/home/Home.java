@@ -3,6 +3,8 @@ package org.cos30018.hets.logic.home;
 import java.util.List;
 import java.util.Map;
 
+import org.cos30018.hets.negotiation.Offer;
+
 import jade.core.AID;
 
 public interface Home {
@@ -32,22 +34,26 @@ public interface Home {
 
 	double getTotalUsageForecast();
 
+	Map<Integer, Double> getTotalUsageForecasts();
+
 	void setActualTotalUsage(int period, double lastActualTotalUsage);
+
+	Map<Integer, Double> getActualTotalUsages();
 
 	double getLastActualTotalUsage();
 
 	void addListener(HomeListener listener);
 
-	void setNegotiatedPrice(int period, double price);
+	void setNegotiatedOffer(int period, Offer offer);
 
-	Map<Integer, Double> getNegotiatedPrices();
+	Map<Integer, Offer> getNegotiatedOffers();
 
 	public interface HomeListener {
 		void onTotalUsageForecastUpdated(int period, double totalUsageForecast);
 
 		void onActualTotalUsageUpdated(int period, double lastActualTotalUsage);
 
-		void onNegotiatedPriceUpdate(int period, double negotiatedPrice);
+		void onNewNegotiatedOffer(int period, Offer offer);
 
 		void onApplianceAdded(AID applianceAID);
 
