@@ -65,7 +65,6 @@ public class ForecastAndActualGraph extends JPanel {
 	}
 
 	private XYDataset createDataset() {
-
 		XYSeries actual = new XYSeries("Actual");
 		for (Map.Entry<Integer, Double> actualValue : actualValues.entrySet()) {
 			actual.add(actualValue.getKey(), actualValue.getValue());

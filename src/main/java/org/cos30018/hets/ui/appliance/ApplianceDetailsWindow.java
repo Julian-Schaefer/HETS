@@ -48,15 +48,19 @@ public class ApplianceDetailsWindow extends JFrame {
 		applianceInformationPanel.setPreferredSize(new Dimension(0, 110));
 
 		JLabel applianceTypeTitleLabel = new JLabel("Appliance type:");
+		applianceTypeTitleLabel.setHorizontalAlignment(JLabel.CENTER);
 		applianceInformationPanel.add(applianceTypeTitleLabel);
 
 		applianceTypeLabel = new JLabel();
+		applianceTypeLabel.setHorizontalAlignment(JLabel.CENTER);
 		applianceInformationPanel.add(applianceTypeLabel);
 
 		JLabel forecastingMethodTitleLabel = new JLabel("Forecasting method:");
+		forecastingMethodTitleLabel.setHorizontalAlignment(JLabel.CENTER);
 		applianceInformationPanel.add(forecastingMethodTitleLabel);
 
 		forecastingMethodLabel = new JLabel();
+		forecastingMethodLabel.setHorizontalAlignment(JLabel.CENTER);
 		applianceInformationPanel.add(forecastingMethodLabel);
 
 		add(applianceInformationPanel, BorderLayout.NORTH);

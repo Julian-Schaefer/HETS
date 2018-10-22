@@ -1,7 +1,6 @@
 package org.cos30018.hets.ui.home.dashboard;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,55 +23,40 @@ public class RetailerInformationPanel extends JPanel {
 
 	public RetailerInformationPanel(Home home) {
 		this.home = home;
-		setLayout(new GridBagLayout());
+		setLayout(new GridLayout(4, 2));
 		setUp();
 		update();
 	}
 
 	private void setUp() {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-
 		JLabel forecastedTotalUsageTextLbl = new JLabel("Forecasted total usage: ");
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		add(forecastedTotalUsageTextLbl, gbc);
+		addCenteredLabel(forecastedTotalUsageTextLbl);
 
 		forecastedTotalUsageLbl = new JLabel();
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		add(forecastedTotalUsageLbl, gbc);
+		addCenteredLabel(forecastedTotalUsageLbl);
 
 		JLabel lastActualTotalUsageTextLbl = new JLabel("Last actual total usage: ");
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		add(lastActualTotalUsageTextLbl, gbc);
+		addCenteredLabel(lastActualTotalUsageTextLbl);
 
 		lastActualTotalUsageLbl = new JLabel();
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		add(lastActualTotalUsageLbl, gbc);
+		addCenteredLabel(lastActualTotalUsageLbl);
 
 		JLabel registeredAppliancesTextLbl = new JLabel("Registered Appliances: ");
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		add(registeredAppliancesTextLbl, gbc);
+		addCenteredLabel(registeredAppliancesTextLbl);
 
 		registeredAppliancesLbl = new JLabel();
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-		add(registeredAppliancesLbl, gbc);
+		addCenteredLabel(registeredAppliancesLbl);
 
 		JLabel registeredRetailersTextLbl = new JLabel("Registered Retailers: ");
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		add(registeredRetailersTextLbl, gbc);
+		addCenteredLabel(registeredRetailersTextLbl);
 
 		registeredRetailersLbl = new JLabel();
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		add(registeredRetailersLbl, gbc);
+		addCenteredLabel(registeredRetailersLbl);
+	}
+
+	private void addCenteredLabel(JLabel label) {
+		label.setHorizontalAlignment(JLabel.CENTER);
+		add(label);
 	}
 
 	public void update() {
