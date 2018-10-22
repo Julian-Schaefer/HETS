@@ -33,10 +33,9 @@ public class HomeDashboardPanelController implements HomeListener {
 	}
 
 	@Override
-	public void onNegotiatedPriceUpdate(double negotiatedPrice) {
+	public void onNegotiatedPriceUpdate(int period, double negotiatedPrice) {
 		NegotiatedPriceGraph negotiatedPriceGraph = homeDashboardPanel.getNegotiatedPriceGraph();
-		negotiatedPriceGraph.addNegotiatedPrice(negotiatedPrice);
-		negotiatedPriceGraph.nextPeriod();
+		negotiatedPriceGraph.addNegotiatedPrice(period, negotiatedPrice);
 
 		homeDashboardPanel.update();
 	}

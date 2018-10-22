@@ -52,7 +52,7 @@ public class SettingsPanelController implements HomeListener, ActionListener {
 	}
 
 	@Override
-	public void onNegotiatedPriceUpdate(double negotiatedPrice) {
+	public void onNegotiatedPriceUpdate(int period, double negotiatedPrice) {
 	}
 
 	@Override

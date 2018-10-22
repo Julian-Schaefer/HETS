@@ -47,7 +47,7 @@ public interface Home {
 
 		void onActualTotalUsageUpdated(int period, double lastActualTotalUsage);
 
-		void onNegotiatedPriceUpdate(double negotiatedPrice);
+		void onNegotiatedPriceUpdate(int period, double negotiatedPrice);
 
 		void onApplianceAdded(AID applianceAID);
 

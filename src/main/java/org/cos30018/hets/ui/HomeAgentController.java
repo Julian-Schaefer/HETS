@@ -50,6 +50,6 @@ public class HomeAgentController implements HomeListener {
 	}
 
 	@Override
-	public void onNegotiatedPriceUpdate(double negotiatedPrice) {
+	public void onNegotiatedPriceUpdate(int period, double negotiatedPrice) {
 	}
 }

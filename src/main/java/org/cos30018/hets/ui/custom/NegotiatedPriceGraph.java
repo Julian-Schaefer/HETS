@@ -28,7 +28,6 @@ public class NegotiatedPriceGraph extends JPanel {
 	 */
 	private static final long serialVersionUID = 8072911533849731056L;
 
-	private int period = 1;
 	private Map<Integer, Double> negotiatedPrices = new HashMap<>();
 
 	private ChartPanel chartPanel;
@@ -44,13 +43,9 @@ public class NegotiatedPriceGraph extends JPanel {
 		add(chartPanel, BorderLayout.CENTER);
 	}
 
-	public void addNegotiatedPrice(double price) {
+	public void addNegotiatedPrice(int period, double price) {
 		negotiatedPrices.put(period, price);
 		chartPanel.setChart(createChart());
-	}
-
-	public void nextPeriod() {
-		period++;
 	}
 
 	private XYDataset createDataset() {

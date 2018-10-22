@@ -159,7 +159,7 @@ public class HomeAgent extends Agent implements Home {
 	public void setNegotiatedPrice(int period, double price) {
 		negotiatedPrices.put(period, price);
 		for (HomeListener listener : listeners) {
-			listener.onNegotiatedPriceUpdate(price);
+			listener.onNegotiatedPriceUpdate(period, price);
 		}
 	}
 
