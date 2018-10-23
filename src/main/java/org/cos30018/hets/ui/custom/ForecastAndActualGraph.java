@@ -28,7 +28,6 @@ public class ForecastAndActualGraph extends JPanel {
 	 */
 	private static final long serialVersionUID = 8072911533849731056L;
 
-	private int period = 1;
 	private Map<Integer, Double> actualValues = new HashMap<>();
 	private Map<Integer, Double> forecastValues = new HashMap<>();
 
@@ -45,22 +44,27 @@ public class ForecastAndActualGraph extends JPanel {
 		add(chartPanel, BorderLayout.CENTER);
 	}
 
-	public void addActualValue(double actual) {
+	public void addActualValue(int period, double actual) {
 		actualValues.put(period, actual);
 		chartPanel.setChart(createChart());
 	}
 
-	public void addForecastValue(double forecast) {
+	public void setActualValues(Map<Integer, Double> actualValues) {
+		this.actualValues = actualValues;
+		chartPanel.setChart(createChart());
+	}
+
+	public void addForecastValue(int period, double forecast) {
 		forecastValues.put(period, forecast);
 		chartPanel.setChart(createChart());
 	}
 
-	public void nextPeriod() {
-		period++;
+	public void setForecastValues(Map<Integer, Double> forecastValues) {
+		this.forecastValues = forecastValues;
+		chartPanel.setChart(createChart());
 	}
 
 	private XYDataset createDataset() {
-
 		XYSeries actual = new XYSeries("Actual");
 		for (Map.Entry<Integer, Double> actualValue : actualValues.entrySet()) {
 			actual.add(actualValue.getKey(), actualValue.getValue());

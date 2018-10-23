@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
+import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
 
@@ -43,14 +44,16 @@ public class SettingsPanelController implements HomeListener, ActionListener {
 	}
 
 	@Override
-	public void onTotalUsageForecastUpdated(double totalUsageForecast) {
+	public void onTotalUsageForecastUpdated(int period, double totalUsageForecast) {
 		settingsPanel.update();
 	}
 
 	@Override
-	public void onLastActualTotalUsageUpdated(double lastActualTotalUsage) {
-		// TODO Auto-generated method stub
+	public void onActualTotalUsageUpdated(int period, double lastActualTotalUsage) {
+	}
 
+	@Override
+	public void onNewNegotiatedOffer(int period, Offer offer) {
 	}
 
 	@Override

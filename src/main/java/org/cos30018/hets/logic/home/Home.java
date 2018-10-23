@@ -1,16 +1,22 @@
 package org.cos30018.hets.logic.home;
 
 import java.util.List;
+import java.util.Map;
+
+import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
 
 public interface Home {
+	public static final int START_PERIOD = 0;
 
 	void setPeriod(int period);
 
 	void nextPeriod();
 
-	int getPeriod();
+	int getCurrentPeriod();
+
+	int getNextPeriod();
 
 	List<AID> getAppliances();
 
@@ -24,20 +30,30 @@ public interface Home {
 
 	int getForecastPeriodCount();
 
-	public void setTotalUsageForecast(double totalUsageForecast);
+	public void setTotalUsageForecast(int period, double totalUsageForecast);
 
-	double getTotalUsageForecast();
+	double getTotalUsageForecast(int period);
 
-	void setLastActualTotalUsage(double lastActualTotalUsage);
+	Map<Integer, Double> getTotalUsageForecasts();
 
-	double getLastActualTotalUsage();
+	void setActualTotalUsage(int period, double lastActualTotalUsage);
+
+	Map<Integer, Double> getActualTotalUsages();
+
+	double getActualTotalUsage(int period);
 
 	void addListener(HomeListener listener);
 
-	public interface HomeListener {
-		void onTotalUsageForecastUpdated(double totalUsageForecast);
+	void setNegotiatedOffer(int period, Offer offer);
 
-		void onLastActualTotalUsageUpdated(double lastActualTotalUsage);
+	Map<Integer, Offer> getNegotiatedOffers();
+
+	public interface HomeListener {
+		void onTotalUsageForecastUpdated(int period, double totalUsageForecast);
+
+		void onActualTotalUsageUpdated(int period, double lastActualTotalUsage);
+
+		void onNewNegotiatedOffer(int period, Offer offer);
 
 		void onApplianceAdded(AID applianceAID);
 

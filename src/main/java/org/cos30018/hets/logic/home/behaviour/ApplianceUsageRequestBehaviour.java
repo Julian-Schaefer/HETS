@@ -19,23 +19,26 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 	 */
 	private static final long serialVersionUID = -2422652535325745455L;
 
-	private HomeAgent homeAgent;
-
 	public static ApplianceUsageRequestBehaviour create(HomeAgent homeAgent, List<AID> applianceAIDs) {
 		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 		for (AID applianceAID : applianceAIDs) {
 			msg.addReceiver(applianceAID);
 		}
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-		msg.setContent(ApplianceMessage.LAST_USAGE);
+		int period = homeAgent.getCurrentPeriod();
+		msg.setContent(ApplianceMessage.ACTUAL_USAGE + period);
 		msg.setOntology(HomeMessage.ONTOLOGY_USAGE);
 
-		return new ApplianceUsageRequestBehaviour(homeAgent, msg);
+		return new ApplianceUsageRequestBehaviour(homeAgent, period, msg);
 	}
 
-	private ApplianceUsageRequestBehaviour(HomeAgent homeAgent, ACLMessage msg) {
+	private HomeAgent homeAgent;
+	private int period;
+
+	private ApplianceUsageRequestBehaviour(HomeAgent homeAgent, int period, ACLMessage msg) {
 		super(homeAgent, msg);
 		this.homeAgent = homeAgent;
+		this.period = period;
 	}
 
 	@Override
@@ -67,14 +70,14 @@ public class ApplianceUsageRequestBehaviour extends AchieveREInitiator {
 			if (o instanceof ACLMessage) {
 				ACLMessage message = (ACLMessage) o;
 				if (message.getPerformative() == ACLMessage.INFORM
-						&& message.getContent().startsWith(ApplianceMessage.LAST_USAGE)) {
-					String usageText = message.getContent().replace(ApplianceMessage.LAST_USAGE, "").trim();
+						&& message.getContent().startsWith(ApplianceMessage.ACTUAL_USAGE)) {
+					String usageText = message.getContent().replace(ApplianceMessage.ACTUAL_USAGE, "").trim();
 					double usage = Double.valueOf(usageText);
 					lastActualTotalUsage += usage;
 				}
 			}
 		}
 
-		homeAgent.setLastActualTotalUsage(lastActualTotalUsage);
+		homeAgent.setActualTotalUsage(period, lastActualTotalUsage);
 	}
 }

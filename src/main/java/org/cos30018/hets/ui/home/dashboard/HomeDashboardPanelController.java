@@ -2,7 +2,9 @@ package org.cos30018.hets.ui.home.dashboard;
 
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
+import org.cos30018.hets.negotiation.Offer;
 import org.cos30018.hets.ui.custom.ForecastAndActualGraph;
+import org.cos30018.hets.ui.custom.NegotiatedPriceGraph;
 
 import jade.core.AID;
 
@@ -16,18 +18,25 @@ public class HomeDashboardPanelController implements HomeListener {
 	}
 
 	@Override
-	public void onTotalUsageForecastUpdated(double totalUsageForecast) {
+	public void onTotalUsageForecastUpdated(int period, double totalUsageForecast) {
 		ForecastAndActualGraph forecastAndActualGraph = homeDashboardPanel.getForecastAndActualGraph();
-		forecastAndActualGraph.addForecastValue(totalUsageForecast);
+		forecastAndActualGraph.addForecastValue(period, totalUsageForecast);
 
 		homeDashboardPanel.update();
 	}
 
 	@Override
-	public void onLastActualTotalUsageUpdated(double lastActualTotalUsage) {
+	public void onActualTotalUsageUpdated(int period, double lastActualTotalUsage) {
 		ForecastAndActualGraph forecastAndActualGraph = homeDashboardPanel.getForecastAndActualGraph();
-		forecastAndActualGraph.addActualValue(lastActualTotalUsage);
-		forecastAndActualGraph.nextPeriod();
+		forecastAndActualGraph.addActualValue(period, lastActualTotalUsage);
+
+		homeDashboardPanel.update();
+	}
+
+	@Override
+	public void onNewNegotiatedOffer(int period, Offer offer) {
+		NegotiatedPriceGraph negotiatedPriceGraph = homeDashboardPanel.getNegotiatedPriceGraph();
+		negotiatedPriceGraph.addNegotiatedPrice(period, offer.getPrice());
 
 		homeDashboardPanel.update();
 	}

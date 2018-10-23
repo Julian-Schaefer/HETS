@@ -1,13 +1,16 @@
 package org.cos30018.hets.logic.home;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.cos30018.hets.logic.home.behaviour.ApplianceForecastRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.ApplianceUsageRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
 import org.cos30018.hets.logic.home.behaviour.RetailerRequestBehaviour;
+import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -30,11 +33,13 @@ public class HomeAgent extends Agent implements Home {
 	private List<AID> applianceAIDs = new ArrayList<>();
 	private List<AID> retailerAIDs = new ArrayList<>();
 
-	private int period = 0;
+	private int period = START_PERIOD - 1;
 	private int forecastPeriodCount;
 
-	private double lastActualTotalUsage;
-	private double totalUsageForecast;
+	private Map<Integer, Double> usageForecasts = new HashMap<>();
+	private Map<Integer, Double> actualUsages = new HashMap<>();
+
+	private Map<Integer, Offer> negotiatedOffers = new HashMap<>();
 
 	private long intervalPeriod = 5000;
 
@@ -126,41 +131,69 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public void setTotalUsageForecast(double totalUsageForecast) {
-		this.totalUsageForecast = totalUsageForecast;
+	public void setTotalUsageForecast(int period, double totalUsageForecast) {
+		usageForecasts.put(period, totalUsageForecast);
 		for (HomeListener listener : listeners) {
-			listener.onTotalUsageForecastUpdated(totalUsageForecast);
+			listener.onTotalUsageForecastUpdated(period, totalUsageForecast);
 		}
 		addBehaviour(RetailerRequestBehaviour.create(this));
 	}
 
 	@Override
-	public double getTotalUsageForecast() {
-		return totalUsageForecast;
+	public double getTotalUsageForecast(int period) {
+		if (usageForecasts.containsKey(period)) {
+			return usageForecasts.get(period);
+		}
+
+		return 0;
 	}
 
 	@Override
-	public void setLastActualTotalUsage(double lastActualTotalUsage) {
-		this.lastActualTotalUsage = lastActualTotalUsage;
+	public Map<Integer, Double> getTotalUsageForecasts() {
+		return usageForecasts;
+	}
+
+	@Override
+	public void setActualTotalUsage(int period, double lastActualTotalUsage) {
+		actualUsages.put(period, lastActualTotalUsage);
 		for (HomeListener listener : listeners) {
-			listener.onLastActualTotalUsageUpdated(lastActualTotalUsage);
+			listener.onActualTotalUsageUpdated(period, lastActualTotalUsage);
 		}
 	}
 
 	@Override
-	public double getLastActualTotalUsage() {
-		return lastActualTotalUsage;
+	public double getActualTotalUsage(int period) {
+		if (actualUsages.containsKey(period)) {
+			return actualUsages.get(period);
+		}
+
+		return 0;
 	}
 
 	@Override
-	public void addListener(HomeListener listener) {
-		listeners.add(listener);
+	public Map<Integer, Double> getActualTotalUsages() {
+		return actualUsages;
+	}
+
+	@Override
+	public void setNegotiatedOffer(int period, Offer offer) {
+		negotiatedOffers.put(period, offer);
+		for (HomeListener listener : listeners) {
+			listener.onNewNegotiatedOffer(period, offer);
+		}
+	}
+
+	@Override
+	public Map<Integer, Offer> getNegotiatedOffers() {
+		return negotiatedOffers;
 	}
 
 	@Override
 	public void setPeriod(int period) {
 		this.period = period;
-		addBehaviour(ApplianceUsageRequestBehaviour.create(this, getAppliances()));
+		if (period > START_PERIOD) {
+			addBehaviour(ApplianceUsageRequestBehaviour.create(this, getAppliances()));
+		}
 		addBehaviour(ApplianceForecastRequestBehaviour.create(this, getAppliances()));
 	}
 
@@ -170,7 +203,17 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public int getPeriod() {
+	public int getCurrentPeriod() {
 		return period;
+	}
+
+	@Override
+	public int getNextPeriod() {
+		return period + 1;
+	}
+
+	@Override
+	public void addListener(HomeListener listener) {
+		listeners.add(listener);
 	}
 }

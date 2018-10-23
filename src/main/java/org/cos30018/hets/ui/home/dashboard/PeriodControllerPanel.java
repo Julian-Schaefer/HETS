@@ -41,7 +41,12 @@ public class PeriodControllerPanel extends JPanel {
 	}
 
 	public void update() {
-		currentPeriodLbl.setText(String.valueOf(home.getPeriod()));
+		if (home.getCurrentPeriod() >= Home.START_PERIOD) {
+			currentPeriodLbl.setText(String.valueOf(home.getCurrentPeriod()));
+		} else {
+			currentPeriodLbl.setText(String.valueOf("Not started"));
+		}
+
 		updateUI();
 	}
 

@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.cos30018.hets.logic.NegotiationMessage;
 import org.cos30018.hets.logic.home.HomeAgent;
+import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
 import jade.domain.FIPANames;
@@ -19,6 +20,7 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 
 	private int currentRound = 0;
 	private int deadLineRound = 20;
+	private final int period;
 
 	public static RetailerRequestBehaviour create(HomeAgent homeAgent) {
 		ACLMessage msg = new ACLMessage(ACLMessage.CFP);
@@ -27,16 +29,18 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 			msg.addReceiver(retailerAID);
 		}
 
-		msg.setContent(NegotiationMessage.OFFER + homeAgent.getTotalUsageForecast());
+		int period = homeAgent.getNextPeriod();
+		msg.setContent(NegotiationMessage.OFFER + homeAgent.getTotalUsageForecast(period));
 
-		return new RetailerRequestBehaviour(homeAgent, msg);
+		return new RetailerRequestBehaviour(homeAgent, period, msg);
 	}
 
 	private HomeAgent homeAgent;
 
-	private RetailerRequestBehaviour(HomeAgent homeAgent, ACLMessage msg) {
+	private RetailerRequestBehaviour(HomeAgent homeAgent, int period, ACLMessage msg) {
 		super(homeAgent, msg);
 		this.homeAgent = homeAgent;
+		this.period = period;
 	}
 
 //	@Override
@@ -60,7 +64,7 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 				ACLMessage acceptance;
 				if (response.getPerformative() == ACLMessage.PROPOSE && currentRound < deadLineRound) {
 					acceptance = response.createReply();
-					acceptance.setPerformative(ACLMessage.REJECT_PROPOSAL);
+					acceptance.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 					acceptances.add(acceptance);
 					newIteration(acceptances);
 				} else {
@@ -75,7 +79,9 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 
 	@Override
 	protected void handleInform(ACLMessage inform) {
-		System.out.println("ive been Informed!");
+		System.out.println("Inform!");
+		homeAgent.setNegotiatedOffer(period,
+				new Offer(homeAgent.getRetailers().get(0), Math.random() * 70, homeAgent.getNextPeriod(), 1));
 	}
 
 	@Override

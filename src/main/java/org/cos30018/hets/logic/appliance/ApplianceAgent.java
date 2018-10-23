@@ -1,6 +1,9 @@
 package org.cos30018.hets.logic.appliance;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.cos30018.hets.logic.appliance.behaviour.ApplianceResponderBehaviour;
 import org.cos30018.hets.logic.appliance.forecast.NeuralNetworkForecast;
@@ -18,8 +21,15 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 	 */
 	private static final long serialVersionUID = -2702213410686638092L;
 
-	private UsageForecast usageForecast;
+	private List<ApplianceListener> listeners = new LinkedList<>();
+
+	private ForecastingMethod forecastingMethod;
 	private ApplianceType applianceType;
+	private UsageForecast usageForecast;
+	private ActualApplianceUsage actualApplianceUsage;
+
+	private Map<Integer, Double> usageForecasts = new HashMap<>();
+	private Map<Integer, Double> actualUsages = new HashMap<>();
 
 	public ApplianceAgent() {
 		super(HomeAgent.HOME_AGENT_SERVICE, ApplianceMessage.REGISTER, ApplianceMessage.UNREGISTER);
@@ -31,7 +41,7 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 		super.setup();
 
 		Object[] arguments = getArguments();
-		applianceType = (ApplianceType) arguments[0];
+		setApplianceType((ApplianceType) arguments[0]);
 		ForecastingMethod forecastingMethod = (ForecastingMethod) arguments[1];
 		setForecastingMethod(forecastingMethod);
 
@@ -41,6 +51,7 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 	@Override
 	public void setApplianceType(ApplianceType applianceType) {
 		this.applianceType = applianceType;
+		actualApplianceUsage = new ActualApplianceUsage(applianceType);
 	}
 
 	@Override
@@ -49,42 +60,43 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 	}
 
 	@Override
-	public double getLastActualUsage() {
-
-		// DISHWASHER, FRIDGE, WASHING_MACHINE, DRYER, HEAT_PUMP, HOT_WATER_SYSTEM, HIFI
-		switch (applianceType) {
-		case DISHWASHER:
-			return 10;
-		case HIFI:
-			return 5;
-		case FRIDGE:
-			return 6;
-		case WASHING_MACHINE:
-			return 12;
-		case DRYER:
-			return 4;
-		case HEAT_PUMP:
-			return 20;
-		case HOT_WATER_SYSTEM:
-			return 3;
+	public double getActualUsage(int period) {
+		double actualUsage = actualApplianceUsage.getActualUsage(period);
+		actualUsages.put(period, actualUsage);
+		for (ApplianceListener listener : listeners) {
+			listener.onNewActualUsage(period, actualUsage);
 		}
 
-		return 0;
+		return actualUsage;
 	}
 
 	@Override
-	public List<Double> getPastActualUsages() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Integer, Double> getActualUsages() {
+		return actualUsages;
 	}
 
 	@Override
 	public double[] getUsageForecast(int period, int numberOfPeriods) {
-		return usageForecast.calculateForecast(period, numberOfPeriods);
+		double[] forecasts = usageForecast.calculateForecast(period, numberOfPeriods);
+		for (int p = 0; p < numberOfPeriods; p++) {
+			double forecast = forecasts[p];
+			usageForecasts.put(period + p, forecast);
+			for (ApplianceListener listener : listeners) {
+				listener.onNewUsageForecast(period + p, forecast);
+			}
+		}
+
+		return forecasts;
+	}
+
+	@Override
+	public Map<Integer, Double> getUsageForecasts() {
+		return usageForecasts;
 	}
 
 	@Override
 	public void setForecastingMethod(ForecastingMethod forecastingMethod) {
+		this.forecastingMethod = forecastingMethod;
 		switch (forecastingMethod) {
 		case SIMPLE:
 			usageForecast = new SimpleUsageForecast(this);
@@ -95,4 +107,13 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 		}
 	}
 
+	@Override
+	public ForecastingMethod getForecastingMethod() {
+		return forecastingMethod;
+	}
+
+	@Override
+	public void addListener(ApplianceListener listener) {
+		listeners.add(listener);
+	}
 }

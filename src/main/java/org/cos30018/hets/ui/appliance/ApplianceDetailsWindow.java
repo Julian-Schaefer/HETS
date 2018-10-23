@@ -1,10 +1,14 @@
 package org.cos30018.hets.ui.appliance;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance;
@@ -19,8 +23,12 @@ public class ApplianceDetailsWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = -8967089543022762294L;
 
+	private ForecastAndActualGraph usageGraph;
+	private JLabel applianceTypeLabel;
+	private JLabel forecastingMethodLabel;
+
 	private Appliance appliance;
-	
+
 	public ApplianceDetailsWindow(AID aid) {
 		super("Appliance: " + aid.getLocalName());
 		this.appliance = JadeController.getInstance().getAppliance(aid);
@@ -28,20 +36,44 @@ public class ApplianceDetailsWindow extends JFrame {
 		setSize(new Dimension(600, 400));
 		setLocationRelativeTo(null);
 		setUp();
+		update();
+		new ApplianceDetailsWindowController(this, appliance);
 		setVisible(true);
 	}
-	
+
 	private void setUp() {
-		ForecastAndActualGraph graph = new ForecastAndActualGraph();
-		graph.addForecastValue(Math.random()*100);
-		add(graph);
-		
-		JButton add = new JButton("Add");
-		add.addActionListener((e) -> {
-			graph.addActualValue(Math.random()*100);
-			graph.nextPeriod();
-			graph.addForecastValue(Math.random()*100);
-		});
-		add(add, BorderLayout.SOUTH);
+		JPanel applianceInformationPanel = new JPanel(new GridLayout(2, 2));
+		applianceInformationPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+		applianceInformationPanel.setBackground(Color.white);
+		applianceInformationPanel.setPreferredSize(new Dimension(0, 110));
+
+		JLabel applianceTypeTitleLabel = new JLabel("Appliance type:");
+		applianceTypeTitleLabel.setHorizontalAlignment(JLabel.CENTER);
+		applianceInformationPanel.add(applianceTypeTitleLabel);
+
+		applianceTypeLabel = new JLabel();
+		applianceTypeLabel.setHorizontalAlignment(JLabel.CENTER);
+		applianceInformationPanel.add(applianceTypeLabel);
+
+		JLabel forecastingMethodTitleLabel = new JLabel("Forecasting method:");
+		forecastingMethodTitleLabel.setHorizontalAlignment(JLabel.CENTER);
+		applianceInformationPanel.add(forecastingMethodTitleLabel);
+
+		forecastingMethodLabel = new JLabel();
+		forecastingMethodLabel.setHorizontalAlignment(JLabel.CENTER);
+		applianceInformationPanel.add(forecastingMethodLabel);
+
+		add(applianceInformationPanel, BorderLayout.NORTH);
+
+		usageGraph = new ForecastAndActualGraph();
+		add(usageGraph, BorderLayout.CENTER);
+	}
+
+	public void update() {
+		applianceTypeLabel.setText(appliance.getType().name());
+		forecastingMethodLabel.setText(appliance.getForecastingMethod().name());
+
+		usageGraph.setActualValues(appliance.getActualUsages());
+		usageGraph.setForecastValues(appliance.getUsageForecasts());
 	}
 }

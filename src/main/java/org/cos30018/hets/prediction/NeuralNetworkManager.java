@@ -291,4 +291,8 @@ public class NeuralNetworkManager {
 			indexElectricity = 0;
 		}
 	}
+
+	public double getActualUsage(int period) {
+		return dataElectricity.get(period);
+	}
 }

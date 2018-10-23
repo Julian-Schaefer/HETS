@@ -1,7 +1,8 @@
 package org.cos30018.hets.ui.home.dashboard;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,69 +18,92 @@ public class ApplianceInformationPanel extends JPanel {
 
 	private Home home;
 
+	private JLabel nextForecastedTotalUsageLbl;
+
 	private JLabel forecastedTotalUsageLbl;
-	private JLabel lastActualTotalUsageLbl;
-	private JLabel registeredAppliancesLbl;
-	private JLabel registeredRetailersLbl;
+	private JLabel actualTotalUsageLbl;
+	private JLabel differenceUsageLbl;
 
 	public ApplianceInformationPanel(Home home) {
 		this.home = home;
-		setLayout(new GridBagLayout());
+		setLayout(new GridLayout(2, 1));
 		setUp();
 		update();
 	}
 
 	private void setUp() {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.weightx = 1;
-		gbc.weighty = 1;
+		add(getNextPeriodPanel());
+		add(getCurrentPeriodPanel());
+	}
+
+	private JPanel getNextPeriodPanel() {
+		JPanel nextPeriod = new JPanel(new BorderLayout());
+		JLabel nextPeriodLbl = new JLabel("Next period:");
+		nextPeriodLbl.setHorizontalAlignment(JLabel.CENTER);
+		nextPeriod.add(nextPeriodLbl, BorderLayout.NORTH);
+
+		JPanel nextPeriodGrid = new JPanel(new GridLayout(1, 2));
+
+		JLabel nextForecastedTotalUsageTextLbl = new JLabel("Next Forecasted total usage: ");
+		addCenteredLabel(nextPeriodGrid, nextForecastedTotalUsageTextLbl);
+
+		nextForecastedTotalUsageLbl = new JLabel();
+		addCenteredLabel(nextPeriodGrid, nextForecastedTotalUsageLbl);
+
+		nextPeriod.add(nextPeriodGrid, BorderLayout.CENTER);
+
+		return nextPeriod;
+	}
+
+	private JPanel getCurrentPeriodPanel() {
+		JPanel currentPeriod = new JPanel(new BorderLayout());
+		JLabel currentPeriodLbl = new JLabel("Current period:");
+		currentPeriodLbl.setHorizontalAlignment(JLabel.CENTER);
+		currentPeriod.add(currentPeriodLbl, BorderLayout.NORTH);
+
+		JPanel currentPeriodGrid = new JPanel(new GridLayout(3, 2));
 
 		JLabel forecastedTotalUsageTextLbl = new JLabel("Forecasted total usage: ");
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		add(forecastedTotalUsageTextLbl, gbc);
+		addCenteredLabel(currentPeriodGrid, forecastedTotalUsageTextLbl);
 
-		forecastedTotalUsageLbl = new JLabel();
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		add(forecastedTotalUsageLbl, gbc);
+		forecastedTotalUsageLbl = new JLabel("-");
+		addCenteredLabel(currentPeriodGrid, forecastedTotalUsageLbl);
 
-		JLabel lastActualTotalUsageTextLbl = new JLabel("Last actual total usage: ");
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		add(lastActualTotalUsageTextLbl, gbc);
+		JLabel actualTotalUsageTextLbl = new JLabel("Actual total usage: ");
+		addCenteredLabel(currentPeriodGrid, actualTotalUsageTextLbl);
 
-		lastActualTotalUsageLbl = new JLabel();
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		add(lastActualTotalUsageLbl, gbc);
+		actualTotalUsageLbl = new JLabel("-");
+		addCenteredLabel(currentPeriodGrid, actualTotalUsageLbl);
 
-		JLabel registeredAppliancesTextLbl = new JLabel("Registered Appliances: ");
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		add(registeredAppliancesTextLbl, gbc);
+		JLabel differenceUsageTextLbl = new JLabel("Difference usage: ");
+		addCenteredLabel(currentPeriodGrid, differenceUsageTextLbl);
 
-		registeredAppliancesLbl = new JLabel();
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-		add(registeredAppliancesLbl, gbc);
+		differenceUsageLbl = new JLabel("-");
+		addCenteredLabel(currentPeriodGrid, differenceUsageLbl);
 
-		JLabel registeredRetailersTextLbl = new JLabel("Registered Retailers: ");
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		add(registeredRetailersTextLbl, gbc);
+		currentPeriod.add(currentPeriodGrid, BorderLayout.CENTER);
 
-		registeredRetailersLbl = new JLabel();
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		add(registeredRetailersLbl, gbc);
+		return currentPeriod;
+	}
+
+	private void addCenteredLabel(JPanel panel, JLabel label) {
+		label.setHorizontalAlignment(JLabel.CENTER);
+		panel.add(label);
 	}
 
 	public void update() {
-		forecastedTotalUsageLbl.setText(String.valueOf(home.getTotalUsageForecast()));
-		lastActualTotalUsageLbl.setText(String.valueOf(home.getLastActualTotalUsage()));
-		registeredAppliancesLbl.setText(String.valueOf(home.getAppliances().size()));
-		registeredRetailersLbl.setText(String.valueOf(home.getRetailers().size()));
+		nextForecastedTotalUsageLbl.setText(String.valueOf(home.getTotalUsageForecast(home.getNextPeriod())));
+
+		Map<Integer, Double> usageForecasts = home.getTotalUsageForecasts();
+		if (usageForecasts.containsKey(home.getCurrentPeriod())) {
+			double lastForecast = usageForecasts.get(home.getCurrentPeriod());
+			forecastedTotalUsageLbl.setText(String.valueOf(lastForecast));
+
+			double actualUsage = home.getActualTotalUsage(home.getCurrentPeriod());
+			actualTotalUsageLbl.setText(String.valueOf(actualUsage));
+
+			differenceUsageLbl.setText(String.valueOf(lastForecast - actualUsage));
+		}
 	}
 
 }
