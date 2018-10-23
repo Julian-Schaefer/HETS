@@ -20,6 +20,7 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 
 	private int currentRound = 0;
 	private int deadLineRound = 20;
+	private final int period;
 
 	public static RetailerRequestBehaviour create(HomeAgent homeAgent) {
 		ACLMessage msg = new ACLMessage(ACLMessage.CFP);
@@ -28,16 +29,18 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 			msg.addReceiver(retailerAID);
 		}
 
-		msg.setContent(NegotiationMessage.OFFER + homeAgent.getTotalUsageForecast());
+		int period = homeAgent.getNextPeriod();
+		msg.setContent(NegotiationMessage.OFFER + homeAgent.getTotalUsageForecast(period));
 
-		return new RetailerRequestBehaviour(homeAgent, msg);
+		return new RetailerRequestBehaviour(homeAgent, period, msg);
 	}
 
 	private HomeAgent homeAgent;
 
-	private RetailerRequestBehaviour(HomeAgent homeAgent, ACLMessage msg) {
+	private RetailerRequestBehaviour(HomeAgent homeAgent, int period, ACLMessage msg) {
 		super(homeAgent, msg);
 		this.homeAgent = homeAgent;
+		this.period = period;
 	}
 
 //	@Override
@@ -77,7 +80,7 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 	@Override
 	protected void handleInform(ACLMessage inform) {
 		System.out.println("Inform!");
-		homeAgent.setNegotiatedOffer(homeAgent.getNextPeriod(),
+		homeAgent.setNegotiatedOffer(period,
 				new Offer(homeAgent.getRetailers().get(0), Math.random() * 70, homeAgent.getNextPeriod(), 1));
 	}
 

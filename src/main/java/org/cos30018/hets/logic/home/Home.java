@@ -32,7 +32,7 @@ public interface Home {
 
 	public void setTotalUsageForecast(int period, double totalUsageForecast);
 
-	double getTotalUsageForecast();
+	double getTotalUsageForecast(int period);
 
 	Map<Integer, Double> getTotalUsageForecasts();
 
@@ -40,7 +40,7 @@ public interface Home {
 
 	Map<Integer, Double> getActualTotalUsages();
 
-	double getLastActualTotalUsage();
+	double getActualTotalUsage(int period);
 
 	void addListener(HomeListener listener);
 

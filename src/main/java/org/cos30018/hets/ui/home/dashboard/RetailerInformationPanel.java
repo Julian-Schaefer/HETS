@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.cos30018.hets.logic.home.Home;
+import org.cos30018.hets.negotiation.Offer;
 
 public class RetailerInformationPanel extends JPanel {
 
@@ -112,6 +113,21 @@ public class RetailerInformationPanel extends JPanel {
 	}
 
 	public void update() {
+		if (home.getNegotiatedOffers().containsKey(home.getNextPeriod())) {
+			Offer negotiatedOffer = home.getNegotiatedOffers().get(home.getNextPeriod());
+			nextNegotiatedPriceLbl.setText(String.valueOf(negotiatedOffer.getPrice()));
+			nextAnticipatedTotalPriceLbl.setText(
+					String.valueOf(home.getTotalUsageForecast(home.getNextPeriod()) * negotiatedOffer.getPrice()));
+			nextSelectedRetailerLbl.setText(String.valueOf(negotiatedOffer.getRetailerId().getLocalName()));
+		}
+
+		if (home.getNegotiatedOffers().containsKey(home.getCurrentPeriod())) {
+			Offer negotiatedOffer = home.getNegotiatedOffers().get(home.getCurrentPeriod());
+			currentNegotiatedPriceLbl.setText(String.valueOf(negotiatedOffer.getPrice()));
+			currentAnticipatedTotalPriceLbl.setText(
+					String.valueOf(home.getTotalUsageForecast(home.getCurrentPeriod()) * negotiatedOffer.getPrice()));
+			currentSelectedRetailerLbl.setText(String.valueOf(negotiatedOffer.getRetailerId().getLocalName()));
+		}
 	}
 
 }

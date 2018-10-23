@@ -92,14 +92,14 @@ public class ApplianceInformationPanel extends JPanel {
 	}
 
 	public void update() {
-		nextForecastedTotalUsageLbl.setText(String.valueOf(home.getTotalUsageForecast()));
+		nextForecastedTotalUsageLbl.setText(String.valueOf(home.getTotalUsageForecast(home.getNextPeriod())));
 
 		Map<Integer, Double> usageForecasts = home.getTotalUsageForecasts();
 		if (usageForecasts.containsKey(home.getCurrentPeriod())) {
 			double lastForecast = usageForecasts.get(home.getCurrentPeriod());
 			forecastedTotalUsageLbl.setText(String.valueOf(lastForecast));
 
-			double actualUsage = home.getLastActualTotalUsage();
+			double actualUsage = home.getActualTotalUsage(home.getCurrentPeriod());
 			actualTotalUsageLbl.setText(String.valueOf(actualUsage));
 
 			differenceUsageLbl.setText(String.valueOf(lastForecast - actualUsage));

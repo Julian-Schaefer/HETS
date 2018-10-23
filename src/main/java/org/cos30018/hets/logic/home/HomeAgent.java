@@ -140,9 +140,9 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public double getTotalUsageForecast() {
-		if (usageForecasts.containsKey(getNextPeriod())) {
-			return usageForecasts.get(getNextPeriod());
+	public double getTotalUsageForecast(int period) {
+		if (usageForecasts.containsKey(period)) {
+			return usageForecasts.get(period);
 		}
 
 		return 0;
@@ -162,9 +162,9 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public double getLastActualTotalUsage() {
-		if (actualUsages.containsKey(getCurrentPeriod())) {
-			return actualUsages.get(getCurrentPeriod());
+	public double getActualTotalUsage(int period) {
+		if (actualUsages.containsKey(period)) {
+			return actualUsages.get(period);
 		}
 
 		return 0;
