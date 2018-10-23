@@ -6,6 +6,10 @@ import java.util.List;
 import org.cos30018.hets.logic.common.RegisteringAgent;
 import org.cos30018.hets.logic.home.HomeAgent;
 import org.cos30018.hets.logic.retailer.behaviour.RetailerResponderBehaviour;
+import org.cos30018.hets.negotiation.strategy.ModellingStrategy;
+import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.tariff.RandomTariff;
+import org.cos30018.hets.negotiation.tariff.Tariff;
 
 import jade.lang.acl.ACLMessage;
 
@@ -22,6 +26,9 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 
 	private NegotiationStrategy negotiationStrategy;
 	private PricingStrategy pricingStrategy;
+
+	private Tariff tariff = new RandomTariff();
+	private Strategy strategy = new ModellingStrategy(tariff, 20, 3.0);
 
 	public RetailerAgent() {
 		super(HomeAgent.HOME_AGENT_SERVICE, RetailerMessage.REGISTER, RetailerMessage.UNREGISTER);
@@ -55,6 +62,26 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 		for (RetailerListener listener : listeners) {
 			listener.onNegotiationMessageAdded(negotiationMessage);
 		}
+	}
+
+	@Override
+	public void setTariff(Tariff tariff) {
+		this.tariff = tariff;
+	}
+
+	@Override
+	public Tariff getTariff() {
+		return tariff;
+	}
+
+	@Override
+	public void setStrategy(Strategy strategy) {
+		this.strategy = strategy;
+	}
+
+	@Override
+	public Strategy getStrategy() {
+		return strategy;
 	}
 
 	@Override

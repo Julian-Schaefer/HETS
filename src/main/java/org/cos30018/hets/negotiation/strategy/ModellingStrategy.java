@@ -21,7 +21,7 @@ public class ModellingStrategy extends Strategy {
 
 	@Override
 	public Offer getCounterOffer(Offer incomingOffer) {
-		if (currentRound == deadline || lastCounterOffer.isRefused()) {
+		if (currentRound == deadline) {
 			return Offer.refuse();
 		}
 
@@ -34,7 +34,12 @@ public class ModellingStrategy extends Strategy {
 			if (incomingOfferPrice < lastOfferedPrice) {
 				double lastIncomingOfferPrice = lastIncomingOffer.getPrice();
 				if (incomingOfferPrice > lastIncomingOfferPrice) {
-					counterOffer.setPrice(incomingOfferPrice - lastIncomingOfferPrice);
+					double newOfferPrice = lastOfferedPrice - (incomingOfferPrice - lastIncomingOfferPrice);
+					if (newOfferPrice >= reservationValue) {
+						counterOffer.setPrice(incomingOfferPrice - lastIncomingOfferPrice);
+					} else {
+						counterOffer = Offer.refuse();
+					}
 				} else {
 					counterOffer = Offer.refuse();
 				}
@@ -47,5 +52,12 @@ public class ModellingStrategy extends Strategy {
 		currentRound++;
 
 		return counterOffer;
+	}
+
+	@Override
+	public void reset() {
+		currentRound = 0;
+		lastCounterOffer = null;
+		lastIncomingOffer = null;
 	}
 }

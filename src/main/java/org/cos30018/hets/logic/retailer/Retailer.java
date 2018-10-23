@@ -2,6 +2,9 @@ package org.cos30018.hets.logic.retailer;
 
 import java.util.List;
 
+import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.tariff.Tariff;
+
 public interface Retailer {
 
 	public enum NegotiationStrategy {
@@ -11,6 +14,14 @@ public interface Retailer {
 	public enum PricingStrategy {
 		HIGH, LOW, EFFICIENT
 	}
+
+	void setTariff(Tariff tariff);
+
+	Tariff getTariff();
+
+	void setStrategy(Strategy strategy);
+
+	Strategy getStrategy();
 
 	void setNegotiationStrategy(NegotiationStrategy negotiationStrategy);
 

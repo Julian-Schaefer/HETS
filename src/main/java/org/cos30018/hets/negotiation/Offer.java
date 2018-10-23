@@ -1,12 +1,19 @@
 package org.cos30018.hets.negotiation;
 
+import java.io.Serializable;
+
 import jade.core.AID;
 
 /**
  * @author JSchaefer
  *
  */
-public class Offer {
+public class Offer implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5693041360119918618L;
 
 	private AID retailerId;
 	private double price;

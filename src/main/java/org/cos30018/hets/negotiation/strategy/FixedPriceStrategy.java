@@ -17,4 +17,8 @@ public class FixedPriceStrategy extends Strategy {
 		counterOffer.setPrice(price);
 		return counterOffer;
 	}
+
+	@Override
+	public void reset() {
+	}
 }

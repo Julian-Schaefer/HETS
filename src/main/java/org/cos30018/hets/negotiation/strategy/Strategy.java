@@ -13,4 +13,5 @@ public abstract class Strategy {
 
 	public abstract Offer getCounterOffer(Offer incomingOffer);
 
+	public abstract void reset();
 }

@@ -1,14 +1,15 @@
 package org.cos30018.hets.logic.home.behaviour;
 
+import java.io.IOException;
 import java.util.Vector;
 
-import org.cos30018.hets.logic.NegotiationMessage;
 import org.cos30018.hets.logic.home.HomeAgent;
 import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 import jade.proto.ContractNetInitiator;
 
 public class RetailerRequestBehaviour extends ContractNetInitiator {
@@ -30,7 +31,12 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 		}
 
 		int period = homeAgent.getNextPeriod();
-		msg.setContent(NegotiationMessage.OFFER + homeAgent.getTotalUsageForecast(period));
+		Offer initialOffer = new Offer(0.0, homeAgent.getTotalUsageForecast(period), period, 1);
+		try {
+			msg.setContentObject(initialOffer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return new RetailerRequestBehaviour(homeAgent, period, msg);
 	}
@@ -80,8 +86,15 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 	@Override
 	protected void handleInform(ACLMessage inform) {
 		System.out.println("Inform!");
-		homeAgent.setNegotiatedOffer(period,
-				new Offer(homeAgent.getRetailers().get(0), Math.random() * 70, homeAgent.getNextPeriod(), 1));
+
+		try {
+			Offer offer = (Offer) inform.getContentObject();
+			offer.setRetailerId(inform.getSender());
+			homeAgent.setNegotiatedOffer(period, offer);
+		} catch (UnreadableException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	@Override
