@@ -55,7 +55,7 @@ public class AgentPanel extends JPanel {
 		deleteButton = new JButton(new ImageIcon(getClass().getResource("/images/delete_outline_18dp.png")));
 		deleteButton.setBackground(Color.red);
 		deleteButton.setForeground(Color.white);
-		deleteButton.setUI(new StyledButtonUI());
+		deleteButton.setUI(new StyledLRoundButtonUI());
 		deleteButton.addActionListener(deleteButtonActionListener);
 		bottom.add(deleteButton);		
 

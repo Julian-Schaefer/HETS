@@ -1,3 +1,6 @@
+# Project specific
+config.xml
+
 # VS Code
 .vscode/*
 !.vscode/settings.json
