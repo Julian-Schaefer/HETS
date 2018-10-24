@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance;
-import org.cos30018.hets.ui.custom.ForecastAndActualGraph;
+import org.cos30018.hets.ui.custom.graph.ForecastAndActualGraph;
 
 import jade.core.AID;
 

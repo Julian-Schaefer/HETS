@@ -12,10 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.cos30018.hets.logic.home.Home;
-import org.cos30018.hets.ui.custom.StyledButtonUI;
+import org.cos30018.hets.ui.custom.button.StyledButtonUI;
+import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
 
 import net.miginfocom.swing.MigLayout;
-import org.cos30018.hets.ui.custom.StyledRoundButtonUI;
 
 public class SettingsPanel extends JPanel {
 

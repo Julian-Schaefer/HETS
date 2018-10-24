@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import org.cos30018.hets.ui.custom.button.StyledButtonUI;
+import org.cos30018.hets.ui.custom.button.StyledJPanelUI;
+import org.cos30018.hets.ui.custom.button.StyledLRoundButtonUI;
+
 import jade.core.AID;
 
 public class AgentPanel extends JPanel {

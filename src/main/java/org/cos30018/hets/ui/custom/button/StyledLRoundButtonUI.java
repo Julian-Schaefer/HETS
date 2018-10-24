@@ -1,11 +1,11 @@
-package org.cos30018.hets.ui.custom;
+package org.cos30018.hets.ui.custom.button;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
-public class StyledButtonUI extends BasicButtonUI {
+public class StyledLRoundButtonUI extends BasicButtonUI {
 
     @Override
     public void installUI(JComponent c) {
@@ -27,9 +27,9 @@ public class StyledButtonUI extends BasicButtonUI {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(c.getBackground().darker());
-        g.fillRoundRect(0, yOffset, size.width, size.height - yOffset, 30, 30);
+        g.fillRoundRect(0, yOffset, size.width, size.height - yOffset, 100, 100);
         g.setColor(c.getBackground());
-        g.fillRoundRect(0, yOffset, size.width, size.height + yOffset - 2, 30, 30);
+        g.fillRoundRect(0, yOffset, size.width, size.height + yOffset - 2, 100, 100);
 
     }
 }

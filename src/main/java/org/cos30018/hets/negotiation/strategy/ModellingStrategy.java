@@ -1,7 +1,6 @@
 package org.cos30018.hets.negotiation.strategy;
 
 import org.cos30018.hets.negotiation.Offer;
-import org.cos30018.hets.negotiation.tariff.Tariff;
 
 public class ModellingStrategy extends Strategy {
 
@@ -13,8 +12,7 @@ public class ModellingStrategy extends Strategy {
 
 	private int currentRound;
 
-	public ModellingStrategy(Tariff tariff, int deadline, double reservationValue) {
-		super(tariff);
+	public ModellingStrategy(int deadline, double reservationValue) {
 		this.deadline = deadline;
 		this.reservationValue = reservationValue;
 	}
@@ -27,7 +25,7 @@ public class ModellingStrategy extends Strategy {
 
 		Offer counterOffer = incomingOffer.createCounterOffer();
 		if (lastCounterOffer == null) {
-			counterOffer.setPrice(tariff.getPrice(incomingOffer.getAmount(), incomingOffer.getStartPeriod()));
+			counterOffer.setPrice(initialPrice);
 		} else {
 			double lastOfferedPrice = lastCounterOffer.getPrice();
 			double incomingOfferPrice = incomingOffer.getPrice();
@@ -55,9 +53,15 @@ public class ModellingStrategy extends Strategy {
 	}
 
 	@Override
-	public void reset() {
+	public void reset(double initialPrice) {
+		super.reset(initialPrice);
 		currentRound = 0;
 		lastCounterOffer = null;
 		lastIncomingOffer = null;
+	}
+
+	@Override
+	public String getName() {
+		return Strategy.STRATEGY_MODELLING;
 	}
 }

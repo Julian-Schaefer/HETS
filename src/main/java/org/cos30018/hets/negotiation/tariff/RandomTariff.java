@@ -7,4 +7,8 @@ public class RandomTariff extends Tariff {
 		return Math.random() * 70;
 	}
 
+	@Override
+	public String getName() {
+		return TARIFF_RANDOM;
+	}
 }

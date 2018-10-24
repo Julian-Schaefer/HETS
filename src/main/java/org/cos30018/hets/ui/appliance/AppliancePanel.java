@@ -14,7 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.ui.custom.*;
-import org.cos30018.hets.ui.custom.StyledButtonUI;
+import org.cos30018.hets.ui.custom.button.StyledButtonUI;
 
 import jade.core.AID;
 

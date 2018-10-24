@@ -15,21 +15,9 @@ public interface Retailer {
 		HIGH, LOW, EFFICIENT
 	}
 
-	void setTariff(Tariff tariff);
-
 	Tariff getTariff();
 
-	void setStrategy(Strategy strategy);
-
 	Strategy getStrategy();
-
-	void setNegotiationStrategy(NegotiationStrategy negotiationStrategy);
-
-	NegotiationStrategy getNegotiationStrategy();
-
-	void setPricingStrategy(PricingStrategy pricingStrategy);
-
-	PricingStrategy getPricingStrategy();
 
 	void setVolumeCharge(double volumeCharge);
 

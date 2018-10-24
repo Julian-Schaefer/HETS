@@ -51,7 +51,7 @@ public class RetailerResponderBehaviour extends ContractNetResponder {
 	protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept)
 			throws FailureException {
 		retailerAgent.addNegotiationMessage(accept);
-		retailerAgent.getStrategy().reset();
+		retailerAgent.getStrategy().reset(retailerAgent.getTariff().getPrice(0, 0));
 
 		try {
 			ACLMessage reply = accept.createReply();
@@ -70,6 +70,6 @@ public class RetailerResponderBehaviour extends ContractNetResponder {
 	@Override
 	protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
 		retailerAgent.addNegotiationMessage(reject);
-		retailerAgent.getStrategy().reset();
+		retailerAgent.getStrategy().reset(retailerAgent.getTariff().getPrice(0, 0));
 	}
 }

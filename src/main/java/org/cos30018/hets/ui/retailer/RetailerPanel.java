@@ -13,9 +13,9 @@ import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.ui.custom.AgentPanel;
 import org.cos30018.hets.ui.custom.JPanelList;
+import org.cos30018.hets.ui.custom.button.StyledButtonUI;
 
 import jade.core.AID;
-import org.cos30018.hets.ui.custom.StyledButtonUI;
 
 public class RetailerPanel extends JPanel implements ActionListener {
 

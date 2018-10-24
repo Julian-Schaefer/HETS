@@ -1,4 +1,4 @@
-package org.cos30018.hets.ui.custom;
+package org.cos30018.hets.ui.custom.button;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

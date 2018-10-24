@@ -10,8 +10,8 @@ import javax.swing.border.LineBorder;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.home.Home;
-import org.cos30018.hets.ui.custom.ForecastAndActualGraph;
-import org.cos30018.hets.ui.custom.NegotiatedPriceGraph;
+import org.cos30018.hets.ui.custom.graph.ForecastAndActualGraph;
+import org.cos30018.hets.ui.custom.graph.NegotiatedPriceGraph;
 
 public class HomeDashboardPanel extends JPanel {
 

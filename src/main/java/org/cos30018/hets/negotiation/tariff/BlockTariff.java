@@ -22,6 +22,11 @@ public class BlockTariff extends Tariff {
 		throw new NotInRangeException();
 	}
 
+	@Override
+	public String getName() {
+		return TARIFF_BLOCK;
+	}
+
 	public static class BlockRange {
 		public double startCapacity;
 		public int endCapacity;

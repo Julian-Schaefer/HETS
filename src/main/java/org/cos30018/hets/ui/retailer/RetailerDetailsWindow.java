@@ -50,7 +50,7 @@ public class RetailerDetailsWindow extends JFrame {
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		JLabel negotiationStrategyLbl = new JLabel(retailer.getNegotiationStrategy().name());
+		JLabel negotiationStrategyLbl = new JLabel(retailer.getStrategy().getName());
 		content.add(negotiationStrategyLbl, gbc);
 
 		gbc.gridx = 0;
@@ -60,7 +60,7 @@ public class RetailerDetailsWindow extends JFrame {
 
 		gbc.gridx = 1;
 		gbc.gridy = 1;
-		JLabel pricingStrategyLbl = new JLabel(retailer.getPricingStrategy().name());
+		JLabel pricingStrategyLbl = new JLabel(retailer.getTariff().getName());
 		content.add(pricingStrategyLbl, gbc);
 
 		add(content, BorderLayout.CENTER);

@@ -3,8 +3,8 @@ package org.cos30018.hets.ui.home.dashboard;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
 import org.cos30018.hets.negotiation.Offer;
-import org.cos30018.hets.ui.custom.ForecastAndActualGraph;
-import org.cos30018.hets.ui.custom.NegotiatedPriceGraph;
+import org.cos30018.hets.ui.custom.graph.ForecastAndActualGraph;
+import org.cos30018.hets.ui.custom.graph.NegotiatedPriceGraph;
 
 import jade.core.AID;
 

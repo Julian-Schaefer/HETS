@@ -1,4 +1,4 @@
-package org.cos30018.hets.ui.custom;
+package org.cos30018.hets.ui.custom.graph;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;

@@ -7,7 +7,6 @@ public class FixedPriceStrategy extends Strategy {
 	private double price;
 
 	public FixedPriceStrategy(double price) {
-		super(null);
 		this.price = price;
 	}
 
@@ -19,6 +18,7 @@ public class FixedPriceStrategy extends Strategy {
 	}
 
 	@Override
-	public void reset() {
+	public String getName() {
+		return Strategy.STRATEGY_FIXED_PRICE;
 	}
 }
