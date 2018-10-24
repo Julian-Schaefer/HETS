@@ -25,7 +25,7 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 		super(retailerAgent, initiationMessage);
 		this.retailerAgent = retailerAgent;
 
-		retailerAgent.clearNegotiationMessages();
+		retailerAgent.clearNegotiationLog();
 
 		try {
 			strategy = (Strategy) retailerAgent.getStrategy().clone();
@@ -52,7 +52,9 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 
 		try {
 			Offer incomingOffer = (Offer) cfp.getContentObject();
+			retailerAgent.addIncomingOffer(strategy.getRound(), incomingOffer);
 			Offer counterOffer = strategy.getCounterOffer(incomingOffer);
+			retailerAgent.addOutgoingOffer(strategy.getRound(), counterOffer);
 
 			ACLMessage reply = cfp.createReply();
 			reply.setSender(getAgent().getAID());

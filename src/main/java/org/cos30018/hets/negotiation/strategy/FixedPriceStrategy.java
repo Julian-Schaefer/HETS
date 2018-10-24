@@ -8,6 +8,7 @@ public class FixedPriceStrategy extends Strategy {
 	public Offer getCounterOffer(Offer incomingOffer) {
 		Offer counterOffer = incomingOffer.createCounterOffer();
 		counterOffer.setPrice(initialPrice);
+		round++;
 		return counterOffer;
 	}
 

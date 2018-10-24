@@ -1,11 +1,14 @@
 package org.cos30018.hets.logic.retailer;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.cos30018.hets.logic.common.RegisteringAgent;
 import org.cos30018.hets.logic.home.HomeAgent;
 import org.cos30018.hets.logic.retailer.behaviour.RetailerResponderBehaviour;
+import org.cos30018.hets.negotiation.Offer;
 import org.cos30018.hets.negotiation.strategy.Strategy;
 import org.cos30018.hets.negotiation.tariff.Tariff;
 
@@ -22,6 +25,9 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 	private List<RetailerListener> listeners = new LinkedList<>();
 
 	private List<String> negotiationMessages = new LinkedList<>();
+
+	private Map<Integer, Offer> outgoingOffers = new HashMap<>();
+	private Map<Integer, Offer> incomingOffers = new HashMap<>();
 
 	private Tariff tariff;
 	private Strategy strategy;
@@ -42,12 +48,22 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 		addBehaviour(new RetailerResponderBehaviour(this));
 	}
 
-	public void clearNegotiationMessages() {
+	public void clearNegotiationLog() {
 		negotiationMessages.clear();
+		outgoingOffers.clear();
+		incomingOffers.clear();
 
 		for (RetailerListener listener : listeners) {
 			listener.onNegotiationMessagesUpdated();
 		}
+	}
+
+	public void addIncomingOffer(int round, Offer offer) {
+		incomingOffers.put(round, offer);
+	}
+
+	public void addOutgoingOffer(int round, Offer offer) {
+		outgoingOffers.put(round, offer);
 	}
 
 	public void addNegotiationMessage(ACLMessage message) {

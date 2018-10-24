@@ -10,8 +10,6 @@ public class ModellingStrategy extends Strategy {
 	private Offer lastIncomingOffer;
 	private Offer lastCounterOffer;
 
-	private int currentRound;
-
 	public ModellingStrategy(int deadline, double reservationValue) {
 		this.deadline = deadline;
 		this.reservationValue = reservationValue;
@@ -19,7 +17,7 @@ public class ModellingStrategy extends Strategy {
 
 	@Override
 	public Offer getCounterOffer(Offer incomingOffer) {
-		if (currentRound == deadline) {
+		if (round == deadline) {
 			return Offer.refuse();
 		}
 
@@ -47,7 +45,7 @@ public class ModellingStrategy extends Strategy {
 		lastIncomingOffer = incomingOffer;
 		lastCounterOffer = counterOffer;
 
-		currentRound++;
+		round++;
 
 		return counterOffer;
 	}
@@ -55,7 +53,6 @@ public class ModellingStrategy extends Strategy {
 	@Override
 	public void reset(double initialPrice) {
 		super.reset(initialPrice);
-		currentRound = 0;
 		lastCounterOffer = null;
 		lastIncomingOffer = null;
 	}
