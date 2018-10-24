@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -14,6 +15,7 @@ import javax.swing.JTextField;
 import org.cos30018.hets.negotiation.strategy.FixedPriceStrategy;
 import org.cos30018.hets.negotiation.strategy.ModellingStrategy;
 import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.strategy.TimeDependentStrategy;
 
 public class StrategyConfigurationPanel extends JPanel implements ActionListener {
 
@@ -25,9 +27,11 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 	private JComboBox<String> strategyComboBox;
 	private JPanel strategySpecificationPanel;
 
-	private JTextField fixedPriceTextField;
 	private JTextField deadLineTextField;
 	private JTextField reservationValueTextField;
+
+	private JTextField betaTextField;
+	private JCheckBox increasingCheckbox;
 
 	public StrategyConfigurationPanel() {
 		setLayout(new BorderLayout());
@@ -39,7 +43,8 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		JLabel strategyLabel = new JLabel("Strategy:");
 		strategySelectorPanel.add(addToJPanel(strategyLabel));
 
-		String[] strategies = { Strategy.STRATEGY_FIXED_PRICE, Strategy.STRATEGY_MODELLING };
+		String[] strategies = { Strategy.STRATEGY_FIXED_PRICE, Strategy.STRATEGY_MODELLING,
+				Strategy.STRATEGY_TIME_DEPENDENT };
 		strategyComboBox = new JComboBox<>(strategies);
 		strategyComboBox.addActionListener(this);
 		strategySelectorPanel.add(addToJPanel(strategyComboBox));
@@ -69,6 +74,20 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 			} catch (NumberFormatException e) {
 				throw new RuntimeException("Please enter a valid numbers for the Modelling Strategy.");
 			}
+		case Strategy.STRATEGY_TIME_DEPENDENT:
+			try {
+				int deadline = Integer.valueOf(deadLineTextField.getText());
+				double reservationValue = Double.valueOf(reservationValueTextField.getText());
+				double beta = Double.valueOf(betaTextField.getText());
+
+				if (deadline <= 0 || reservationValue < 0 || beta <= 0) {
+					throw new RuntimeException("Please enter a positive numbers for the Time-dependent Strategy.");
+				}
+
+				return new TimeDependentStrategy(deadline, reservationValue, beta, increasingCheckbox.isSelected());
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Please enter a valid numbers for the Time-dependent Strategy.");
+			}
 		default:
 			throw new RuntimeException("Selected Strategy not found.");
 		}
@@ -83,6 +102,9 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 			switch (selectedStrategy) {
 			case Strategy.STRATEGY_MODELLING:
 				strategySpecificationPanel.add(getModellingPanel());
+				break;
+			case Strategy.STRATEGY_TIME_DEPENDENT:
+				strategySpecificationPanel.add(getTimeDependentPanel());
 				break;
 			default:
 				break;
@@ -106,6 +128,36 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 		reservationValueTextField = new JTextField(8);
 		panel.add(addToJPanel(reservationValueTextField));
+
+		return panel;
+	}
+
+	private JPanel getTimeDependentPanel() {
+		JPanel panel = new JPanel(new GridLayout(4, 2));
+
+		JLabel deadlineTextLbl = new JLabel("Deadline (Rounds):");
+		panel.add(addToJPanel(deadlineTextLbl));
+
+		deadLineTextField = new JTextField(8);
+		panel.add(addToJPanel(deadLineTextField));
+
+		JLabel minimumValueLbl = new JLabel("Reservation Value:");
+		panel.add(addToJPanel(minimumValueLbl));
+
+		reservationValueTextField = new JTextField(8);
+		panel.add(addToJPanel(reservationValueTextField));
+
+		JLabel betaLbl = new JLabel("Beta Value:");
+		panel.add(addToJPanel(betaLbl));
+
+		betaTextField = new JTextField(8);
+		panel.add(addToJPanel(betaTextField));
+
+		JLabel increasingDecreasingLbl = new JLabel("Increasing?:");
+		panel.add(addToJPanel(increasingDecreasingLbl));
+
+		increasingCheckbox = new JCheckBox();
+		panel.add(addToJPanel(increasingCheckbox));
 
 		return panel;
 	}

@@ -7,7 +7,7 @@ public class FixedPriceStrategy extends Strategy {
 	@Override
 	public Offer getCounterOffer(Offer incomingOffer) {
 		Offer counterOffer = incomingOffer.createCounterOffer();
-		counterOffer.setPrice(initialPrice);
+		counterOffer.setPrice(initialValue);
 		round++;
 		return counterOffer;
 	}

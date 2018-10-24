@@ -6,14 +6,15 @@ public abstract class Strategy implements Cloneable {
 
 	public static final String STRATEGY_FIXED_PRICE = "Fixed Price";
 	public static final String STRATEGY_MODELLING = "Modelling";
+	public static final String STRATEGY_TIME_DEPENDENT = "Time-Dependent";
 
-	protected double initialPrice;
+	protected double initialValue;
 	protected int round;
 
 	public abstract Offer getCounterOffer(Offer incomingOffer);
 
-	public void reset(double initialPrice) {
-		this.initialPrice = initialPrice;
+	public void reset(double initialValue) {
+		this.initialValue = initialValue;
 		this.round = 0;
 	}
 

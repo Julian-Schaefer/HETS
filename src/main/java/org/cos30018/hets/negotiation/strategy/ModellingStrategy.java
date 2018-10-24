@@ -23,7 +23,7 @@ public class ModellingStrategy extends Strategy {
 
 		Offer counterOffer = incomingOffer.createCounterOffer();
 		if (lastCounterOffer == null) {
-			counterOffer.setPrice(initialPrice);
+			counterOffer.setPrice(initialValue);
 		} else {
 			double lastOfferedPrice = lastCounterOffer.getPrice();
 			double incomingOfferPrice = incomingOffer.getPrice();
