@@ -56,8 +56,13 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 
 			ACLMessage reply = cfp.createReply();
 			reply.setSender(getAgent().getAID());
-			reply.setPerformative(ACLMessage.PROPOSE);
 			reply.setContentObject(counterOffer);
+
+			if (counterOffer.isRefused()) {
+				reply.setPerformative(ACLMessage.REFUSE);
+			} else {
+				reply.setPerformative(ACLMessage.PROPOSE);
+			}
 
 			retailerAgent.addNegotiationMessage(reply);
 			return reply;
