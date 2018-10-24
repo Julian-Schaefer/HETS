@@ -42,6 +42,14 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 		addBehaviour(new RetailerResponderBehaviour(this));
 	}
 
+	public void clearNegotiationMessages() {
+		negotiationMessages.clear();
+
+		for (RetailerListener listener : listeners) {
+			listener.onNegotiationMessagesUpdated();
+		}
+	}
+
 	public void addNegotiationMessage(ACLMessage message) {
 		StringBuilder stringBuilder = new StringBuilder().append(message.getSender().getLocalName()).append(" send a ")
 				.append(ACLMessage.getAllPerformativeNames()[message.getPerformative()]).append(": ");
@@ -60,7 +68,7 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 
 		negotiationMessages.add(negotiationMessage);
 		for (RetailerListener listener : listeners) {
-			listener.onNegotiationMessageAdded(negotiationMessage);
+			listener.onNegotiationMessagesUpdated();
 		}
 	}
 

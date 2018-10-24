@@ -2,7 +2,7 @@ package org.cos30018.hets.negotiation.strategy;
 
 import org.cos30018.hets.negotiation.Offer;
 
-public abstract class Strategy {
+public abstract class Strategy implements Cloneable {
 
 	public static final String STRATEGY_FIXED_PRICE = "Fixed Price";
 	public static final String STRATEGY_MODELLING = "Modelling";
@@ -16,4 +16,9 @@ public abstract class Strategy {
 	}
 
 	public abstract String getName();
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 }

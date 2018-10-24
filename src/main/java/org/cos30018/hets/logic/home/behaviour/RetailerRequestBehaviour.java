@@ -87,13 +87,16 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 				} else {
 					acceptance = response.createReply();
 					acceptance.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+					acceptance.setProtocol(FIPANames.InteractionProtocol.FIPA_ITERATED_CONTRACT_NET);
 					acceptances.add(acceptance);
 				}
 			}
 		}
 
-		newIteration(newIteration);
-		currentRound++;
+		if (currentRound < deadLineRound) {
+			newIteration(newIteration);
+			currentRound++;
+		}
 	}
 
 	@Override

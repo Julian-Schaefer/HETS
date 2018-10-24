@@ -24,7 +24,7 @@ public interface Retailer {
 	void addRetailerListener(RetailerListener listener);
 
 	public interface RetailerListener {
-		void onNegotiationMessageAdded(String message);
+		void onNegotiationMessagesUpdated();
 	}
 
 }
