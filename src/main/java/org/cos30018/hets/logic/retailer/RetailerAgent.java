@@ -62,8 +62,18 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 		incomingOffers.put(round, offer);
 	}
 
+	@Override
+	public Map<Integer, Offer> getIncomingOffers() {
+		return incomingOffers;
+	}
+
 	public void addOutgoingOffer(int round, Offer offer) {
 		outgoingOffers.put(round, offer);
+	}
+
+	@Override
+	public Map<Integer, Offer> getOutgoingOffers() {
+		return outgoingOffers;
 	}
 
 	public void addNegotiationMessage(ACLMessage message) {

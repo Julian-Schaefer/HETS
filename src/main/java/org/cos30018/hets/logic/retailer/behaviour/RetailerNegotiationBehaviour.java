@@ -52,8 +52,8 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 
 		try {
 			Offer incomingOffer = (Offer) cfp.getContentObject();
-			retailerAgent.addIncomingOffer(strategy.getRound(), incomingOffer);
 			Offer counterOffer = strategy.getCounterOffer(incomingOffer);
+			retailerAgent.addIncomingOffer(strategy.getRound(), incomingOffer);
 			retailerAgent.addOutgoingOffer(strategy.getRound(), counterOffer);
 
 			ACLMessage reply = cfp.createReply();
