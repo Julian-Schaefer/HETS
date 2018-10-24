@@ -64,15 +64,26 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void handleAllResponses(Vector responses, Vector acceptances) {
+
+		Offer initialOffer = new Offer(0.0, homeAgent.getTotalUsageForecast(period), period, 1);
+
+		Vector newIteration = new Vector<>();
 		for (Object o : responses) {
 			if (o instanceof ACLMessage) {
 				ACLMessage response = (ACLMessage) o;
 				ACLMessage acceptance;
 				if (response.getPerformative() == ACLMessage.PROPOSE && currentRound < deadLineRound) {
 					acceptance = response.createReply();
-					acceptance.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-					acceptances.add(acceptance);
-					newIteration(acceptances);
+					acceptance.setProtocol(FIPANames.InteractionProtocol.FIPA_ITERATED_CONTRACT_NET);
+					acceptance.setPerformative(ACLMessage.CFP);
+
+					try {
+						acceptance.setContentObject(initialOffer);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					newIteration.add(acceptance);
 				} else {
 					acceptance = response.createReply();
 					acceptance.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
@@ -80,6 +91,8 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 				}
 			}
 		}
+
+		newIteration(newIteration);
 		currentRound++;
 	}
 
