@@ -19,23 +19,21 @@ public class Negotiation {
 
 	public Offer createCounterOffer(Offer incomingOffer) {
 		try {
+			Offer counterOffer = incomingOffer.createCounterOffer();
 			if (lastOutgoingOffer == null) {
-				Offer counterOffer = incomingOffer.createCounterOffer();
 				counterOffer.setPrice(strategy.getNewValue());
-				return counterOffer;
+			} else {
+				double incomingOfferUtility = utility.getUtility(incomingOffer);
+				double lastOutgoingOfferUtility = utility.getUtility(lastOutgoingOffer);
+				if (incomingOfferUtility >= lastOutgoingOfferUtility) {
+					counterOffer.setStatus(Status.ACCEPT);
+				} else {
+					counterOffer.setPrice(strategy.getNewValue());
+				}
 			}
 
-			double incomingOfferUtility = utility.getUtility(incomingOffer);
-			double lastOutgoingOfferUtility = utility.getUtility(lastOutgoingOffer);
-			if (incomingOfferUtility >= lastOutgoingOfferUtility) {
-				Offer acceptOffer = incomingOffer.createCounterOffer();
-				acceptOffer.setStatus(Status.ACCEPT);
-				return acceptOffer;
-			} else {
-				Offer counterOffer = incomingOffer.createCounterOffer();
-				counterOffer.setPrice(strategy.getNewValue());
-				return counterOffer;
-			}
+			lastOutgoingOffer = counterOffer;
+			return counterOffer;
 		} catch (DeadlineExceededException e) {
 			return Offer.refuse();
 		}

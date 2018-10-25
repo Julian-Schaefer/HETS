@@ -74,7 +74,6 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void handleAllResponses(Vector responses, Vector acceptances) {
-
 		Vector propositions = new Vector<>();
 		for (Object o : responses) {
 			if (o instanceof ACLMessage) {
@@ -87,14 +86,17 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 
 		if (propositions.size() > 1) {
 			Vector newIteration = new Vector<>();
+			boolean accepted = false;
+
 			for (Object o : propositions) {
 				if (o instanceof ACLMessage) {
 					ACLMessage proposition = (ACLMessage) o;
 					ACLMessage response = proposition.createReply();
 
-					if (acceptances.size() > 0) {
+					newIteration.add(response);
+
+					if (accepted) {
 						response.setPerformative(ACLMessage.REJECT_PROPOSAL);
-						acceptances.add(response);
 					} else {
 						Offer incomingOffer = null;
 
@@ -106,17 +108,17 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 
 						if (incomingOffer.getStatus() == Status.ACCEPT) {
 							response.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+							accepted = true;
 						} else {
 							Negotiation negotiation = negotiations.get(proposition.getSender());
 							Offer counterOffer = negotiation.createCounterOffer(incomingOffer);
 							switch (counterOffer.getStatus()) {
 							case ACCEPT:
 								response.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-								acceptances.addElement(response);
+								accepted = true;
 								break;
 							case REFUSE:
 								response.setPerformative(ACLMessage.REJECT_PROPOSAL);
-								newIteration.add(response);
 								break;
 							case COUNTEROFFER:
 								response.setPerformative(ACLMessage.CFP);
@@ -125,17 +127,25 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
-								newIteration.add(response);
 								break;
 							}
-
 						}
 					}
 				}
 			}
 
-			if (acceptances.size() == 0) {
+			if (!accepted) {
 				newIteration(newIteration);
+			} else {
+				for (Object o : propositions) {
+					if (o instanceof ACLMessage) {
+						ACLMessage response = (ACLMessage) o;
+						if (response.getPerformative() != ACLMessage.ACCEPT_PROPOSAL) {
+							response.setPerformative(ACLMessage.REFUSE);
+						}
+						acceptances.add(response);
+					}
+				}
 			}
 		} else if (propositions.size() == 1) {
 			ACLMessage proposition = (ACLMessage) propositions.get(0);
