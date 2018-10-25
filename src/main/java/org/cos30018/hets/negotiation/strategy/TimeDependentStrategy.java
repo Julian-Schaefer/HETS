@@ -8,18 +8,20 @@ public class TimeDependentStrategy extends Strategy {
 	private double minValue;
 	private double maxValue;
 	private double beta;
-	private boolean increasing;
 
-	public TimeDependentStrategy(int deadline, double reservationValue, double beta, boolean increasing) {
+	public TimeDependentStrategy(int deadline, double reservationValue, double beta) {
 		this.deadline = deadline;
-		this.minValue = reservationValue;
-		this.maxValue = initialValue;
+		this.minValue = initialValue;
+		this.maxValue = reservationValue;
 		this.beta = beta;
-		this.increasing = increasing;
 	}
 
 	@Override
 	public Offer getCounterOffer(Offer incomingOffer) {
+		if (round == deadline + 1) {
+			return Offer.refuse();
+		}
+
 		Offer counterOffer = incomingOffer.createCounterOffer();
 		counterOffer.setPrice(calculateNewValue());
 		round++;
@@ -30,17 +32,14 @@ public class TimeDependentStrategy extends Strategy {
 		double kj = 0.0;
 		double alpha = kj + (1 - kj) * Math.pow((Double.valueOf(round) / Double.valueOf(deadline)), (1.0 / beta));
 
-		if (increasing) {
-			return minValue + alpha * (maxValue - minValue);
-		} else {
-			return minValue + (1 - alpha) * (maxValue - minValue);
-		}
+		return minValue + alpha * (maxValue - minValue);
 	}
 
 	@Override
 	public void reset(double initialValue) {
 		super.reset(initialValue);
-		this.maxValue = initialValue;
+
+		this.minValue = initialValue;
 	}
 
 	@Override

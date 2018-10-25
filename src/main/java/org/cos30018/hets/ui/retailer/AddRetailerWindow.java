@@ -34,7 +34,7 @@ public class AddRetailerWindow extends JFrame {
 	public AddRetailerWindow() {
 		super("Add Retailer");
 		setLayout(new BorderLayout());
-		setSize(new Dimension(500, 300));
+		setSize(new Dimension(500, 500));
 		setLocationRelativeTo(null);
 		setUp();
 		setVisible(true);

@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -31,7 +30,6 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 	private JTextField reservationValueTextField;
 
 	private JTextField betaTextField;
-	private JCheckBox increasingCheckbox;
 
 	public StrategyConfigurationPanel() {
 		setLayout(new BorderLayout());
@@ -84,7 +82,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 					throw new RuntimeException("Please enter a positive numbers for the Time-dependent Strategy.");
 				}
 
-				return new TimeDependentStrategy(deadline, reservationValue, beta, increasingCheckbox.isSelected());
+				return new TimeDependentStrategy(deadline, reservationValue, beta);
 			} catch (NumberFormatException e) {
 				throw new RuntimeException("Please enter a valid numbers for the Time-dependent Strategy.");
 			}
@@ -133,7 +131,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 	}
 
 	private JPanel getTimeDependentPanel() {
-		JPanel panel = new JPanel(new GridLayout(4, 2));
+		JPanel panel = new JPanel(new GridLayout(3, 2));
 
 		JLabel deadlineTextLbl = new JLabel("Deadline (Rounds):");
 		panel.add(addToJPanel(deadlineTextLbl));
@@ -152,12 +150,6 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 		betaTextField = new JTextField(8);
 		panel.add(addToJPanel(betaTextField));
-
-		JLabel increasingDecreasingLbl = new JLabel("Increasing?:");
-		panel.add(addToJPanel(increasingDecreasingLbl));
-
-		increasingCheckbox = new JCheckBox();
-		panel.add(addToJPanel(increasingCheckbox));
 
 		return panel;
 	}

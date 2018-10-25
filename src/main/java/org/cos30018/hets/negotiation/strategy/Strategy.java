@@ -15,7 +15,7 @@ public abstract class Strategy implements Cloneable {
 
 	public void reset(double initialValue) {
 		this.initialValue = initialValue;
-		this.round = 0;
+		this.round = 1;
 	}
 
 	public abstract String getName();
