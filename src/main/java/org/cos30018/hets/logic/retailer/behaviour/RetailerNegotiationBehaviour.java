@@ -86,7 +86,6 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 			ACLMessage reply = accept.createReply();
 			reply.setContentObject(propose.getContentObject());
 			reply.setPerformative(ACLMessage.INFORM);
-			retailerAgent.addNegotiationMessage(accept);
 			return reply;
 		} catch (Exception e) {
 			e.printStackTrace();

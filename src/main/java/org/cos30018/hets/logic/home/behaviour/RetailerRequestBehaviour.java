@@ -92,38 +92,44 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 					ACLMessage proposition = (ACLMessage) o;
 					ACLMessage response = proposition.createReply();
 
-					Offer incomingOffer = null;
-					try {
-						incomingOffer = (Offer) proposition.getContentObject();
-					} catch (UnreadableException e1) {
-						e1.printStackTrace();
-					}
-
-					if (incomingOffer.getStatus() == Status.ACCEPT) {
-						response.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+					if (acceptances.size() > 0) {
+						response.setPerformative(ACLMessage.REJECT_PROPOSAL);
+						acceptances.add(response);
 					} else {
-						Negotiation negotiation = negotiations.get(proposition.getSender());
-						Offer counterOffer = negotiation.createCounterOffer(incomingOffer);
-						switch (counterOffer.getStatus()) {
-						case ACCEPT:
-							response.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-							acceptances.addElement(response);
-							break;
-						case REFUSE:
-							response.setPerformative(ACLMessage.REJECT_PROPOSAL);
-							newIteration.add(response);
-							break;
-						case COUNTEROFFER:
-							response.setPerformative(ACLMessage.CFP);
-							try {
-								response.setContentObject(counterOffer);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-							newIteration.add(response);
-							break;
+						Offer incomingOffer = null;
+
+						try {
+							incomingOffer = (Offer) proposition.getContentObject();
+						} catch (UnreadableException e1) {
+							e1.printStackTrace();
 						}
 
+						if (incomingOffer.getStatus() == Status.ACCEPT) {
+							response.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+						} else {
+							Negotiation negotiation = negotiations.get(proposition.getSender());
+							Offer counterOffer = negotiation.createCounterOffer(incomingOffer);
+							switch (counterOffer.getStatus()) {
+							case ACCEPT:
+								response.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								acceptances.addElement(response);
+								break;
+							case REFUSE:
+								response.setPerformative(ACLMessage.REJECT_PROPOSAL);
+								newIteration.add(response);
+								break;
+							case COUNTEROFFER:
+								response.setPerformative(ACLMessage.CFP);
+								try {
+									response.setContentObject(counterOffer);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+								newIteration.add(response);
+								break;
+							}
+
+						}
 					}
 				}
 			}
