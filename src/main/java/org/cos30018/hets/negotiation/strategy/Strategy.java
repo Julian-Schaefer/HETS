@@ -1,7 +1,5 @@
 package org.cos30018.hets.negotiation.strategy;
 
-import org.cos30018.hets.negotiation.Offer;
-
 public abstract class Strategy implements Cloneable {
 
 	public static final String STRATEGY_FIXED_PRICE = "Fixed Price";
@@ -9,9 +7,14 @@ public abstract class Strategy implements Cloneable {
 	public static final String STRATEGY_TIME_DEPENDENT = "Time-Dependent";
 
 	protected double initialValue;
-	protected int round;
+	protected double reservationValue;
+	protected int round = 1;
 
-	public abstract Offer getCounterOffer(Offer incomingOffer);
+	public Strategy(double reservationValue) {
+		this.reservationValue = reservationValue;
+	}
+
+	public abstract double getNewValue() throws DeadlineExceededException;
 
 	public void reset(double initialValue) {
 		this.initialValue = initialValue;
@@ -19,6 +22,10 @@ public abstract class Strategy implements Cloneable {
 	}
 
 	public abstract String getName();
+
+	public double getReservationValue() {
+		return reservationValue;
+	}
 
 	public int getRound() {
 		return round;

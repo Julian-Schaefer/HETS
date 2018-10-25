@@ -10,6 +10,10 @@ import jade.core.AID;
  */
 public class Offer implements Serializable {
 
+	public enum Status {
+		ACCEPT, REFUSE, COUNTEROFFER
+	}
+
 	/**
 	 * 
 	 */
@@ -20,28 +24,33 @@ public class Offer implements Serializable {
 	private double amount;
 	private int startPeriod;
 	private int numberOfPeriods;
-	private boolean refused;
+	private Status status;
 
 	public Offer(AID retailerId, double price, double amount, int startPeriod, int numberOfPeriods) {
 		this.retailerId = retailerId;
 		this.price = price;
 		this.startPeriod = startPeriod;
 		this.numberOfPeriods = numberOfPeriods;
+		this.status = Status.COUNTEROFFER;
 	}
 
 	public Offer(double price, double amount, int startPeriod, int numberOfPeriods) {
-		this.price = price;
-		this.startPeriod = startPeriod;
-		this.numberOfPeriods = numberOfPeriods;
+		this(null, price, amount, startPeriod, numberOfPeriods);
 	}
 
 	private Offer() {
 
 	}
 
+	public static Offer accept() {
+		Offer offer = new Offer();
+		offer.setStatus(Status.ACCEPT);
+		return offer;
+	}
+
 	public static Offer refuse() {
 		Offer offer = new Offer();
-		offer.setRefused(true);
+		offer.setStatus(Status.REFUSE);
 		return offer;
 	}
 
@@ -95,12 +104,11 @@ public class Offer implements Serializable {
 		this.numberOfPeriods = numberOfPeriods;
 	}
 
-	public boolean isRefused() {
-		return refused;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setRefused(boolean refused) {
-		this.refused = refused;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
-
 }

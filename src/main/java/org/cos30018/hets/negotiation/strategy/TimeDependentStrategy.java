@@ -1,7 +1,5 @@
 package org.cos30018.hets.negotiation.strategy;
 
-import org.cos30018.hets.negotiation.Offer;
-
 public class TimeDependentStrategy extends Strategy {
 
 	private int deadline;
@@ -10,6 +8,7 @@ public class TimeDependentStrategy extends Strategy {
 	private double beta;
 
 	public TimeDependentStrategy(int deadline, double reservationValue, double beta) {
+		super(reservationValue);
 		this.deadline = deadline;
 		this.minValue = initialValue;
 		this.maxValue = reservationValue;
@@ -17,15 +16,14 @@ public class TimeDependentStrategy extends Strategy {
 	}
 
 	@Override
-	public Offer getCounterOffer(Offer incomingOffer) {
+	public double getNewValue() throws DeadlineExceededException {
 		if (round == deadline + 1) {
-			return Offer.refuse();
+			throw new DeadlineExceededException();
 		}
 
-		Offer counterOffer = incomingOffer.createCounterOffer();
-		counterOffer.setPrice(calculateNewValue());
+		double newValue = calculateNewValue();
 		round++;
-		return counterOffer;
+		return newValue;
 	}
 
 	private double calculateNewValue() {

@@ -1,15 +1,15 @@
 package org.cos30018.hets.negotiation.strategy;
 
-import org.cos30018.hets.negotiation.Offer;
-
 public class FixedPriceStrategy extends Strategy {
 
+	public FixedPriceStrategy(double reservationValue) {
+		super(reservationValue);
+	}
+
 	@Override
-	public Offer getCounterOffer(Offer incomingOffer) {
-		Offer counterOffer = incomingOffer.createCounterOffer();
-		counterOffer.setPrice(initialValue);
+	public double getNewValue() {
 		round++;
-		return counterOffer;
+		return initialValue;
 	}
 
 	@Override
