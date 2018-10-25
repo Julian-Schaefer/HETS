@@ -1,5 +1,6 @@
 package org.cos30018.hets.negotiation;
 
+import org.cos30018.hets.negotiation.Offer.Status;
 import org.cos30018.hets.negotiation.strategy.DeadlineExceededException;
 import org.cos30018.hets.negotiation.strategy.Strategy;
 import org.cos30018.hets.negotiation.utility.OfferUtility;
@@ -27,7 +28,9 @@ public class Negotiation {
 			double incomingOfferUtility = utility.getUtility(incomingOffer);
 			double lastOutgoingOfferUtility = utility.getUtility(lastOutgoingOffer);
 			if (incomingOfferUtility >= lastOutgoingOfferUtility) {
-				return Offer.accept();
+				Offer acceptOffer = incomingOffer.createCounterOffer();
+				acceptOffer.setStatus(Status.ACCEPT);
+				return acceptOffer;
 			} else {
 				Offer counterOffer = incomingOffer.createCounterOffer();
 				counterOffer.setPrice(strategy.getNewValue());
