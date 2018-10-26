@@ -84,7 +84,8 @@ public class RetailerDetailsWindow extends JFrame {
 
 	public void update() {
 		negotiationMessagesList.setListData(retailer.getNegotiationMessages().toArray(new String[] {}));
-		negotiationMessagesList.updateUI();
+		negotiationMessagesList.invalidate();
+		negotiationMessagesList.repaint();
 
 		offerAndCounterOfferGraph.setIncomingOffers(retailer.getIncomingOffers());
 		offerAndCounterOfferGraph.setOutgoingOffers(retailer.getOutgoingOffers());

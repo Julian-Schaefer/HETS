@@ -61,7 +61,8 @@ public class Offer implements Serializable {
 	@Override
 	public String toString() {
 		return new StringBuilder().append("Price: ").append(price).append(", ").append("Amount: ").append(amount)
-				.append(", ").append("Number of Periods: ").append(numberOfPeriods).toString();
+				.append(", ").append("Number of Periods: ").append(numberOfPeriods).append(", ").append("Status:")
+				.append(status).toString();
 	}
 
 	public AID getRetailerId() {

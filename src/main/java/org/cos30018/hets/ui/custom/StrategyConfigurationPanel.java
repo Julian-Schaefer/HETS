@@ -59,16 +59,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		String selectedStrategy = (String) strategyComboBox.getSelectedItem();
 		switch (selectedStrategy) {
 		case Strategy.STRATEGY_FIXED_PRICE:
-			try {
-				double reservationValue = Double.valueOf(reservationValueTextField.getText());
-				if (reservationValue < 0) {
-					throw new RuntimeException("Please enter a positive numbers for the Fixed Price Strategy.");
-				}
-
-				return new FixedPriceStrategy(reservationValue);
-			} catch (NumberFormatException e) {
-				throw new RuntimeException("Please enter a valid numbers for the Fixed Price Strategy.");
-			}
+			return new FixedPriceStrategy();
 		case Strategy.STRATEGY_MODELLING:
 			try {
 				int deadline = Integer.valueOf(deadLineTextField.getText());
@@ -107,9 +98,6 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 			String selectedStrategy = (String) strategyComboBox.getSelectedItem();
 			switch (selectedStrategy) {
-			case Strategy.STRATEGY_FIXED_PRICE:
-				strategySpecificationPanel.add(getFixedStrategyPanel());
-				break;
 			case Strategy.STRATEGY_MODELLING:
 				strategySpecificationPanel.add(getModellingPanel());
 				break;
@@ -122,18 +110,6 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 			updateUI();
 		}
-	}
-
-	JPanel getFixedStrategyPanel() {
-		JPanel panel = new JPanel(new GridLayout(1, 2));
-
-		JLabel reservationValueTextLbl = new JLabel("Reservation Value:");
-		panel.add(addToJPanel(reservationValueTextLbl));
-
-		reservationValueTextField = new JTextField(8);
-		panel.add(addToJPanel(reservationValueTextField));
-
-		return panel;
 	}
 
 	private JPanel getModellingPanel() {
