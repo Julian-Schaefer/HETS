@@ -19,7 +19,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.ContractNetInitiator;
 
-public class RetailerRequestBehaviour extends ContractNetInitiator {
+public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 
 	/**
 	 * 
@@ -29,7 +29,7 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 	private int deadLineRound = 20;
 	private final int period;
 
-	public static RetailerRequestBehaviour create(HomeAgent homeAgent) {
+	public static HomeAgentNegotiationBehaviour create(HomeAgent homeAgent) {
 		ACLMessage msg = new ACLMessage(ACLMessage.CFP);
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_ITERATED_CONTRACT_NET);
 		for (AID retailerAID : homeAgent.getRetailers()) {
@@ -44,12 +44,12 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 			e.printStackTrace();
 		}
 
-		return new RetailerRequestBehaviour(homeAgent, period, msg);
+		return new HomeAgentNegotiationBehaviour(homeAgent, period, msg);
 	}
 
 	private HomeAgent homeAgent;
 
-	private RetailerRequestBehaviour(HomeAgent homeAgent, int period, ACLMessage msg) {
+	private HomeAgentNegotiationBehaviour(HomeAgent homeAgent, int period, ACLMessage msg) {
 		super(homeAgent, msg);
 		this.homeAgent = homeAgent;
 		this.period = period;

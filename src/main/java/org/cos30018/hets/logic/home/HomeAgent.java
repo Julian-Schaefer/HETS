@@ -9,7 +9,7 @@ import java.util.Map;
 import org.cos30018.hets.logic.home.behaviour.ApplianceForecastRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.ApplianceUsageRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
-import org.cos30018.hets.logic.home.behaviour.RetailerRequestBehaviour;
+import org.cos30018.hets.logic.home.behaviour.HomeAgentNegotiationBehaviour;
 import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
@@ -136,7 +136,7 @@ public class HomeAgent extends Agent implements Home {
 		for (HomeListener listener : listeners) {
 			listener.onTotalUsageForecastUpdated(period, totalUsageForecast);
 		}
-		addBehaviour(RetailerRequestBehaviour.create(this));
+		addBehaviour(HomeAgentNegotiationBehaviour.create(this));
 	}
 
 	@Override
