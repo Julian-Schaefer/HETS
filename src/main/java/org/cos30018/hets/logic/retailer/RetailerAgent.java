@@ -1,13 +1,19 @@
 package org.cos30018.hets.logic.retailer;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.cos30018.hets.logic.common.RegisteringAgent;
 import org.cos30018.hets.logic.home.HomeAgent;
 import org.cos30018.hets.logic.retailer.behaviour.RetailerResponderBehaviour;
+import org.cos30018.hets.negotiation.Offer;
+import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.tariff.Tariff;
 
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
 public class RetailerAgent extends RegisteringAgent implements Retailer {
 
@@ -20,8 +26,11 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 
 	private List<String> negotiationMessages = new LinkedList<>();
 
-	private NegotiationStrategy negotiationStrategy;
-	private PricingStrategy pricingStrategy;
+	private Map<Integer, Offer> outgoingOffers = new HashMap<>();
+	private Map<Integer, Offer> incomingOffers = new HashMap<>();
+
+	private Tariff tariff;
+	private Strategy strategy;
 
 	public RetailerAgent() {
 		super(HomeAgent.HOME_AGENT_SERVICE, RetailerMessage.REGISTER, RetailerMessage.UNREGISTER);
@@ -33,48 +42,70 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 		super.setup();
 
 		Object[] arguments = getArguments();
-		negotiationStrategy = (NegotiationStrategy) arguments[0];
-		pricingStrategy = (PricingStrategy) arguments[1];
+		strategy = (Strategy) arguments[0];
+		tariff = (Tariff) arguments[1];
 
 		addBehaviour(new RetailerResponderBehaviour(this));
+	}
+
+	public void clearNegotiationLog() {
+		negotiationMessages.clear();
+		outgoingOffers.clear();
+		incomingOffers.clear();
+
+		for (RetailerListener listener : listeners) {
+			listener.onNegotiationMessagesUpdated();
+		}
+	}
+
+	public void addIncomingOffer(int round, Offer offer) {
+		incomingOffers.put(round, offer);
+	}
+
+	@Override
+	public Map<Integer, Offer> getIncomingOffers() {
+		return incomingOffers;
+	}
+
+	public void addOutgoingOffer(int round, Offer offer) {
+		outgoingOffers.put(round, offer);
+	}
+
+	@Override
+	public Map<Integer, Offer> getOutgoingOffers() {
+		return outgoingOffers;
 	}
 
 	public void addNegotiationMessage(ACLMessage message) {
 		StringBuilder stringBuilder = new StringBuilder().append(message.getSender().getLocalName()).append(" send a ")
 				.append(ACLMessage.getAllPerformativeNames()[message.getPerformative()]).append(": ");
 
-		if (message.getContent() != null) {
-			stringBuilder.append(message.getContent());
-		} else {
-			stringBuilder.append(" - ");
+		try {
+			if (message.getContentObject() != null) {
+				stringBuilder.append(message.getContentObject());
+			} else {
+				stringBuilder.append(" - ");
+			}
+		} catch (UnreadableException e) {
+			stringBuilder.append(e.getMessage());
 		}
 
 		String negotiationMessage = stringBuilder.toString();
 
 		negotiationMessages.add(negotiationMessage);
 		for (RetailerListener listener : listeners) {
-			listener.onNegotiationMessageAdded(negotiationMessage);
+			listener.onNegotiationMessagesUpdated();
 		}
 	}
 
 	@Override
-	public void setNegotiationStrategy(NegotiationStrategy negotiationStrategy) {
-		this.negotiationStrategy = negotiationStrategy;
+	public Tariff getTariff() {
+		return tariff;
 	}
 
 	@Override
-	public NegotiationStrategy getNegotiationStrategy() {
-		return negotiationStrategy;
-	}
-
-	@Override
-	public void setPricingStrategy(PricingStrategy pricingStrategy) {
-		this.pricingStrategy = pricingStrategy;
-	}
-
-	@Override
-	public PricingStrategy getPricingStrategy() {
-		return pricingStrategy;
+	public Strategy getStrategy() {
+		return strategy;
 	}
 
 	@Override

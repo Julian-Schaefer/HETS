@@ -18,10 +18,10 @@ import org.cos30018.hets.App;
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance;
 import org.cos30018.hets.logic.home.Home;
-import org.cos30018.hets.ui.custom.StyledButtonUI;
-import org.cos30018.hets.ui.custom.StyledPopupMenuUI;
-import org.cos30018.hets.ui.custom.StyledRoundButtonUI;
 import org.cos30018.hets.ui.custom.WriteFile;
+import org.cos30018.hets.ui.custom.button.StyledButtonUI;
+import org.cos30018.hets.ui.custom.button.StyledPopupMenuUI;
+import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
 import org.cos30018.hets.ui.home.dashboard.HomeDashboardPanel;
 
 public class HomePanel extends JPanel {

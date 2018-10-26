@@ -1,24 +1,17 @@
 package org.cos30018.hets.logic.retailer;
 
 import java.util.List;
+import java.util.Map;
+
+import org.cos30018.hets.negotiation.Offer;
+import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.tariff.Tariff;
 
 public interface Retailer {
 
-	public enum NegotiationStrategy {
-		FIXED, COMPLEX
-	}
+	Tariff getTariff();
 
-	public enum PricingStrategy {
-		HIGH, LOW, EFFICIENT
-	}
-
-	void setNegotiationStrategy(NegotiationStrategy negotiationStrategy);
-
-	NegotiationStrategy getNegotiationStrategy();
-
-	void setPricingStrategy(PricingStrategy pricingStrategy);
-
-	PricingStrategy getPricingStrategy();
+	Strategy getStrategy();
 
 	void setVolumeCharge(double volumeCharge);
 
@@ -30,10 +23,14 @@ public interface Retailer {
 
 	List<String> getNegotiationMessages();
 
+	Map<Integer, Offer> getIncomingOffers();
+
+	Map<Integer, Offer> getOutgoingOffers();
+
 	void addRetailerListener(RetailerListener listener);
 
 	public interface RetailerListener {
-		void onNegotiationMessageAdded(String message);
+		void onNegotiationMessagesUpdated();
 	}
 
 }

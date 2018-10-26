@@ -1,4 +1,4 @@
-package org.cos30018.hets.ui.custom;
+package org.cos30018.hets.ui.custom.graph;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import org.cos30018.hets.negotiation.Offer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -21,18 +22,19 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class NegotiatedPriceGraph extends JPanel {
+public class OfferAndCounterOfferGraph extends JPanel {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8072911533849731056L;
+	private static final long serialVersionUID = -1061945622069988748L;
 
-	private Map<Integer, Double> negotiatedPrices = new HashMap<>();
+	private Map<Integer, Offer> incomingOffers = new HashMap<>();
+	private Map<Integer, Offer> outgoingOffers = new HashMap<>();
 
 	private ChartPanel chartPanel;
 
-	public NegotiatedPriceGraph() {
+	public OfferAndCounterOfferGraph() {
 		setLayout(new BorderLayout());
 		setUp();
 	}
@@ -43,26 +45,39 @@ public class NegotiatedPriceGraph extends JPanel {
 		add(chartPanel, BorderLayout.CENTER);
 	}
 
-	public void addNegotiatedPrice(int period, double price) {
-		negotiatedPrices.put(period, price);
+	public void setIncomingOffers(Map<Integer, Offer> incomingOffers) {
+		this.incomingOffers = incomingOffers;
+		chartPanel.setChart(createChart());
+	}
+
+	public void setOutgoingOffers(Map<Integer, Offer> outgoingOffers) {
+		this.outgoingOffers = outgoingOffers;
+	}
+
+	public void update() {
 		chartPanel.setChart(createChart());
 	}
 
 	private XYDataset createDataset() {
+		XYSeries incoming = new XYSeries("Incoming Offer");
+		for (Map.Entry<Integer, Offer> incomingOffer : incomingOffers.entrySet()) {
+			incoming.add(incomingOffer.getKey(), (Double) incomingOffer.getValue().getPrice());
+		}
 
-		XYSeries negotiated = new XYSeries("Negotiated Price");
-		for (Map.Entry<Integer, Double> negotiatedPrice : negotiatedPrices.entrySet()) {
-			negotiated.add(negotiatedPrice.getKey(), negotiatedPrice.getValue());
+		XYSeries outgoing = new XYSeries("Outgoing Offer");
+		for (Map.Entry<Integer, Offer> outgoingOffer : outgoingOffers.entrySet()) {
+			outgoing.add(outgoingOffer.getKey(), (Double) outgoingOffer.getValue().getPrice());
 		}
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(negotiated);
+		dataset.addSeries(incoming);
+		dataset.addSeries(outgoing);
 
 		return dataset;
 	}
 
 	private JFreeChart createChart() {
-		JFreeChart chart = ChartFactory.createXYLineChart("Negotiated Energy prices", "Period", "Price/Kwh (Cent)",
+		JFreeChart chart = ChartFactory.createXYLineChart("Price Negotiation", "Round", "Price/Kwh (Cent)",
 				createDataset(), PlotOrientation.VERTICAL, true, true, false);
 
 		XYPlot plot = chart.getXYPlot();
@@ -82,7 +97,7 @@ public class NegotiatedPriceGraph extends JPanel {
 		plot.setDomainGridlinesVisible(false);
 
 		chart.getLegend().setFrame(BlockBorder.NONE);
-		chart.setTitle(new TextTitle("Negotiated Energy prices", new Font("Serif", Font.BOLD, 18)));
+		chart.setTitle(new TextTitle("Price Negotiation", new Font("Serif", Font.BOLD, 18)));
 
 		return chart;
 	}

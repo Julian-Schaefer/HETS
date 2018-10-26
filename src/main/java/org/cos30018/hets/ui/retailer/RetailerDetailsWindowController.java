@@ -13,7 +13,7 @@ public class RetailerDetailsWindowController implements RetailerListener {
 	}
 
 	@Override
-	public void onNegotiationMessageAdded(String message) {
+	public void onNegotiationMessagesUpdated() {
 		retailerDetailsWindow.update();
 	}
 }

@@ -1,18 +1,20 @@
 package org.cos30018.hets.ui.retailer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.retailer.Retailer;
+import org.cos30018.hets.ui.custom.graph.OfferAndCounterOfferGraph;
 
 import jade.core.AID;
 
@@ -25,13 +27,14 @@ public class RetailerDetailsWindow extends JFrame {
 
 	private Retailer retailer;
 
+	private OfferAndCounterOfferGraph offerAndCounterOfferGraph;
 	private JList<String> negotiationMessagesList;
 
 	public RetailerDetailsWindow(AID aid) {
 		super("Retailer: " + aid.getLocalName());
 		this.retailer = JadeController.getInstance().getRetailer(aid);
 		setLayout(new BorderLayout());
-		setSize(new Dimension(600, 400));
+		setSize(new Dimension(600, 700));
 		setLocationRelativeTo(null);
 		setUp();
 		update();
@@ -40,39 +43,51 @@ public class RetailerDetailsWindow extends JFrame {
 	}
 
 	private void setUp() {
-		JPanel content = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
+		JPanel informationPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+		informationPanel.setBackground(Color.WHITE);
+		informationPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-		gbc.gridx = 0;
-		gbc.gridy = 0;
 		JLabel negotiationStrategyTitleLbl = new JLabel("Negotiation Strategy: ");
-		content.add(negotiationStrategyTitleLbl, gbc);
+		negotiationStrategyTitleLbl.setHorizontalAlignment(JLabel.CENTER);
+		informationPanel.add(negotiationStrategyTitleLbl);
 
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		JLabel negotiationStrategyLbl = new JLabel(retailer.getNegotiationStrategy().name());
-		content.add(negotiationStrategyLbl, gbc);
+		JLabel negotiationStrategyLbl = new JLabel(retailer.getStrategy().getName());
+		negotiationStrategyLbl.setHorizontalAlignment(JLabel.CENTER);
+		informationPanel.add(negotiationStrategyLbl);
 
-		gbc.gridx = 0;
-		gbc.gridy = 1;
 		JLabel pricingStrategyTitleLbl = new JLabel("Pricing Strategy: ");
-		content.add(pricingStrategyTitleLbl, gbc);
+		pricingStrategyTitleLbl.setHorizontalAlignment(JLabel.CENTER);
+		informationPanel.add(pricingStrategyTitleLbl);
 
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		JLabel pricingStrategyLbl = new JLabel(retailer.getPricingStrategy().name());
-		content.add(pricingStrategyLbl, gbc);
+		JLabel pricingStrategyLbl = new JLabel(retailer.getTariff().getName());
+		pricingStrategyLbl.setHorizontalAlignment(JLabel.CENTER);
+		informationPanel.add(pricingStrategyLbl);
 
-		add(content, BorderLayout.CENTER);
+		add(informationPanel, BorderLayout.NORTH);
 
+		JPanel centerPanel = new JPanel(new GridLayout(2, 1, 0, 20));
+
+		offerAndCounterOfferGraph = new OfferAndCounterOfferGraph();
+		centerPanel.add(offerAndCounterOfferGraph);
+
+		JPanel negotiationMessagesPanel = new JPanel(new BorderLayout());
+		JLabel interchangedMessagesLbl = new JLabel("Interchanged Negotiation Messages");
+		interchangedMessagesLbl.setHorizontalAlignment(JLabel.CENTER);
+		negotiationMessagesPanel.add(interchangedMessagesLbl, BorderLayout.NORTH);
 		negotiationMessagesList = new JList<>();
 		JScrollPane listScrollPane = new JScrollPane(negotiationMessagesList);
+		negotiationMessagesPanel.add(listScrollPane, BorderLayout.CENTER);
+		centerPanel.add(negotiationMessagesPanel);
 
-		add(listScrollPane, BorderLayout.SOUTH);
+		add(centerPanel, BorderLayout.CENTER);
 	}
 
 	public void update() {
 		negotiationMessagesList.setListData(retailer.getNegotiationMessages().toArray(new String[] {}));
 		negotiationMessagesList.updateUI();
+
+		offerAndCounterOfferGraph.setIncomingOffers(retailer.getIncomingOffers());
+		offerAndCounterOfferGraph.setOutgoingOffers(retailer.getOutgoingOffers());
+		offerAndCounterOfferGraph.update();
 	}
 }

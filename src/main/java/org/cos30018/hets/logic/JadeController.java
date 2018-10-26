@@ -7,9 +7,9 @@ import org.cos30018.hets.logic.appliance.ApplianceAgent;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.HomeAgent;
 import org.cos30018.hets.logic.retailer.Retailer;
-import org.cos30018.hets.logic.retailer.Retailer.NegotiationStrategy;
-import org.cos30018.hets.logic.retailer.Retailer.PricingStrategy;
 import org.cos30018.hets.logic.retailer.RetailerAgent;
+import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.tariff.Tariff;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -23,54 +23,55 @@ import jade.wrapper.StaleProxyException;
 public class JadeController {
 
 	private static JadeController instance;
-	
+
 	private Runtime runtime = Runtime.instance();
 	private AgentContainer mainContainer;
-	
+
 	private Home home;
-	
+
 	public static JadeController getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new JadeController();
 		}
-		
+
 		return instance;
 	}
-	
+
 	public void launchPlattform() {
 		System.out.println(getClass().getSimpleName() + ": Launching the Main Platform container...");
-		
+
 		Profile pMain = new ProfileImpl(null, 8888, null);
 		pMain.setParameter(Profile.GUI, "true");
-		
+
 		mainContainer = runtime.createMainContainer(pMain);
-		
+
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException interruptedException) {
-			//Ignore
+			// Ignore
 		}
-		
+
 		setupHomeAgent();
 	}
-	
+
 	private void setupHomeAgent() {
 		try {
 			AgentController homeAgentController = addAgent("homeAgent", HomeAgent.class);
 			this.home = homeAgentController.getO2AInterface(Home.class);
 		} catch (StaleProxyException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 	public Home getHome() {
 		return home;
 	}
-	
-	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod) throws StaleProxyException {
+
+	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod)
+			throws StaleProxyException {
 		addAgent("appliance_" + name, ApplianceAgent.class, new Object[] { applianceType, forecastingMethod });
 	}
-	
+
 	public Appliance getAppliance(AID aid) {
 		try {
 			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
@@ -78,14 +79,14 @@ public class JadeController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
-	public void addRetailerAgent(String name, NegotiationStrategy negotiationStrategy, PricingStrategy pricingStrategy) throws StaleProxyException {
-		addAgent("retailer_" + name, RetailerAgent.class, new Object[] { negotiationStrategy, pricingStrategy });
+
+	public void addRetailerAgent(String name, Strategy strategy, Tariff tariff) throws StaleProxyException {
+		addAgent("retailer_" + name, RetailerAgent.class, new Object[] { strategy, tariff });
 	}
-	
+
 	public Retailer getRetailer(AID aid) {
 		try {
 			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
@@ -93,10 +94,10 @@ public class JadeController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
+
 	public void removeAgent(AID aid) {
 		try {
 			AgentController agentController = mainContainer.getAgent(aid.getName(), true);
@@ -105,21 +106,22 @@ public class JadeController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setInterval() {
-		
+
 	}
 
-    private AgentController addAgent(String name, Class<? extends Agent> agentClass) throws StaleProxyException {
-    	return addAgent(name, agentClass, new Object[0]);
-    }
-    
-    private AgentController addAgent(String name, Class<? extends Agent> agentClass, Object[] arguments) throws StaleProxyException {
+	private AgentController addAgent(String name, Class<? extends Agent> agentClass) throws StaleProxyException {
+		return addAgent(name, agentClass, new Object[0]);
+	}
+
+	private AgentController addAgent(String name, Class<? extends Agent> agentClass, Object[] arguments)
+			throws StaleProxyException {
 		System.out.println(getClass().getSimpleName() + ": Starting up Agent: " + name);
-		
+
 		AgentController agentController = mainContainer.createNewAgent(name, agentClass.getName(), arguments);
 		agentController.start();
-		
+
 		return agentController;
-    }
+	}
 }
