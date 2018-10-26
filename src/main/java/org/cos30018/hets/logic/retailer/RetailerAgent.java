@@ -80,14 +80,14 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 		StringBuilder stringBuilder = new StringBuilder().append(message.getSender().getLocalName()).append(" send a ")
 				.append(ACLMessage.getAllPerformativeNames()[message.getPerformative()]).append(": ");
 
-		if (message.getContent() != null) {
-			try {
+		try {
+			if (message.getContentObject() != null) {
 				stringBuilder.append(message.getContentObject());
-			} catch (UnreadableException e) {
-				stringBuilder.append(e.getMessage());
+			} else {
+				stringBuilder.append(" - ");
 			}
-		} else {
-			stringBuilder.append(" - ");
+		} catch (UnreadableException e) {
+			stringBuilder.append(e.getMessage());
 		}
 
 		String negotiationMessage = stringBuilder.toString();
