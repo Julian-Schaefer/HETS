@@ -2,8 +2,8 @@ package org.cos30018.hets.negotiation.strategy;
 
 public class FixedPriceStrategy extends Strategy {
 
-	public FixedPriceStrategy(double reservationValue) {
-		super(reservationValue);
+	public FixedPriceStrategy() {
+		super(0);
 	}
 
 	@Override
@@ -20,5 +20,6 @@ public class FixedPriceStrategy extends Strategy {
 	@Override
 	public void reset(double initialPrice) {
 		super.reset(initialPrice);
+		reservationValue = initialPrice;
 	}
 }
