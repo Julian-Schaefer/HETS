@@ -137,11 +137,16 @@ public class RetailerRequestBehaviour extends ContractNetInitiator {
 			if (!accepted) {
 				newIteration(newIteration);
 			} else {
-				for (Object o : propositions) {
+				for (Object o : newIteration) {
 					if (o instanceof ACLMessage) {
 						ACLMessage response = (ACLMessage) o;
 						if (response.getPerformative() != ACLMessage.ACCEPT_PROPOSAL) {
-							response.setPerformative(ACLMessage.REFUSE);
+							response.setPerformative(ACLMessage.REJECT_PROPOSAL);
+							try {
+								response.setContentObject(null);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						}
 						acceptances.add(response);
 					}
