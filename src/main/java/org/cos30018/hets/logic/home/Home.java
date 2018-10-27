@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cos30018.hets.negotiation.Offer;
+import org.cos30018.hets.negotiation.strategy.Strategy;
 
 import jade.core.AID;
 
@@ -46,9 +47,9 @@ public interface Home {
 
 	Map<Integer, Offer> getNegotiatedOffers();
 
-	double getReservationValue();
+	Strategy getNegotiationStrategy();
 
-	void setReservationValue(double reservationValue);
+	void setNegotiationStrategy(Strategy strategy);
 
 	void addListener(HomeListener listener);
 

@@ -38,7 +38,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 	private void setUp() {
 		JPanel strategySelectorPanel = new JPanel(new GridLayout(1, 2, 20, 20));
-		JLabel strategyLabel = new JLabel("Strategy:");
+		JLabel strategyLabel = new JLabel("Negotiation Strategy:");
 		strategySelectorPanel.add(addToJPanel(strategyLabel));
 
 		String[] strategies = { Strategy.STRATEGY_FIXED_PRICE, Strategy.STRATEGY_MODELLING,
@@ -57,6 +57,10 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 	public Strategy getStrategy() {
 		String selectedStrategy = (String) strategyComboBox.getSelectedItem();
+		if (selectedStrategy == null) {
+			throw new RuntimeException("Please select a strategy.");
+		}
+
 		switch (selectedStrategy) {
 		case Strategy.STRATEGY_FIXED_PRICE:
 			return new FixedPriceStrategy();

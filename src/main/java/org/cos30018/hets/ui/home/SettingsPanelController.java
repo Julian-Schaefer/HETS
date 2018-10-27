@@ -24,37 +24,29 @@ public class SettingsPanelController implements HomeListener, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		long interval;
+		int periods;
 
-		if (e.getActionCommand().equals(SettingsPanel.RESERVATION_VALUE_CHANGE)) {
-			try {
-				double reservationValue = Long.valueOf(settingsPanel.getReservationValueTextField().getText());
-				home.setReservationValue(reservationValue);
-			} catch (NumberFormatException exception) {
-				JOptionPane.showMessageDialog(null, "Please enter a valid reservation value.", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		} else if (e.getActionCommand().equals(SettingsPanel.PERIOD_CHANGE)) {
-			try {
-				long interval = Long.valueOf(settingsPanel.getPeriodIntervalTextField().getText());
-				home.setIntervalPeriod(interval * 1000);
-			} catch (NumberFormatException exception) {
-				JOptionPane.showMessageDialog(null, "Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-		} else if (e.getActionCommand().equals(SettingsPanel.FORECAST_PERIODS_CHANGE)) {
-			try {
-				int periods = Integer.valueOf(settingsPanel.getForecastPeriodsTextField().getText());
-				home.setForecastPeriodCount(periods);
-			} catch (NumberFormatException exception) {
-				JOptionPane.showMessageDialog(null, "Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
-			}
+		try {
+			interval = Long.valueOf(settingsPanel.getPeriodIntervalTextField().getText());
+		} catch (NumberFormatException exception) {
+			JOptionPane.showMessageDialog(null, "Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		try {
+			periods = Integer.valueOf(settingsPanel.getForecastPeriodsTextField().getText());
+		} catch (NumberFormatException exception) {
+			JOptionPane.showMessageDialog(null, "Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 
+		home.setIntervalPeriod(interval * 1000);
+		home.setForecastPeriodCount(periods);
 		settingsPanel.update();
 	}
 
 	@Override
 	public void onTotalUsageForecastUpdated(int period, double totalUsageForecast) {
-		settingsPanel.update();
 	}
 
 	@Override

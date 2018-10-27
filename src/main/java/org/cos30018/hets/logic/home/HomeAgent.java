@@ -11,6 +11,7 @@ import org.cos30018.hets.logic.home.behaviour.ApplianceUsageRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.HomeAgentNegotiationBehaviour;
 import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
 import org.cos30018.hets.negotiation.Offer;
+import org.cos30018.hets.negotiation.strategy.Strategy;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -43,7 +44,7 @@ public class HomeAgent extends Agent implements Home {
 
 	private long intervalPeriod = 5000;
 
-	private double reservationValue;
+	private Strategy negotiationStrategy;
 
 	public HomeAgent() {
 		registerO2AInterface(Home.class, this);
@@ -215,13 +216,13 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public double getReservationValue() {
-		return reservationValue;
+	public Strategy getNegotiationStrategy() {
+		return negotiationStrategy;
 	}
 
 	@Override
-	public void setReservationValue(double reservationValue) {
-		this.reservationValue = reservationValue;
+	public void setNegotiationStrategy(Strategy strategy) {
+		this.negotiationStrategy = strategy;
 	}
 
 	@Override

@@ -12,7 +12,6 @@ import org.cos30018.hets.negotiation.Negotiation;
 import org.cos30018.hets.negotiation.Offer;
 import org.cos30018.hets.negotiation.Offer.Status;
 import org.cos30018.hets.negotiation.strategy.Strategy;
-import org.cos30018.hets.negotiation.strategy.TimeDependentStrategy;
 import org.cos30018.hets.negotiation.utility.OfferUtility;
 
 import jade.core.AID;
@@ -28,7 +27,6 @@ public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 	 */
 	private static final long serialVersionUID = -2422652535325745455L;
 
-	private int deadLineRound = 20;
 	private final int period;
 
 	private OfferUtility utility;
@@ -66,13 +64,18 @@ public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 	private Map<AID, Negotiation> negotiations = new HashMap<>();
 
 	private void initNegotiation() {
-		utility = new OfferUtility(0, homeAgent.getReservationValue(), 1, 0);
-		for (AID retailerAID : homeAgent.getRetailers()) {
-			Strategy strategy = new TimeDependentStrategy(deadLineRound, 20, 4);
-			strategy.reset(0);
+		utility = new OfferUtility(0, homeAgent.getNegotiationStrategy().getReservationValue(), 1, 0);
 
-			Negotiation negotiation = new Negotiation(strategy, utility);
-			negotiations.put(retailerAID, negotiation);
+		for (AID retailerAID : homeAgent.getRetailers()) {
+			try {
+				Strategy strategy = (Strategy) homeAgent.getNegotiationStrategy().clone();
+				strategy.reset(0);
+
+				Negotiation negotiation = new Negotiation(strategy, utility);
+				negotiations.put(retailerAID, negotiation);
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
