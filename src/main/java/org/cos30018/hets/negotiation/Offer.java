@@ -25,6 +25,7 @@ public class Offer implements Serializable {
 	private int startPeriod;
 	private int numberOfPeriods;
 	private Status status;
+	private double excessPrice = 150.0;
 
 	public Offer(AID retailerId, double price, double amount, int startPeriod, int numberOfPeriods) {
 		this.retailerId = retailerId;
@@ -111,5 +112,13 @@ public class Offer implements Serializable {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public double getExcessPrice() {
+		return excessPrice;
+	}
+
+	public void setExcessPrice(double excessPrice) {
+		this.excessPrice = excessPrice;
 	}
 }

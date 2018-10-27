@@ -4,17 +4,20 @@ import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
 import org.cos30018.hets.negotiation.Offer;
 import org.cos30018.hets.ui.custom.graph.ForecastAndActualGraph;
+import org.cos30018.hets.ui.custom.graph.NegotiatedAndActualPriceGraph;
 import org.cos30018.hets.ui.custom.graph.NegotiatedPriceGraph;
 
 import jade.core.AID;
 
 public class HomeDashboardPanelController implements HomeListener {
 
-	HomeDashboardPanel homeDashboardPanel;
+	private HomeDashboardPanel homeDashboardPanel;
+	private Home home;
 
 	public HomeDashboardPanelController(HomeDashboardPanel homeDashboardPanel, Home home) {
 		this.homeDashboardPanel = homeDashboardPanel;
-		home.addListener(this);
+		this.home = home;
+		this.home.addListener(this);
 	}
 
 	@Override
@@ -37,6 +40,35 @@ public class HomeDashboardPanelController implements HomeListener {
 	public void onNewNegotiatedOffer(int period, Offer offer) {
 		NegotiatedPriceGraph negotiatedPriceGraph = homeDashboardPanel.getNegotiatedPriceGraph();
 		negotiatedPriceGraph.addNegotiatedPrice(period, offer.getPrice());
+
+		NegotiatedAndActualPriceGraph negotiatedAndActualPriceGraph = homeDashboardPanel
+				.getNegotiatedAndActualPriceGraph();
+
+		if (home.getNegotiatedOffers().containsKey(home.getNextPeriod())) {
+			Offer nextNegotiatedOffer = home.getNegotiatedOffers().get(home.getNextPeriod());
+			negotiatedAndActualPriceGraph.addForecastValue(home.getNextPeriod(),
+					home.getTotalUsageForecast(home.getNextPeriod()) * nextNegotiatedOffer.getPrice());
+		}
+
+		if (home.getNegotiatedOffers().containsKey(home.getCurrentPeriod())) {
+			Offer currentNegotiatedOffer = home.getNegotiatedOffers().get(home.getCurrentPeriod());
+			double forecastedUsage = home.getTotalUsageForecast(home.getCurrentPeriod());
+			double actualUsage = home.getActualTotalUsage(home.getCurrentPeriod());
+
+			double forecastedPrice = forecastedUsage * currentNegotiatedOffer.getPrice();
+			double actualPrice = actualUsage * currentNegotiatedOffer.getPrice();
+
+			if (forecastedUsage < actualUsage) {
+				double difference = actualUsage - forecastedUsage;
+				double differencePrice = difference * currentNegotiatedOffer.getExcessPrice();
+				negotiatedAndActualPriceGraph.addActualValue(home.getCurrentPeriod(), actualPrice);
+				negotiatedAndActualPriceGraph.addDifferenceValue(home.getCurrentPeriod(), differencePrice);
+			} else {
+				negotiatedAndActualPriceGraph.addActualValue(home.getCurrentPeriod(), actualPrice);
+				negotiatedAndActualPriceGraph.addDifferenceValue(home.getCurrentPeriod(),
+						forecastedPrice - actualPrice);
+			}
+		}
 
 		homeDashboardPanel.update();
 	}

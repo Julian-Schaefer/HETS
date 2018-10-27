@@ -115,19 +115,19 @@ public class RetailerInformationPanel extends JPanel {
 
 	public void update() {
 		if (home.getNegotiatedOffers().containsKey(home.getNextPeriod())) {
-			Offer negotiatedOffer = home.getNegotiatedOffers().get(home.getNextPeriod());
-			nextNegotiatedPriceLbl.setText(NumberUtil.toString(negotiatedOffer.getPrice()));
-			nextAnticipatedTotalPriceLbl.setText(
-					NumberUtil.toString(home.getTotalUsageForecast(home.getNextPeriod()) * negotiatedOffer.getPrice()));
-			nextSelectedRetailerLbl.setText(negotiatedOffer.getRetailerId().getLocalName());
+			Offer nextNegotiatedOffer = home.getNegotiatedOffers().get(home.getNextPeriod());
+			nextNegotiatedPriceLbl.setText(NumberUtil.toString(nextNegotiatedOffer.getPrice()));
+			nextAnticipatedTotalPriceLbl.setText(NumberUtil
+					.toString(home.getTotalUsageForecast(home.getNextPeriod()) * nextNegotiatedOffer.getPrice()));
+			nextSelectedRetailerLbl.setText(nextNegotiatedOffer.getRetailerId().getLocalName());
 		}
 
 		if (home.getNegotiatedOffers().containsKey(home.getCurrentPeriod())) {
-			Offer negotiatedOffer = home.getNegotiatedOffers().get(home.getCurrentPeriod());
-			currentNegotiatedPriceLbl.setText(NumberUtil.toString(negotiatedOffer.getPrice()));
+			Offer currentNegotiatedOffer = home.getNegotiatedOffers().get(home.getCurrentPeriod());
+			currentNegotiatedPriceLbl.setText(NumberUtil.toString(currentNegotiatedOffer.getPrice()));
 			currentAnticipatedTotalPriceLbl.setText(NumberUtil
-					.toString(home.getTotalUsageForecast(home.getCurrentPeriod()) * negotiatedOffer.getPrice()));
-			currentSelectedRetailerLbl.setText(negotiatedOffer.getRetailerId().getLocalName());
+					.toString(home.getTotalUsageForecast(home.getCurrentPeriod()) * currentNegotiatedOffer.getPrice()));
+			currentSelectedRetailerLbl.setText(currentNegotiatedOffer.getRetailerId().getLocalName());
 		}
 	}
 
