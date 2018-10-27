@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.negotiation.Offer;
+import org.cos30018.hets.util.NumberUtil;
 
 public class RetailerInformationPanel extends JPanel {
 
@@ -115,18 +116,18 @@ public class RetailerInformationPanel extends JPanel {
 	public void update() {
 		if (home.getNegotiatedOffers().containsKey(home.getNextPeriod())) {
 			Offer negotiatedOffer = home.getNegotiatedOffers().get(home.getNextPeriod());
-			nextNegotiatedPriceLbl.setText(String.valueOf(negotiatedOffer.getPrice()));
+			nextNegotiatedPriceLbl.setText(NumberUtil.toString(negotiatedOffer.getPrice()));
 			nextAnticipatedTotalPriceLbl.setText(
-					String.valueOf(home.getTotalUsageForecast(home.getNextPeriod()) * negotiatedOffer.getPrice()));
-			nextSelectedRetailerLbl.setText(String.valueOf(negotiatedOffer.getRetailerId().getLocalName()));
+					NumberUtil.toString(home.getTotalUsageForecast(home.getNextPeriod()) * negotiatedOffer.getPrice()));
+			nextSelectedRetailerLbl.setText(negotiatedOffer.getRetailerId().getLocalName());
 		}
 
 		if (home.getNegotiatedOffers().containsKey(home.getCurrentPeriod())) {
 			Offer negotiatedOffer = home.getNegotiatedOffers().get(home.getCurrentPeriod());
-			currentNegotiatedPriceLbl.setText(String.valueOf(negotiatedOffer.getPrice()));
-			currentAnticipatedTotalPriceLbl.setText(
-					String.valueOf(home.getTotalUsageForecast(home.getCurrentPeriod()) * negotiatedOffer.getPrice()));
-			currentSelectedRetailerLbl.setText(String.valueOf(negotiatedOffer.getRetailerId().getLocalName()));
+			currentNegotiatedPriceLbl.setText(NumberUtil.toString(negotiatedOffer.getPrice()));
+			currentAnticipatedTotalPriceLbl.setText(NumberUtil
+					.toString(home.getTotalUsageForecast(home.getCurrentPeriod()) * negotiatedOffer.getPrice()));
+			currentSelectedRetailerLbl.setText(negotiatedOffer.getRetailerId().getLocalName());
 		}
 	}
 

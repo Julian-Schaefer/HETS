@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.cos30018.hets.logic.home.Home;
+import org.cos30018.hets.util.NumberUtil;
 
 public class ApplianceInformationPanel extends JPanel {
 
@@ -92,17 +93,17 @@ public class ApplianceInformationPanel extends JPanel {
 	}
 
 	public void update() {
-		nextForecastedTotalUsageLbl.setText(String.valueOf(home.getTotalUsageForecast(home.getNextPeriod())));
+		nextForecastedTotalUsageLbl.setText(NumberUtil.toString(home.getTotalUsageForecast(home.getNextPeriod())));
 
 		Map<Integer, Double> usageForecasts = home.getTotalUsageForecasts();
 		if (usageForecasts.containsKey(home.getCurrentPeriod())) {
 			double lastForecast = usageForecasts.get(home.getCurrentPeriod());
-			forecastedTotalUsageLbl.setText(String.valueOf(lastForecast));
+			forecastedTotalUsageLbl.setText(NumberUtil.toString(lastForecast));
 
 			double actualUsage = home.getActualTotalUsage(home.getCurrentPeriod());
-			actualTotalUsageLbl.setText(String.valueOf(actualUsage));
+			actualTotalUsageLbl.setText(NumberUtil.toString(actualUsage));
 
-			differenceUsageLbl.setText(String.valueOf(lastForecast - actualUsage));
+			differenceUsageLbl.setText(NumberUtil.toString(lastForecast - actualUsage));
 		}
 	}
 
