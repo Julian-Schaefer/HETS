@@ -34,49 +34,50 @@ public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 	public static HomeAgentNegotiationBehaviour create(HomeAgent homeAgent) {
 		ACLMessage msg = new ACLMessage(ACLMessage.CFP);
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_ITERATED_CONTRACT_NET);
-		for (AID retailerAID : homeAgent.getRetailers()) {
-			msg.addReceiver(retailerAID);
-		}
+
+		OfferUtility utility = new OfferUtility(0, homeAgent.getNegotiationStrategy().getReservationValue(), 1, 0);
 
 		int period = homeAgent.getNextPeriod();
 		Offer initialOffer = new Offer(0.0, homeAgent.getTotalUsageForecast(period), period, 1);
+
+		Map<AID, Negotiation> negotiations = new HashMap<>();
+		for (AID retailerAID : homeAgent.getRetailers()) {
+			msg.addReceiver(retailerAID);
+
+			try {
+				Strategy strategy = (Strategy) homeAgent.getNegotiationStrategy().clone();
+				strategy.reset(0);
+
+				Negotiation negotiation = new Negotiation(strategy, utility);
+				negotiation.createCounterOffer(initialOffer);
+				negotiations.put(retailerAID, negotiation);
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		try {
 			msg.setContentObject(initialOffer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return new HomeAgentNegotiationBehaviour(homeAgent, period, msg);
+		return new HomeAgentNegotiationBehaviour(homeAgent, period, utility, negotiations, msg);
 	}
 
 	private HomeAgent homeAgent;
 
 	private Map<ACLMessage, Offer> acceptedOfferMessages = new HashMap<>();
 
-	private HomeAgentNegotiationBehaviour(HomeAgent homeAgent, int period, ACLMessage msg) {
+	private Map<AID, Negotiation> negotiations = new HashMap<>();
+
+	private HomeAgentNegotiationBehaviour(HomeAgent homeAgent, int period, OfferUtility utility,
+			Map<AID, Negotiation> negotiations, ACLMessage msg) {
 		super(homeAgent, msg);
 		this.homeAgent = homeAgent;
 		this.period = period;
-
-		initNegotiation();
-	}
-
-	private Map<AID, Negotiation> negotiations = new HashMap<>();
-
-	private void initNegotiation() {
-		utility = new OfferUtility(0, homeAgent.getNegotiationStrategy().getReservationValue(), 1, 0);
-
-		for (AID retailerAID : homeAgent.getRetailers()) {
-			try {
-				Strategy strategy = (Strategy) homeAgent.getNegotiationStrategy().clone();
-				strategy.reset(0);
-
-				Negotiation negotiation = new Negotiation(strategy, utility);
-				negotiations.put(retailerAID, negotiation);
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
-		}
+		this.utility = utility;
+		this.negotiations = negotiations;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

@@ -12,6 +12,7 @@ import org.cos30018.hets.logic.home.behaviour.HomeAgentNegotiationBehaviour;
 import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
 import org.cos30018.hets.negotiation.Offer;
 import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.strategy.TimeDependentStrategy;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -44,7 +45,7 @@ public class HomeAgent extends Agent implements Home {
 
 	private long intervalPeriod = 5000;
 
-	private Strategy negotiationStrategy;
+	private Strategy negotiationStrategy = new TimeDependentStrategy(20, 50, 1);
 
 	public HomeAgent() {
 		registerO2AInterface(Home.class, this);

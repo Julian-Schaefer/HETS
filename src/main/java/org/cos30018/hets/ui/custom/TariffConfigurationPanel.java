@@ -24,9 +24,8 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 	private JComboBox<String> tariffComboBox;
 	private JPanel tariffSpecificationPanel;
 
-	private JTextField fixedPriceTextField;
-	private JTextField deadLineTextField;
-	private JTextField reservationValueTextField;
+	private JTextField fixedPriceMinTextField;
+	private JTextField fixedPriceMaxTextField;
 
 	public TariffConfigurationPanel() {
 		setLayout(new BorderLayout());
@@ -55,7 +54,19 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 		String selectedTariff = (String) tariffComboBox.getSelectedItem();
 		switch (selectedTariff) {
 		case Tariff.TARIFF_RANDOM:
-			return new RandomTariff();
+			try {
+				double minValue = Double.valueOf(fixedPriceMinTextField.getText());
+				double maxValue = Double.valueOf(fixedPriceMaxTextField.getText());
+
+				if (minValue < 0 || maxValue <= 0) {
+					throw new RuntimeException("Please enter a positive numbers for the Random Tariff.");
+				}
+
+				return new RandomTariff(minValue, maxValue);
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Please enter a valid numbers for the Random Tariff.");
+			}
+
 		case Tariff.TARIFF_BLOCK:
 			throw new RuntimeException("Not supported yet!");
 		case Tariff.TARIFF_TIME_OF_USE:
@@ -73,6 +84,7 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 			String selectedTariff = (String) tariffComboBox.getSelectedItem();
 			switch (selectedTariff) {
 			case Tariff.TARIFF_RANDOM:
+				tariffSpecificationPanel.add(getFixedPricePanel());
 				break;
 			case Tariff.TARIFF_BLOCK:
 				break;
@@ -87,31 +99,25 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 	}
 
 	private JPanel getFixedPricePanel() {
-		JPanel panel = new JPanel(new GridLayout(1, 2));
+		JPanel panel = new JPanel(new GridLayout(2, 2));
 
-		JLabel fixedPriceTextLbl = new JLabel("Fixed Price:");
-		panel.add(addToJPanel(fixedPriceTextLbl));
+		JLabel fixedPriceMinTextLbl = new JLabel("Minimum Price:");
+		panel.add(addToJPanel(fixedPriceMinTextLbl));
 
-		fixedPriceTextField = new JTextField(8);
-		panel.add(addToJPanel(fixedPriceTextField));
+		fixedPriceMinTextField = new JTextField(8);
+		panel.add(addToJPanel(fixedPriceMinTextField));
+
+		JLabel fixedPriceMaxTextLbl = new JLabel("Maximum Price:");
+		panel.add(addToJPanel(fixedPriceMaxTextLbl));
+
+		fixedPriceMaxTextField = new JTextField(8);
+		panel.add(addToJPanel(fixedPriceMaxTextField));
 
 		return panel;
 	}
 
 	private JPanel getModellingPanel() {
 		JPanel panel = new JPanel(new GridLayout(2, 2));
-
-		JLabel deadlineTextLbl = new JLabel("Deadline (Rounds):");
-		panel.add(addToJPanel(deadlineTextLbl));
-
-		deadLineTextField = new JTextField(8);
-		panel.add(addToJPanel(deadLineTextField));
-
-		JLabel reservationValueTextLbl = new JLabel("Reservation Value:");
-		panel.add(addToJPanel(reservationValueTextLbl));
-
-		reservationValueTextField = new JTextField(8);
-		panel.add(addToJPanel(reservationValueTextField));
 
 		return panel;
 	}

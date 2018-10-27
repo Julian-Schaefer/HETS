@@ -8,7 +8,7 @@ public abstract class Strategy implements Cloneable {
 
 	protected double initialValue;
 	protected double reservationValue;
-	protected int round = 1;
+	protected int round;
 
 	public Strategy(double reservationValue) {
 		this.reservationValue = reservationValue;
@@ -18,7 +18,7 @@ public abstract class Strategy implements Cloneable {
 
 	public void reset(double initialValue) {
 		this.initialValue = initialValue;
-		this.round = 1;
+		this.round = 0;
 	}
 
 	public abstract String getName();

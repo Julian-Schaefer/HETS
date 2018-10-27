@@ -17,7 +17,7 @@ public class TimeDependentStrategy extends Strategy {
 
 	@Override
 	public double getNewValue() throws DeadlineExceededException {
-		if (round == deadline + 1) {
+		if (round == deadline) {
 			throw new DeadlineExceededException();
 		}
 
@@ -28,7 +28,7 @@ public class TimeDependentStrategy extends Strategy {
 
 	private double calculateNewValue() {
 		double kj = 0.0;
-		double alpha = kj + (1 - kj) * Math.pow((Double.valueOf(round) / Double.valueOf(deadline)), (1.0 / beta));
+		double alpha = kj + (1 - kj) * Math.pow((Double.valueOf(round) / Double.valueOf(deadline - 1.0)), (1.0 / beta));
 
 		return minValue + alpha * (maxValue - minValue);
 	}
