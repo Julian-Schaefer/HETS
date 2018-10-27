@@ -31,7 +31,7 @@ public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 	private int deadLineRound = 20;
 	private final int period;
 
-	private OfferUtility utility = new OfferUtility(0, 100, 1, 0);
+	private OfferUtility utility;
 
 	public static HomeAgentNegotiationBehaviour create(HomeAgent homeAgent) {
 		ACLMessage msg = new ACLMessage(ACLMessage.CFP);
@@ -66,6 +66,7 @@ public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 	private Map<AID, Negotiation> negotiations = new HashMap<>();
 
 	private void initNegotiation() {
+		utility = new OfferUtility(0, homeAgent.getReservationValue(), 1, 0);
 		for (AID retailerAID : homeAgent.getRetailers()) {
 			Strategy strategy = new TimeDependentStrategy(deadLineRound, 20, 4);
 			strategy.reset(0);

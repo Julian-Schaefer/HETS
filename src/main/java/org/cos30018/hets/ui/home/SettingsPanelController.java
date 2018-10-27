@@ -24,7 +24,16 @@ public class SettingsPanelController implements HomeListener, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(SettingsPanel.PERIOD_CHANGE)) {
+
+		if (e.getActionCommand().equals(SettingsPanel.RESERVATION_VALUE_CHANGE)) {
+			try {
+				double reservationValue = Long.valueOf(settingsPanel.getReservationValueTextField().getText());
+				home.setReservationValue(reservationValue);
+			} catch (NumberFormatException exception) {
+				JOptionPane.showMessageDialog(null, "Please enter a valid reservation value.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		} else if (e.getActionCommand().equals(SettingsPanel.PERIOD_CHANGE)) {
 			try {
 				long interval = Long.valueOf(settingsPanel.getPeriodIntervalTextField().getText());
 				home.setIntervalPeriod(interval * 1000);

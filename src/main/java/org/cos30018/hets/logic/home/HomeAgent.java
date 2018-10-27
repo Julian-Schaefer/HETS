@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.cos30018.hets.logic.home.behaviour.ApplianceForecastRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.ApplianceUsageRequestBehaviour;
-import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
 import org.cos30018.hets.logic.home.behaviour.HomeAgentNegotiationBehaviour;
+import org.cos30018.hets.logic.home.behaviour.HomeAgentRegisterRespondBehaviour;
 import org.cos30018.hets.negotiation.Offer;
 
 import jade.core.AID;
@@ -42,6 +42,8 @@ public class HomeAgent extends Agent implements Home {
 	private Map<Integer, Offer> negotiatedOffers = new HashMap<>();
 
 	private long intervalPeriod = 5000;
+
+	private double reservationValue;
 
 	public HomeAgent() {
 		registerO2AInterface(Home.class, this);
@@ -210,6 +212,16 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public int getNextPeriod() {
 		return period + 1;
+	}
+
+	@Override
+	public double getReservationValue() {
+		return reservationValue;
+	}
+
+	@Override
+	public void setReservationValue(double reservationValue) {
+		this.reservationValue = reservationValue;
 	}
 
 	@Override

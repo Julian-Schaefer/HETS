@@ -19,6 +19,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class SettingsPanel extends JPanel {
 
+	public static final String RESERVATION_VALUE_CHANGE = "reservation_value";
 	public static final String PERIOD_CHANGE = "period_change";
 	public static final String FORECAST_PERIODS_CHANGE = "forecast_periods_change";
 
@@ -33,6 +34,7 @@ public class SettingsPanel extends JPanel {
 	private JButton homeButton;
 	private JLabel registeredAppliancesLabel;
 	private JLabel registeredRetailersLabel;
+	private JTextField reservationValueTextField;
 	private JTextField periodIntervalTextField;
 	private JTextField forecastPeriodsTextField;
 
@@ -47,7 +49,7 @@ public class SettingsPanel extends JPanel {
 
 	private void setUp() {
 		setLayout(new MigLayout("insets 20 20 20 20"));
-		//setBackground(Color.white);
+		// setBackground(Color.white);
 
 		JLabel titleSettings = new JLabel("Settings");
 		titleSettings.setFont(new Font("Raleway", Font.BOLD, 40));
@@ -74,6 +76,9 @@ public class SettingsPanel extends JPanel {
 		JLabel subTitle = new JLabel("General");
 		subTitle.setFont(new Font("Raleway", Font.PLAIN, 20));
 
+		JLabel reservationValueLbl = new JLabel("Reservation Value (Cent/kwH)");
+		reservationValueLbl.setFont(new Font("Raleway", Font.PLAIN, 16));
+
 		JLabel lblTimeInterval = new JLabel("Current Time Interval (seconds)");
 		lblTimeInterval.setFont(new Font("Raleway", Font.PLAIN, 16));
 
@@ -86,11 +91,20 @@ public class SettingsPanel extends JPanel {
 		JLabel lblRegisterRetailers = new JLabel("Currently Registered Retailers");
 		lblRegisterRetailers.setFont(new Font("Raleway", Font.PLAIN, 16));
 
+		reservationValueTextField = new JTextField(8);
 		periodIntervalTextField = new JTextField(8);
 		forecastPeriodsTextField = new JTextField(8);
 
+		JButton reservationValueChangeButton = new JButton("Change");
 		JButton periodChangeButton = new JButton("Change");
 		JButton forecastChangeButton = new JButton("Change");
+
+		reservationValueChangeButton.setBackground(new Color(0x2dce98));
+		reservationValueChangeButton.setFont(new Font("Raleway", Font.BOLD, 14));
+		reservationValueChangeButton.setForeground(Color.white);
+		reservationValueChangeButton.setUI(new StyledButtonUI());
+		reservationValueChangeButton.setActionCommand(RESERVATION_VALUE_CHANGE);
+		reservationValueChangeButton.addActionListener(controller);
 
 		periodChangeButton.setBackground(new Color(0x2dce98));
 		periodChangeButton.setFont(new Font("Raleway", Font.BOLD, 14));
@@ -110,6 +124,10 @@ public class SettingsPanel extends JPanel {
 		registeredRetailersLabel = new JLabel();
 
 		// content.add(subTitle, "wrap");
+
+		content.add(reservationValueLbl, "span 1");
+		content.add(reservationValueTextField, "span 1");
+		content.add(reservationValueChangeButton, "span 3, wrap 5");
 
 		content.add(lblTimeInterval, "span 1");
 		content.add(periodIntervalTextField, "span 1");
@@ -141,6 +159,10 @@ public class SettingsPanel extends JPanel {
 		if (!periodInterval.equals(periodIntervalTextField.getText()) && !periodIntervalTextField.hasFocus()) {
 			periodIntervalTextField.setText(periodInterval);
 		}
+	}
+
+	public JTextField getReservationValueTextField() {
+		return reservationValueTextField;
 	}
 
 	public JTextField getPeriodIntervalTextField() {

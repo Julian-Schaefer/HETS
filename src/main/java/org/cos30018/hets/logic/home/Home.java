@@ -42,11 +42,15 @@ public interface Home {
 
 	double getActualTotalUsage(int period);
 
-	void addListener(HomeListener listener);
-
 	void setNegotiatedOffer(int period, Offer offer);
 
 	Map<Integer, Offer> getNegotiatedOffers();
+
+	double getReservationValue();
+
+	void setReservationValue(double reservationValue);
+
+	void addListener(HomeListener listener);
 
 	public interface HomeListener {
 		void onTotalUsageForecastUpdated(int period, double totalUsageForecast);
