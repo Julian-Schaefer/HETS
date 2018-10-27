@@ -28,15 +28,14 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 	private JTextField deadLineTextField;
 	private JTextField reservationValueTextField;
-
 	private JTextField betaTextField;
 
-	public StrategyConfigurationPanel() {
+	public StrategyConfigurationPanel(Strategy strategy) {
 		setLayout(new BorderLayout());
-		setUp();
+		setUp(strategy);
 	}
 
-	private void setUp() {
+	private void setUp(Strategy strategy) {
 		JPanel strategySelectorPanel = new JPanel(new GridLayout(1, 2, 20, 20));
 		JLabel strategyLabel = new JLabel("Negotiation Strategy:");
 		strategySelectorPanel.add(addToJPanel(strategyLabel));
@@ -52,7 +51,18 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		strategySpecificationPanel = new JPanel(new BorderLayout());
 		add(strategySpecificationPanel, BorderLayout.CENTER);
 
-		strategyComboBox.setSelectedItem(Strategy.STRATEGY_FIXED_PRICE);
+		if (strategy != null) {
+			if (strategy instanceof TimeDependentStrategy) {
+				strategyComboBox.setSelectedItem(Strategy.STRATEGY_TIME_DEPENDENT);
+
+				TimeDependentStrategy timeDependentStrategy = (TimeDependentStrategy) strategy;
+				deadLineTextField.setText(String.valueOf(timeDependentStrategy.getDeadline()));
+				reservationValueTextField.setText(String.valueOf(timeDependentStrategy.getReservationValue()));
+				betaTextField.setText(String.valueOf(timeDependentStrategy.getBeta()));
+			}
+		} else {
+			strategyComboBox.setSelectedItem(Strategy.STRATEGY_FIXED_PRICE);
+		}
 	}
 
 	public Strategy getStrategy() {

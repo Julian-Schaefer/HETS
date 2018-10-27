@@ -34,7 +34,7 @@ public class NegotiationStrategySelectorWindow extends JFrame {
 	}
 
 	private void setUp() {
-		strategyConfigurationPanel = new StrategyConfigurationPanel();
+		strategyConfigurationPanel = new StrategyConfigurationPanel(home.getNegotiationStrategy());
 		add(strategyConfigurationPanel, BorderLayout.CENTER);
 
 		JPanel bottomButtonPanel = new JPanel();

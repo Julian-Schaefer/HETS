@@ -54,7 +54,7 @@ public class AddRetailerWindow extends JFrame {
 
 		JPanel strategyAndTariffPanel = new JPanel(new GridLayout(2, 1));
 
-		strategyConfigurationPanel = new StrategyConfigurationPanel();
+		strategyConfigurationPanel = new StrategyConfigurationPanel(null);
 		strategyAndTariffPanel.add(strategyConfigurationPanel);
 
 		tariffConfigurationPanel = new TariffConfigurationPanel();
