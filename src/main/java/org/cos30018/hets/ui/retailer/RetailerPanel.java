@@ -1,6 +1,8 @@
 package org.cos30018.hets.ui.retailer;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -41,7 +43,7 @@ public class RetailerPanel extends JPanel implements ActionListener {
 	private void setup() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//buttonPanel.setBackground(Color.WHITE);
+		// buttonPanel.setBackground(Color.WHITE);
 
 		addRetailerButton = new JButton("Add Retailer");
 		addRetailerButton.setFont(new Font("Raleway", Font.BOLD, 18));
@@ -59,14 +61,14 @@ public class RetailerPanel extends JPanel implements ActionListener {
 		JScrollPane scrollPane = new JScrollPane(panelList);
 		add(scrollPane, BorderLayout.CENTER);
 	}
-	
-	public void addRetailerAgent(AID aid) {			
+
+	public void addRetailerAgent(AID aid) {
 		AgentPanel agentPanel = new AgentPanel(aid);
 		agentPanel.setAgentPanelListener(controller);
-        
-		agentPanelForAID.put(aid, panelList.addJPanel(agentPanel));
+
+		agentPanelForAID.put(aid, panelList.addJPanel(agentPanel, new EmptyBorder(20, 10, 20, 10)));
 	}
-	
+
 	public void removeRetailerAgent(AID aid) {
 		panelList.remove(agentPanelForAID.get(aid));
 		agentPanelForAID.remove(aid);
@@ -77,11 +79,11 @@ public class RetailerPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		listener.onRetailerAddButtonClick();
 	}
-	
+
 	public void setRetailerPanelListener(RetailerPanelListener listener) {
 		this.listener = listener;
 	}
-	
+
 	public interface RetailerPanelListener {
 		void onRetailerAddButtonClick();
 	}

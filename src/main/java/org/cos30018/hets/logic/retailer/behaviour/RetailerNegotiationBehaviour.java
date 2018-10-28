@@ -36,7 +36,7 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 			Strategy strategy = (Strategy) retailerAgent.getStrategy().clone();
 
 			Offer initialOffer = (Offer) initiationMessage.getContentObject();
-			double initialPrice = retailerAgent.getTariff().getPrice(initialOffer.getAmount(),
+			double initialPrice = retailerAgent.getTariff().getVolumeCharge(initialOffer.getAmount(),
 					initialOffer.getStartPeriod());
 			strategy.reset(initialPrice);
 

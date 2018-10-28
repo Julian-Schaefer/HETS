@@ -13,7 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import org.cos30018.hets.ui.custom.*;
+import org.cos30018.hets.ui.custom.AgentPanel;
+import org.cos30018.hets.ui.custom.JPanelList;
 import org.cos30018.hets.ui.custom.button.StyledButtonUI;
 
 import jade.core.AID;
@@ -42,7 +43,7 @@ public class AppliancePanel extends JPanel implements ActionListener {
 	private void setup() {
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		//buttonPanel.setBackground(Color.WHITE);
+		// buttonPanel.setBackground(Color.WHITE);
 
 		addApplianceButton = new JButton("Add Appliance");
 		addApplianceButton.setFont(new Font("Raleway", Font.BOLD, 18));
@@ -71,7 +72,7 @@ public class AppliancePanel extends JPanel implements ActionListener {
 		AgentPanel agentPanel = new AgentPanel(aid);
 		agentPanel.setAgentPanelListener(controller);
 
-		agentPanelForAID.put(aid, panelList.addJPanel(agentPanel));
+		agentPanelForAID.put(aid, panelList.addJPanel(agentPanel, new EmptyBorder(20, 10, 20, 10)));
 	}
 
 	/**

@@ -11,7 +11,7 @@ public class BlockTariff extends Tariff {
 	}
 
 	@Override
-	public double getPrice(double requestedAmount, int period) {
+	public double getVolumeCharge(double requestedAmount, int period) {
 		for (Map.Entry<BlockRange, Double> blockRate : blockRates.entrySet()) {
 			BlockRange range = blockRate.getKey();
 			if (requestedAmount >= range.startCapacity && requestedAmount <= range.endCapacity) {
@@ -20,6 +20,12 @@ public class BlockTariff extends Tariff {
 		}
 
 		throw new NotInRangeException();
+	}
+
+	@Override
+	public double getFeedInCharge(double requestedAmount, int period) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override

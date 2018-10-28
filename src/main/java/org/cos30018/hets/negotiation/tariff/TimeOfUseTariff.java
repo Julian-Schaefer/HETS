@@ -2,10 +2,22 @@ package org.cos30018.hets.negotiation.tariff;
 
 public class TimeOfUseTariff extends Tariff {
 
+	private double[] volumeCharges;
+	private double[] feedInRates;
+
+	public TimeOfUseTariff(double[] volumeCharges, double[] feedInRates) {
+		this.volumeCharges = volumeCharges;
+		this.feedInRates = feedInRates;
+	}
+
 	@Override
-	public double getPrice(double requestedAmount, int period) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getVolumeCharge(double requestedAmount, int period) {
+		return volumeCharges[period % 24];
+	}
+
+	@Override
+	public double getFeedInCharge(double requestedAmount, int period) {
+		return feedInRates[period % 24];
 	}
 
 	@Override
