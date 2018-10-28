@@ -2,27 +2,28 @@ package org.cos30018.hets.ui.home;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.*;
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.xml.parsers.ParserConfigurationException;
 
 import jade.core.AID;
-import org.cos30018.hets.App;
+import jade.wrapper.StaleProxyException;
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance;
 import org.cos30018.hets.logic.home.Home;
+import org.cos30018.hets.logic.retailer.Retailer;
+import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.tariff.Tariff;
+import org.cos30018.hets.ui.custom.ReadFile;
 import org.cos30018.hets.ui.custom.WriteFile;
-import org.cos30018.hets.ui.custom.button.StyledButtonUI;
 import org.cos30018.hets.ui.custom.button.StyledPopupMenuUI;
 import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
 import org.cos30018.hets.ui.home.dashboard.HomeDashboardPanel;
+import org.xml.sax.SAXException;
 
 public class HomePanel extends JPanel {
 
@@ -61,10 +62,12 @@ public class HomePanel extends JPanel {
 
 	public JPanel getHomeContentPanel() {
 		JPanel homeContentLayout = new JPanel(new BorderLayout());
-
 		JPanel titlePanel = new JPanel(new BorderLayout());
+		JPanel btnPanel = new JPanel(new BorderLayout());
+		btnPanel.setBackground(Color.WHITE);
 		titlePanel.setBackground(Color.white);
 		titlePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
 		JLabel titleHome = new JLabel("Home");
 		titleHome.setFont(new Font("Raleway", Font.BOLD, 40));
 
@@ -88,7 +91,9 @@ public class HomePanel extends JPanel {
 		});
 
 		titlePanel.add(titleHome, BorderLayout.CENTER);
-		titlePanel.add(btnSettings, BorderLayout.EAST);
+		btnPanel.add(btnConfigFile, BorderLayout.WEST);
+		btnPanel.add(btnSettings, BorderLayout.EAST);
+		titlePanel.add(btnPanel, BorderLayout.EAST);
 		homeContentLayout.add(titlePanel, BorderLayout.NORTH);
 
 		HomeDashboardPanel homeDashboardPanel = new HomeDashboardPanel();
@@ -116,15 +121,29 @@ public class HomePanel extends JPanel {
 			System.out.println("Save Config is clicked");
 			SaveFile();
 
-
 		});
 		popupMenu.add(menuItemSaveFile);
 
 		JMenuItem menuItemLoadFile = new JMenuItem("Load Config File");
 		menuItemLoadFile.setFont(new Font("Raleway", Font.PLAIN, 14));
 		menuItemLoadFile.setBackground(Color.white);
-		popupMenu.add(menuItemLoadFile);
+		menuItemLoadFile.addActionListener((e1) -> {
+            System.out.println("Load Config is clicked");
+            try {
+                LoadFile();
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            } catch (SAXException e2) {
+                e2.printStackTrace();
+            } catch (ParserConfigurationException e2) {
+                e2.printStackTrace();
+            } catch (StaleProxyException e2) {
+                e2.printStackTrace();
+            }
 
+        });
+
+		popupMenu.add(menuItemLoadFile);
 		popupMenu.setUI(new StyledPopupMenuUI());
 
 
@@ -156,23 +175,85 @@ public class HomePanel extends JPanel {
 
 	}
 
-	private void SaveFile() {
+    private void LoadFile() throws IOException, SAXException, ParserConfigurationException, StaleProxyException {
+
+        ReadFile readFile = new ReadFile();
+
+       List<List<String>> applianceList = readFile.LoadAppliances();
+
+       for (List<String> appliance: applianceList) {
+
+           System.out.println("name: " + appliance.get(0));
+           System.out.println("type: " + appliance.get(1));
+           System.out.println("forecast: " + appliance.get(2));
+
+           String name = appliance.get(0);
+           Appliance.ApplianceType type = Appliance.ApplianceType.valueOf(appliance.get(1));
+           Appliance.ForecastingMethod forecastingMethod = Appliance.ForecastingMethod.valueOf(appliance.get(2));
+
+           System.out.println("Appliance Type: " + type);
+           System.out.println("Appliance Forecast method: " + forecastingMethod);
+
+           JadeController.getInstance().addApplianceAgent(name, type, forecastingMethod);
+
+       }
+
+        List<List<String>> retailerList = readFile.LoadRetailers();
+
+        for (List<String> retailer: retailerList) {
+
+            System.out.println("name: " + retailer.get(0));
+            System.out.println("strategy: " + retailer.get(1));
+            System.out.println("tariff: " + retailer.get(2));
+
+
+            String name = retailer.get(0);
+
+            String tariff = retailer.get(2);
+
+
+             // = Appliance.ApplianceType.valueOf(retailer.get(1));
+           // Appliance.ForecastingMethod forecastingMethod = Appliance.ForecastingMethod.valueOf(retailer.get(2));
+
+            //System.out.println("Appliance Type: " + strategy);
+            System.out.println("Appliance Forecast method: " + tariff);
+            //JadeController.getInstance().addRetailerAgent(name, Strategy.STRATEGY_FIXED_PRICE, Tariff.TARIFF_RANDOM);
+
+        }
+
+    }
+
+    private void SaveFile() {
 
 		WriteFile writeFile = new WriteFile();
 
-		List<AID> appliances = JadeController.getInstance().getHome().getAppliances();
+		/** get Appliance List **/
+		List<AID> aidApplianceList = JadeController.getInstance().getHome().getAppliances();
+		List<Appliance> applianceList = new ArrayList<Appliance>();
 
-		List<AID> listAppliances = new ArrayList<AID>();
-
-        for (Iterator<AID> aidIterator = appliances.iterator(); aidIterator.hasNext();) {
-            AID applianceAID = aidIterator.next();
-
-            listAppliances.add(applianceAID);
+		for (AID aid: aidApplianceList){
+		    System.out.println(aid);
+		    Appliance appliance = JadeController.getInstance().getAppliance(aid);
+		    applianceList.add(appliance);
 
         }
-        writeFile.writeXmlFile(listAppliances);
+        writeFile.writeAppliances(applianceList);
 
-        System.out.println("Appliances: " + appliances);
+        System.out.println("APPLIANCES: " + applianceList);
+
+
+        /** get Retailer List **/
+        List<AID> aidRetailerList = JadeController.getInstance().getHome().getRetailers();
+        List<Retailer> retailerList = new ArrayList<Retailer>();
+
+        for (AID aid: aidRetailerList){
+            System.out.println(aid);
+            Retailer retailer = JadeController.getInstance().getRetailer(aid);
+            retailerList.add(retailer);
+        }
+        writeFile.writeRetailers(retailerList);
+
+        System.out.println("Retailers: " + retailerList);
 	}
 
 

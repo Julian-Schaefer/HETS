@@ -67,6 +67,7 @@ public class JadeController {
 		return home;
 	}
 
+
 	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod)
 			throws StaleProxyException {
 		addAgent("appliance_" + name, ApplianceAgent.class, new Object[] { applianceType, forecastingMethod });

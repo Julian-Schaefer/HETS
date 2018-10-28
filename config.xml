@@ -2,16 +2,31 @@
 <Agents>
     <Appliances>
         <Appliance>
-            <Name>( agent-identifier :name "appliance_Appliance 01@192.168.0.4:8888/JADE"  :addresses (sequence http://MALAKA.home:7778/acc ))</Name>
+            <Name>org.cos30018.hets.logic.appliance.ApplianceAgent@5f765573</Name>
+            <Type>DISHWASHER</Type>
+            <Forecast>SIMPLE</Forecast>
         </Appliance>
         <Appliance>
-            <Name>( agent-identifier :name "appliance_Appliance 02@192.168.0.4:8888/JADE"  :addresses (sequence http://MALAKA.home:7778/acc ))</Name>
+            <Name>org.cos30018.hets.logic.appliance.ApplianceAgent@41173ea6</Name>
+            <Type>FRIDGE</Type>
+            <Forecast>MODERATE</Forecast>
         </Appliance>
         <Appliance>
-            <Name>( agent-identifier :name "appliance_Appliance 03@192.168.0.4:8888/JADE"  :addresses (sequence http://MALAKA.home:7778/acc ))</Name>
-        </Appliance>
-        <Appliance>
-            <Name>( agent-identifier :name "appliance_Appliance 04@192.168.0.4:8888/JADE"  :addresses (sequence http://MALAKA.home:7778/acc ))</Name>
+            <Name>org.cos30018.hets.logic.appliance.ApplianceAgent@2619bb9c</Name>
+            <Type>WASHING_MACHINE</Type>
+            <Forecast>COMPLEX</Forecast>
         </Appliance>
     </Appliances>
+    <Retailers>
+        <Retailer>
+            <Name>org.cos30018.hets.logic.retailer.RetailerAgent@5878bd9b</Name>
+            <Strategy>Fixed Price</Strategy>
+            <Tariff>Random Tariff</Tariff>
+        </Retailer>
+        <Retailer>
+            <Name>org.cos30018.hets.logic.retailer.RetailerAgent@29936c1</Name>
+            <Strategy>Fixed Price</Strategy>
+            <Tariff>Random Tariff</Tariff>
+        </Retailer>
+    </Retailers>
 </Agents>
