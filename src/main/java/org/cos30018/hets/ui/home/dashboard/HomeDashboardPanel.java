@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.home.Home;
@@ -53,25 +52,23 @@ public class HomeDashboardPanel extends JPanel {
 		add(periodContainer, BorderLayout.NORTH);
 
 		JPanel mainContainer = new JPanel(new GridLayout(2, 2, 20, 20));
-		mainContainer.setPreferredSize(new Dimension(0, 800));
+		mainContainer.setUI(new StyledJPanelUI());
+		mainContainer.setBackground(Color.WHITE);
+		mainContainer.setPreferredSize(new Dimension(0, 900));
 
 		forecastAndActualGraph = new ForecastAndActualGraph();
-		forecastAndActualGraph.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(forecastAndActualGraph);
 
 		negotiatedPriceGraph = new NegotiatedPriceGraph();
-		negotiatedPriceGraph.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(negotiatedPriceGraph);
 
 		applianceInformationPanel = new ApplianceInformationPanel(home);
-		applianceInformationPanel.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(applianceInformationPanel);
 
 		retailerInformationPanel = new RetailerInformationPanel(home);
-		retailerInformationPanel.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(retailerInformationPanel);
 
