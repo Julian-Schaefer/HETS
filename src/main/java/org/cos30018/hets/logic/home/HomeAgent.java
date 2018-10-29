@@ -43,9 +43,9 @@ public class HomeAgent extends Agent implements Home {
 
 	private Map<Integer, Offer> negotiatedOffers = new HashMap<>();
 
-	private long intervalPeriod = 5000;
+	private long intervalPeriod;
 
-	private Strategy negotiationStrategy = new TimeDependentStrategy(20, 50, 1);
+	private Strategy negotiationStrategy;
 
 	public HomeAgent() {
 		registerO2AInterface(Home.class, this);
@@ -53,6 +53,8 @@ public class HomeAgent extends Agent implements Home {
 
 	@Override
 	protected void setup() {
+		reset();
+
 		ServiceDescription sd = new ServiceDescription();
 		sd.setType(HOME_AGENT_SERVICE);
 		sd.setName(getLocalName());
@@ -102,6 +104,21 @@ public class HomeAgent extends Agent implements Home {
 			DFService.deregister(this);
 		} catch (Exception e) {
 		}
+	}
+
+	@Override
+	public void reset() {
+		period = START_PERIOD - 1;
+		forecastPeriodCount = 0;
+		intervalPeriod = 5000;
+		negotiationStrategy = new TimeDependentStrategy(20, 50, 1);
+
+		applianceAIDs.clear();
+		retailerAIDs.clear();
+
+		usageForecasts.clear();
+		actualUsages.clear();
+		negotiatedOffers.clear();
 	}
 
 	@Override

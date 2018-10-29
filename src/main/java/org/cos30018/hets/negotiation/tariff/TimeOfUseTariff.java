@@ -24,4 +24,20 @@ public class TimeOfUseTariff extends Tariff {
 	public String getName() {
 		return TARIFF_TIME_OF_USE;
 	}
+
+	public double[] getVolumeCharges() {
+		return volumeCharges;
+	}
+
+	public void setVolumeCharges(double[] volumeCharges) {
+		this.volumeCharges = volumeCharges;
+	}
+
+	public double[] getFeedInRates() {
+		return feedInRates;
+	}
+
+	public void setFeedInRates(double[] feedInRates) {
+		this.feedInRates = feedInRates;
+	}
 }

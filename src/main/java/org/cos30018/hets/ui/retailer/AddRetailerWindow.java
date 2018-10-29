@@ -79,7 +79,7 @@ public class AddRetailerWindow extends JFrame {
 		if (!nameTextField.getText().isEmpty()) {
 			try {
 				JadeController.getInstance().addRetailerAgent(nameTextField.getText(),
-						strategyConfigurationPanel.getStrategy(), tariffConfigurationPanel.getTariff());
+						strategyConfigurationPanel.getStrategy(), tariffConfigurationPanel.getTariff(), true);
 
 				dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 			} catch (Exception e) {

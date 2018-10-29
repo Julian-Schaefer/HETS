@@ -29,4 +29,36 @@ public class RandomTariff extends Tariff {
 	public String getName() {
 		return TARIFF_RANDOM;
 	}
+
+	public double getVolumeChargeMinValue() {
+		return volumeChargeMinValue;
+	}
+
+	public void setVolumeChargeMinValue(double volumeChargeMinValue) {
+		this.volumeChargeMinValue = volumeChargeMinValue;
+	}
+
+	public double getVolumeChargeMaxValue() {
+		return volumeChargeMaxValue;
+	}
+
+	public void setVolumeChargeMaxValue(double volumeChargeMaxValue) {
+		this.volumeChargeMaxValue = volumeChargeMaxValue;
+	}
+
+	public double getFeedInRateMinValue() {
+		return feedInRateMinValue;
+	}
+
+	public void setFeedInRateMinValue(double feedInRateMinValue) {
+		this.feedInRateMinValue = feedInRateMinValue;
+	}
+
+	public double getFeedInRateMaxValue() {
+		return feedInRateMaxValue;
+	}
+
+	public void setFeedInRateMaxValue(double feedInRateMaxValue) {
+		this.feedInRateMaxValue = feedInRateMaxValue;
+	}
 }

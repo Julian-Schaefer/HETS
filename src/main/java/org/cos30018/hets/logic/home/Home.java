@@ -11,6 +11,8 @@ import jade.core.AID;
 public interface Home {
 	public static final int START_PERIOD = 0;
 
+	void reset();
+
 	void setPeriod(int period);
 
 	void nextPeriod();

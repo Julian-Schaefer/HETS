@@ -9,17 +9,11 @@ import org.cos30018.hets.negotiation.tariff.Tariff;
 
 public interface Retailer {
 
+	String getLocalName();
+
 	Tariff getTariff();
 
 	Strategy getStrategy();
-
-	void setVolumeCharge(double volumeCharge);
-
-	double getVolumeCharge();
-
-	void setFeedInRate(double feedInRate);
-
-	double getFeedInRate();
 
 	List<String> getNegotiationMessages();
 

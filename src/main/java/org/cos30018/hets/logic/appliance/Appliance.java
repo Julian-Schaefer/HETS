@@ -11,6 +11,8 @@ public interface Appliance {
 		SIMPLE, MODERATE, COMPLEX
 	}
 
+	String getLocalName();
+
 	void setApplianceType(ApplianceType applianceType);
 
 	ApplianceType getType();

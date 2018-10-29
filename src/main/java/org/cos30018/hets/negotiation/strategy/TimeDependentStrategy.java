@@ -38,7 +38,7 @@ public class TimeDependentStrategy extends Strategy {
 		return Strategy.STRATEGY_TIME_DEPENDENT;
 	}
 
-	public double getDeadline() {
+	public int getDeadline() {
 		return deadline;
 	}
 
