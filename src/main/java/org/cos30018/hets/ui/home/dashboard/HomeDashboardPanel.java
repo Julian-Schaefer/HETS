@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import org.cos30018.hets.logic.JadeController;
@@ -25,7 +24,6 @@ public class HomeDashboardPanel extends JPanel {
 
 	private Home home;
 
-	private PeriodControllerPanel periodControllerPanel;
 	private ForecastAndActualGraph forecastAndActualGraph;
 	private NegotiatedPriceGraph negotiatedPriceGraph;
 	private NegotiatedAndActualPriceGraph negotiatedAndActualPriceGraph;
@@ -40,24 +38,10 @@ public class HomeDashboardPanel extends JPanel {
 	}
 
 	private void setUp() {
-		JPanel periodContainer = new JPanel(new BorderLayout());
-
-		JPanel subPeriodContainer = new JPanel(new BorderLayout());
-		subPeriodContainer.setUI(new StyledJPanelUI());
-		subPeriodContainer.setBackground(Color.WHITE);
-
-		periodContainer.setBorder(new EmptyBorder(20, 0, 20, 0));
-		periodControllerPanel = new PeriodControllerPanel(home);
-		periodControllerPanel.setBackground(Color.WHITE);
-
-		subPeriodContainer.add(periodControllerPanel);
-		periodContainer.add(subPeriodContainer);
-		add(periodContainer, BorderLayout.NORTH);
-
 		JPanel mainContainer = new JPanel(new GridLayout(3, 2, 20, 20));
 		mainContainer.setUI(new StyledJPanelUI());
 		mainContainer.setBackground(Color.WHITE);
-		mainContainer.setPreferredSize(new Dimension(0, 900));
+		mainContainer.setPreferredSize(new Dimension(0, 1200));
 
 		forecastAndActualGraph = new ForecastAndActualGraph();
 
@@ -86,10 +70,6 @@ public class HomeDashboardPanel extends JPanel {
 	public void update() {
 		applianceInformationPanel.update();
 		retailerInformationPanel.update();
-	}
-
-	public PeriodControllerPanel getPeriodControllerPanel() {
-		return periodControllerPanel;
 	}
 
 	public ForecastAndActualGraph getForecastAndActualGraph() {

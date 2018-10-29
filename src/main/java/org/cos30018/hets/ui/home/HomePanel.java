@@ -25,9 +25,11 @@ import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.retailer.Retailer;
+import org.cos30018.hets.ui.custom.button.StyledJPanelUI;
 import org.cos30018.hets.ui.custom.button.StyledPopupMenuUI;
 import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
 import org.cos30018.hets.ui.home.dashboard.HomeDashboardPanel;
+import org.cos30018.hets.ui.home.dashboard.PeriodControllerPanel;
 import org.cos30018.hets.util.ConfigurationReader;
 import org.cos30018.hets.util.ConfigurationWriter;
 
@@ -68,6 +70,11 @@ public class HomePanel extends JPanel {
 		add(settingsPanel, SETTINGS_PANEL);
 	}
 
+	private void reset() {
+		removeAll();
+		setUp();
+	}
+
 	public JPanel getHomeContentPanel() {
 		JPanel homeContentLayout = new JPanel(new BorderLayout());
 		JPanel titlePanel = new JPanel(new BorderLayout());
@@ -101,11 +108,28 @@ public class HomePanel extends JPanel {
 		titlePanel.add(btnPanel, BorderLayout.EAST);
 		homeContentLayout.add(titlePanel, BorderLayout.NORTH);
 
+		JPanel contentPanel = new JPanel(new BorderLayout());
+
+		JPanel periodContainer = new JPanel(new BorderLayout());
+
+		JPanel subPeriodContainer = new JPanel(new BorderLayout());
+		subPeriodContainer.setUI(new StyledJPanelUI());
+		subPeriodContainer.setBackground(Color.WHITE);
+
+		periodContainer.setBorder(new EmptyBorder(5, 20, 20, 15));
+		PeriodControllerPanel periodControllerPanel = new PeriodControllerPanel(home);
+		periodControllerPanel.setBackground(Color.WHITE);
+
+		subPeriodContainer.add(periodControllerPanel);
+		periodContainer.add(subPeriodContainer);
+		contentPanel.add(periodContainer, BorderLayout.NORTH);
+
 		HomeDashboardPanel homeDashboardPanel = new HomeDashboardPanel();
-		homeDashboardPanel.setBorder(new EmptyBorder(0, 20, 20, 20));
+		homeDashboardPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
 		JScrollPane scrollPane = new JScrollPane(homeDashboardPanel);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-		homeContentLayout.add(scrollPane, BorderLayout.CENTER);
+		contentPanel.add(scrollPane, BorderLayout.CENTER);
+		homeContentLayout.add(contentPanel, BorderLayout.CENTER);
 
 		return homeContentLayout;
 	}
@@ -158,6 +182,7 @@ public class HomePanel extends JPanel {
 
 	private void LoadFile() {
 		ConfigurationReader.readConfiguration();
+		reset();
 	}
 
 	private void SaveFile() {

@@ -106,6 +106,7 @@ public class ConfigurationReader {
 		Strategy strategy = getStrategy(strategyElement);
 
 		Home home = jadeController.getHome();
+		home.reset();
 		home.setNegotiationStrategy(strategy);
 	}
 
