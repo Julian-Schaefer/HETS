@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class HomePanel extends JPanel {
 	public JPanel getHomeContentPanel() {
 		JPanel homeContentLayout = new JPanel(new BorderLayout());
 		JPanel titlePanel = new JPanel(new BorderLayout());
-		JPanel btnPanel = new JPanel(new BorderLayout());
+		JPanel btnPanel = new JPanel(new GridLayout(1, 2, 15, 0));
 		titlePanel.setBorder(new EmptyBorder(20, 20, 5, 20));
 
 		JLabel titleHome = new JLabel("Home");
@@ -95,8 +96,8 @@ public class HomePanel extends JPanel {
 		});
 
 		titlePanel.add(titleHome, BorderLayout.CENTER);
-		btnPanel.add(btnConfigFile, BorderLayout.WEST);
-		btnPanel.add(btnSettings, BorderLayout.EAST);
+		btnPanel.add(btnConfigFile);
+		btnPanel.add(btnSettings);
 		titlePanel.add(btnPanel, BorderLayout.EAST);
 		homeContentLayout.add(titlePanel, BorderLayout.NORTH);
 
