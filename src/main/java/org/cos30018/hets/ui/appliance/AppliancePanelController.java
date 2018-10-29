@@ -32,6 +32,7 @@ public class AppliancePanelController implements AppliancePanelListener, AgentPa
                 "Forecast Method", forecastCombo
         };
 
+
         JOptionPane.showConfirmDialog(null, dialogComponents, "Add Appliance", JOptionPane.OK_CANCEL_OPTION);
 
         if (!applianceNameField.getText().isEmpty()) {

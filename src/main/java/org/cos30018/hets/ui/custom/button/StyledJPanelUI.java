@@ -28,6 +28,7 @@ public class StyledJPanelUI extends BasicPanelUI {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(p.getBackground().darker());
+        //g.setColor(new Color(0x2dce98));
         g.fillRoundRect(0, yOffset, size.width, size.height - yOffset, 20, 20);
         g.setColor(p.getBackground());
         g.fillRoundRect(0, yOffset, size.width, size.height + yOffset - 1, 20, 20);

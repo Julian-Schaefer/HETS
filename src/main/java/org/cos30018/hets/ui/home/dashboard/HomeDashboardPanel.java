@@ -53,30 +53,31 @@ public class HomeDashboardPanel extends JPanel {
 
 		JPanel mainContainer = new JPanel(new GridLayout(2, 2, 20, 20));
 		//change
-        //mainContainer.setBackground(Color.WHITE);
-		mainContainer.setPreferredSize(new Dimension(0, 800));
+		mainContainer.setUI(new StyledJPanelUI());
+        mainContainer.setBackground(Color.WHITE);
+		mainContainer.setPreferredSize(new Dimension(0, 900));
 
 		forecastAndActualGraph = new ForecastAndActualGraph();
         //change
-		forecastAndActualGraph.setBorder(LineBorder.createGrayLineBorder());
+		//forecastAndActualGraph.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(forecastAndActualGraph);
 
 		negotiatedPriceGraph = new NegotiatedPriceGraph();
         //change
-		negotiatedPriceGraph.setBorder(LineBorder.createGrayLineBorder());
+		//negotiatedPriceGraph.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(negotiatedPriceGraph);
 
 		applianceInformationPanel = new ApplianceInformationPanel(home);
         //change
-		applianceInformationPanel.setBorder(LineBorder.createGrayLineBorder());
+		//applianceInformationPanel.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(applianceInformationPanel);
 
 		retailerInformationPanel = new RetailerInformationPanel(home);
         //change
-		retailerInformationPanel.setBorder(LineBorder.createGrayLineBorder());
+		//retailerInformationPanel.setBorder(LineBorder.createGrayLineBorder());
 
 		mainContainer.add(retailerInformationPanel);
 

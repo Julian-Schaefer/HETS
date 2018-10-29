@@ -64,9 +64,9 @@ public class HomePanel extends JPanel {
 		JPanel homeContentLayout = new JPanel(new BorderLayout());
 		JPanel titlePanel = new JPanel(new BorderLayout());
 		JPanel btnPanel = new JPanel(new BorderLayout());
-		btnPanel.setBackground(Color.WHITE);
-		titlePanel.setBackground(Color.white);
-		titlePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+		//btnPanel.setBackground(Color.WHITE);
+		//titlePanel.setBackground(Color.white);
+		titlePanel.setBorder(new EmptyBorder(20, 20, 5, 20));
 
 		JLabel titleHome = new JLabel("Home");
 		titleHome.setFont(new Font("Raleway", Font.BOLD, 40));
