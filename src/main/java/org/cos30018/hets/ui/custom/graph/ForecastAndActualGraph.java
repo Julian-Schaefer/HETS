@@ -90,10 +90,10 @@ public class ForecastAndActualGraph extends JPanel {
 
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
-		renderer.setSeriesPaint(0, Color.RED);
+		renderer.setSeriesPaint(0, Color.GRAY);
 		renderer.setSeriesStroke(0, new BasicStroke(2.0f));
 
-		renderer.setSeriesPaint(1, Color.BLUE);
+		renderer.setSeriesPaint(1, new Color(0x2dce98));
 		renderer.setSeriesStroke(1, new BasicStroke(2.0f));
 
 		plot.setRenderer(renderer);
