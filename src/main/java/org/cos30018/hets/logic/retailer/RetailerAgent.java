@@ -109,30 +109,6 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 	}
 
 	@Override
-	public void setVolumeCharge(double volumeCharge) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public double getVolumeCharge() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setFeedInRate(double feedInRate) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public double getFeedInRate() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public void addRetailerListener(RetailerListener listener) {
 		listeners.add(listener);
 	}

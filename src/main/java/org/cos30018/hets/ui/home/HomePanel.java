@@ -27,6 +27,7 @@ import org.cos30018.hets.logic.retailer.Retailer;
 import org.cos30018.hets.ui.custom.button.StyledPopupMenuUI;
 import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
 import org.cos30018.hets.ui.home.dashboard.HomeDashboardPanel;
+import org.cos30018.hets.util.ConfigurationReader;
 import org.cos30018.hets.util.ConfigurationWriter;
 
 import jade.core.AID;
@@ -155,6 +156,7 @@ public class HomePanel extends JPanel {
 	}
 
 	private void LoadFile() {
+		ConfigurationReader.readConfiguration();
 	}
 
 	private void SaveFile() {

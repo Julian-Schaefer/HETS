@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.cos30018.hets.Configuration;
@@ -29,6 +30,9 @@ public class ConfigurationWriter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
+			JOptionPane.showMessageDialog(null, "Configuration has been written!", "Success",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

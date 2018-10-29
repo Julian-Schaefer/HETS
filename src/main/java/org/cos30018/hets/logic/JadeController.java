@@ -77,9 +77,12 @@ public class JadeController {
 		}
 	}
 
-	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod)
-			throws StaleProxyException {
-		addAgent("appliance_" + name, ApplianceAgent.class, new Object[] { applianceType, forecastingMethod });
+	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod,
+			boolean addPrefix) throws StaleProxyException {
+		if (addPrefix) {
+			name = "appliance_" + name;
+		}
+		addAgent(name, ApplianceAgent.class, new Object[] { applianceType, forecastingMethod });
 	}
 
 	public Appliance getAppliance(AID aid) {
@@ -93,8 +96,13 @@ public class JadeController {
 		return null;
 	}
 
-	public void addRetailerAgent(String name, Strategy strategy, Tariff tariff) throws StaleProxyException {
-		addAgent("retailer_" + name, RetailerAgent.class, new Object[] { strategy, tariff });
+	public void addRetailerAgent(String name, Strategy strategy, Tariff tariff, boolean addPrefix)
+			throws StaleProxyException {
+		if (addPrefix) {
+			name = "retailer_" + name;
+		}
+
+		addAgent(name, RetailerAgent.class, new Object[] { strategy, tariff });
 	}
 
 	public Retailer getRetailer(AID aid) {
