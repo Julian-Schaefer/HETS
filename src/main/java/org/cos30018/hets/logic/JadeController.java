@@ -67,6 +67,15 @@ public class JadeController {
 		return home;
 	}
 
+	public void killAllAgents() {
+		for (AID applianceAID : home.getAppliances()) {
+			removeAgent(applianceAID);
+		}
+
+		for (AID retailerAID : home.getRetailers()) {
+			removeAgent(retailerAID);
+		}
+	}
 
 	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod)
 			throws StaleProxyException {

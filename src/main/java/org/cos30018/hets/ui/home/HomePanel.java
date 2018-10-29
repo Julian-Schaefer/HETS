@@ -1,29 +1,35 @@
 package org.cos30018.hets.ui.home;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.xml.parsers.ParserConfigurationException;
 
-import jade.core.AID;
-import jade.wrapper.StaleProxyException;
+import org.cos30018.hets.Configuration;
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.retailer.Retailer;
-import org.cos30018.hets.negotiation.strategy.Strategy;
-import org.cos30018.hets.negotiation.tariff.Tariff;
-import org.cos30018.hets.ui.custom.ReadFile;
-import org.cos30018.hets.ui.custom.WriteFile;
 import org.cos30018.hets.ui.custom.button.StyledPopupMenuUI;
 import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
 import org.cos30018.hets.ui.home.dashboard.HomeDashboardPanel;
-import org.xml.sax.SAXException;
+import org.cos30018.hets.util.ConfigurationWriter;
+
+import jade.core.AID;
 
 public class HomePanel extends JPanel {
 
@@ -71,7 +77,6 @@ public class HomePanel extends JPanel {
 		JLabel titleHome = new JLabel("Home");
 		titleHome.setFont(new Font("Raleway", Font.BOLD, 40));
 
-
 		btnConfigFile = new JButton();
 		btnConfigFile.setIcon(new ImageIcon(getClass().getResource("/images/file_add_outline_2x_18dp.png")));
 		btnConfigFile.setBackground(new Color(0x2dce98));
@@ -105,22 +110,14 @@ public class HomePanel extends JPanel {
 		return homeContentLayout;
 	}
 
-
-
 	private void showFileMenu(ActionEvent e) {
-
-		/**
-		 * Creating Popup Menu
-		 */
 		JPopupMenu popupMenu = new JPopupMenu();
 
 		JMenuItem menuItemSaveFile = new JMenuItem("Save Config File");
 		menuItemSaveFile.setFont(new Font("Raleway", Font.PLAIN, 14));
 		menuItemSaveFile.setBackground(Color.white);
 		menuItemSaveFile.addActionListener((e1) -> {
-			System.out.println("Save Config is clicked");
 			SaveFile();
-
 		});
 		popupMenu.add(menuItemSaveFile);
 
@@ -128,34 +125,13 @@ public class HomePanel extends JPanel {
 		menuItemLoadFile.setFont(new Font("Raleway", Font.PLAIN, 14));
 		menuItemLoadFile.setBackground(Color.white);
 		menuItemLoadFile.addActionListener((e1) -> {
-            System.out.println("Load Config is clicked");
-            try {
-                LoadFile();
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            } catch (SAXException e2) {
-                e2.printStackTrace();
-            } catch (ParserConfigurationException e2) {
-                e2.printStackTrace();
-            } catch (StaleProxyException e2) {
-                e2.printStackTrace();
-            }
-
-        });
+			LoadFile();
+		});
 
 		popupMenu.add(menuItemLoadFile);
 		popupMenu.setUI(new StyledPopupMenuUI());
 
-
-
-
-		/**
-		 * Showing File menu
-		 */
-		//get the event Source
 		Component c = (Component) e.getSource();
-
-		// Get the location of the point 'on the screen'
 		Point p = c.getLocationOnScreen();
 
 		// Show the JPopupMenu via program
@@ -165,98 +141,12 @@ public class HomePanel extends JPanel {
 		// this - represents current frame
 		// 0,0 is the co ordinate where the popup
 		// is shown
-		popupMenu.show(this,0,0);
+		popupMenu.show(this, 0, 0);
 
 		// Now set the location of the JPopupMenu
 		// This location is relative to the screen
-		popupMenu.setLocation(p.x,p.y+c.getHeight());
-
-
-
+		popupMenu.setLocation(p.x, p.y + c.getHeight());
 	}
-
-    private void LoadFile() throws IOException, SAXException, ParserConfigurationException, StaleProxyException {
-
-        ReadFile readFile = new ReadFile();
-
-       List<List<String>> applianceList = readFile.LoadAppliances();
-
-       for (List<String> appliance: applianceList) {
-
-           System.out.println("name: " + appliance.get(0));
-           System.out.println("type: " + appliance.get(1));
-           System.out.println("forecast: " + appliance.get(2));
-
-           String name = appliance.get(0);
-           Appliance.ApplianceType type = Appliance.ApplianceType.valueOf(appliance.get(1));
-           Appliance.ForecastingMethod forecastingMethod = Appliance.ForecastingMethod.valueOf(appliance.get(2));
-
-           System.out.println("Appliance Type: " + type);
-           System.out.println("Appliance Forecast method: " + forecastingMethod);
-
-           JadeController.getInstance().addApplianceAgent(name, type, forecastingMethod);
-
-       }
-
-        List<List<String>> retailerList = readFile.LoadRetailers();
-
-        for (List<String> retailer: retailerList) {
-
-            System.out.println("name: " + retailer.get(0));
-            System.out.println("strategy: " + retailer.get(1));
-            System.out.println("tariff: " + retailer.get(2));
-
-
-            String name = retailer.get(0);
-
-            String tariff = retailer.get(2);
-
-
-             // = Appliance.ApplianceType.valueOf(retailer.get(1));
-           // Appliance.ForecastingMethod forecastingMethod = Appliance.ForecastingMethod.valueOf(retailer.get(2));
-
-            //System.out.println("Appliance Type: " + strategy);
-            System.out.println("Appliance Forecast method: " + tariff);
-            //JadeController.getInstance().addRetailerAgent(name, Strategy.STRATEGY_FIXED_PRICE, Tariff.TARIFF_RANDOM);
-
-        }
-
-    }
-
-    private void SaveFile() {
-
-		WriteFile writeFile = new WriteFile();
-
-		/** get Appliance List **/
-		List<AID> aidApplianceList = JadeController.getInstance().getHome().getAppliances();
-		List<Appliance> applianceList = new ArrayList<Appliance>();
-
-		for (AID aid: aidApplianceList){
-		    System.out.println(aid);
-		    Appliance appliance = JadeController.getInstance().getAppliance(aid);
-		    applianceList.add(appliance);
-
-        }
-        writeFile.writeAppliances(applianceList);
-
-        System.out.println("APPLIANCES: " + applianceList);
-
-
-        /** get Retailer List **/
-        List<AID> aidRetailerList = JadeController.getInstance().getHome().getRetailers();
-        List<Retailer> retailerList = new ArrayList<Retailer>();
-
-        for (AID aid: aidRetailerList){
-            System.out.println(aid);
-            Retailer retailer = JadeController.getInstance().getRetailer(aid);
-            retailerList.add(retailer);
-        }
-        writeFile.writeRetailers(retailerList);
-
-        System.out.println("Retailers: " + retailerList);
-	}
-
-
 
 	public void showHomePanel() {
 		homeLayout.previous(this);
@@ -264,5 +154,30 @@ public class HomePanel extends JPanel {
 
 	public void showSettingsPanel() {
 		homeLayout.next(this);
+	}
+
+	private void LoadFile() {
+	}
+
+	private void SaveFile() {
+		List<AID> aidApplianceList = JadeController.getInstance().getHome().getAppliances();
+		List<Appliance> applianceList = new ArrayList<Appliance>();
+
+		for (AID aid : aidApplianceList) {
+			Appliance appliance = JadeController.getInstance().getAppliance(aid);
+			applianceList.add(appliance);
+
+		}
+
+		List<AID> aidRetailerList = JadeController.getInstance().getHome().getRetailers();
+		List<Retailer> retailerList = new ArrayList<Retailer>();
+
+		for (AID aid : aidRetailerList) {
+			Retailer retailer = JadeController.getInstance().getRetailer(aid);
+			retailerList.add(retailer);
+		}
+
+		Configuration config = new Configuration(JadeController.getInstance().getHome(), applianceList, retailerList);
+		ConfigurationWriter.writeConfig(config);
 	}
 }
