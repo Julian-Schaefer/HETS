@@ -12,7 +12,6 @@ import org.cos30018.hets.negotiation.Negotiation;
 import org.cos30018.hets.negotiation.Offer;
 import org.cos30018.hets.negotiation.Offer.Status;
 import org.cos30018.hets.negotiation.strategy.Strategy;
-import org.cos30018.hets.negotiation.strategy.TimeDependentStrategy;
 import org.cos30018.hets.negotiation.utility.OfferUtility;
 
 import jade.core.AID;
@@ -28,51 +27,57 @@ public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 	 */
 	private static final long serialVersionUID = -2422652535325745455L;
 
-	private int deadLineRound = 20;
 	private final int period;
 
-	private OfferUtility utility = new OfferUtility(0, 100, 1, 0);
+	private OfferUtility utility;
 
 	public static HomeAgentNegotiationBehaviour create(HomeAgent homeAgent) {
 		ACLMessage msg = new ACLMessage(ACLMessage.CFP);
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_ITERATED_CONTRACT_NET);
-		for (AID retailerAID : homeAgent.getRetailers()) {
-			msg.addReceiver(retailerAID);
-		}
+
+		OfferUtility utility = new OfferUtility(0, homeAgent.getNegotiationStrategy().getReservationValue(), 1, 0);
 
 		int period = homeAgent.getNextPeriod();
 		Offer initialOffer = new Offer(0.0, homeAgent.getTotalUsageForecast(period), period, 1);
+
+		Map<AID, Negotiation> negotiations = new HashMap<>();
+		for (AID retailerAID : homeAgent.getRetailers()) {
+			msg.addReceiver(retailerAID);
+
+			try {
+				Strategy strategy = (Strategy) homeAgent.getNegotiationStrategy().clone();
+				strategy.reset(0);
+
+				Negotiation negotiation = new Negotiation(strategy, utility);
+				negotiation.createCounterOffer(initialOffer);
+				negotiations.put(retailerAID, negotiation);
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		try {
 			msg.setContentObject(initialOffer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return new HomeAgentNegotiationBehaviour(homeAgent, period, msg);
+		return new HomeAgentNegotiationBehaviour(homeAgent, period, utility, negotiations, msg);
 	}
 
 	private HomeAgent homeAgent;
 
 	private Map<ACLMessage, Offer> acceptedOfferMessages = new HashMap<>();
 
-	private HomeAgentNegotiationBehaviour(HomeAgent homeAgent, int period, ACLMessage msg) {
+	private Map<AID, Negotiation> negotiations = new HashMap<>();
+
+	private HomeAgentNegotiationBehaviour(HomeAgent homeAgent, int period, OfferUtility utility,
+			Map<AID, Negotiation> negotiations, ACLMessage msg) {
 		super(homeAgent, msg);
 		this.homeAgent = homeAgent;
 		this.period = period;
-
-		initNegotiation();
-	}
-
-	private Map<AID, Negotiation> negotiations = new HashMap<>();
-
-	private void initNegotiation() {
-		for (AID retailerAID : homeAgent.getRetailers()) {
-			Strategy strategy = new TimeDependentStrategy(deadLineRound, 20, 4);
-			strategy.reset(0);
-
-			Negotiation negotiation = new Negotiation(strategy, utility);
-			negotiations.put(retailerAID, negotiation);
-		}
+		this.utility = utility;
+		this.negotiations = negotiations;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

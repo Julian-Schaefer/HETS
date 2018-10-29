@@ -40,6 +40,6 @@ public class Negotiation {
 	}
 
 	public int getRound() {
-		return strategy.getRound();
+		return strategy.getRound() + 1;
 	}
 }

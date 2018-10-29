@@ -1,28 +1,35 @@
 package org.cos30018.hets.ui.home;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import jade.core.AID;
-import org.cos30018.hets.App;
+import org.cos30018.hets.Configuration;
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.appliance.Appliance;
 import org.cos30018.hets.logic.home.Home;
-import org.cos30018.hets.ui.custom.WriteFile;
-import org.cos30018.hets.ui.custom.button.StyledButtonUI;
+import org.cos30018.hets.logic.retailer.Retailer;
 import org.cos30018.hets.ui.custom.button.StyledPopupMenuUI;
 import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
 import org.cos30018.hets.ui.home.dashboard.HomeDashboardPanel;
+import org.cos30018.hets.util.ConfigurationWriter;
+
+import jade.core.AID;
 
 public class HomePanel extends JPanel {
 
@@ -61,13 +68,12 @@ public class HomePanel extends JPanel {
 
 	public JPanel getHomeContentPanel() {
 		JPanel homeContentLayout = new JPanel(new BorderLayout());
-
 		JPanel titlePanel = new JPanel(new BorderLayout());
-		titlePanel.setBackground(Color.white);
-		titlePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+		JPanel btnPanel = new JPanel(new BorderLayout());
+		titlePanel.setBorder(new EmptyBorder(20, 20, 5, 20));
+
 		JLabel titleHome = new JLabel("Home");
 		titleHome.setFont(new Font("Raleway", Font.BOLD, 40));
-
 
 		btnConfigFile = new JButton();
 		btnConfigFile.setIcon(new ImageIcon(getClass().getResource("/images/file_add_outline_2x_18dp.png")));
@@ -88,7 +94,9 @@ public class HomePanel extends JPanel {
 		});
 
 		titlePanel.add(titleHome, BorderLayout.CENTER);
-		titlePanel.add(btnSettings, BorderLayout.EAST);
+		btnPanel.add(btnConfigFile, BorderLayout.WEST);
+		btnPanel.add(btnSettings, BorderLayout.EAST);
+		titlePanel.add(btnPanel, BorderLayout.EAST);
 		homeContentLayout.add(titlePanel, BorderLayout.NORTH);
 
 		HomeDashboardPanel homeDashboardPanel = new HomeDashboardPanel();
@@ -100,43 +108,28 @@ public class HomePanel extends JPanel {
 		return homeContentLayout;
 	}
 
-
-
 	private void showFileMenu(ActionEvent e) {
-
-		/**
-		 * Creating Popup Menu
-		 */
 		JPopupMenu popupMenu = new JPopupMenu();
 
 		JMenuItem menuItemSaveFile = new JMenuItem("Save Config File");
 		menuItemSaveFile.setFont(new Font("Raleway", Font.PLAIN, 14));
 		menuItemSaveFile.setBackground(Color.white);
 		menuItemSaveFile.addActionListener((e1) -> {
-			System.out.println("Save Config is clicked");
 			SaveFile();
-
-
 		});
 		popupMenu.add(menuItemSaveFile);
 
 		JMenuItem menuItemLoadFile = new JMenuItem("Load Config File");
 		menuItemLoadFile.setFont(new Font("Raleway", Font.PLAIN, 14));
 		menuItemLoadFile.setBackground(Color.white);
-		popupMenu.add(menuItemLoadFile);
+		menuItemLoadFile.addActionListener((e1) -> {
+			LoadFile();
+		});
 
+		popupMenu.add(menuItemLoadFile);
 		popupMenu.setUI(new StyledPopupMenuUI());
 
-
-
-
-		/**
-		 * Showing File menu
-		 */
-		//get the event Source
 		Component c = (Component) e.getSource();
-
-		// Get the location of the point 'on the screen'
 		Point p = c.getLocationOnScreen();
 
 		// Show the JPopupMenu via program
@@ -146,36 +139,12 @@ public class HomePanel extends JPanel {
 		// this - represents current frame
 		// 0,0 is the co ordinate where the popup
 		// is shown
-		popupMenu.show(this,0,0);
+		popupMenu.show(this, 0, 0);
 
 		// Now set the location of the JPopupMenu
 		// This location is relative to the screen
-		popupMenu.setLocation(p.x,p.y+c.getHeight());
-
-
-
+		popupMenu.setLocation(p.x, p.y + c.getHeight());
 	}
-
-	private void SaveFile() {
-
-		WriteFile writeFile = new WriteFile();
-
-		List<AID> appliances = JadeController.getInstance().getHome().getAppliances();
-
-		List<AID> listAppliances = new ArrayList<AID>();
-
-        for (Iterator<AID> aidIterator = appliances.iterator(); aidIterator.hasNext();) {
-            AID applianceAID = aidIterator.next();
-
-            listAppliances.add(applianceAID);
-
-        }
-        writeFile.writeXmlFile(listAppliances);
-
-        System.out.println("Appliances: " + appliances);
-	}
-
-
 
 	public void showHomePanel() {
 		homeLayout.previous(this);
@@ -183,5 +152,30 @@ public class HomePanel extends JPanel {
 
 	public void showSettingsPanel() {
 		homeLayout.next(this);
+	}
+
+	private void LoadFile() {
+	}
+
+	private void SaveFile() {
+		List<AID> aidApplianceList = JadeController.getInstance().getHome().getAppliances();
+		List<Appliance> applianceList = new ArrayList<Appliance>();
+
+		for (AID aid : aidApplianceList) {
+			Appliance appliance = JadeController.getInstance().getAppliance(aid);
+			applianceList.add(appliance);
+
+		}
+
+		List<AID> aidRetailerList = JadeController.getInstance().getHome().getRetailers();
+		List<Retailer> retailerList = new ArrayList<Retailer>();
+
+		for (AID aid : aidRetailerList) {
+			Retailer retailer = JadeController.getInstance().getRetailer(aid);
+			retailerList.add(retailer);
+		}
+
+		Configuration config = new Configuration(JadeController.getInstance().getHome(), applianceList, retailerList);
+		ConfigurationWriter.writeConfig(config);
 	}
 }

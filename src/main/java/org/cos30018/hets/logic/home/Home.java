@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cos30018.hets.negotiation.Offer;
+import org.cos30018.hets.negotiation.strategy.Strategy;
 
 import jade.core.AID;
 
@@ -42,11 +43,15 @@ public interface Home {
 
 	double getActualTotalUsage(int period);
 
-	void addListener(HomeListener listener);
-
 	void setNegotiatedOffer(int period, Offer offer);
 
 	Map<Integer, Offer> getNegotiatedOffers();
+
+	Strategy getNegotiationStrategy();
+
+	void setNegotiationStrategy(Strategy strategy);
+
+	void addListener(HomeListener listener);
 
 	public interface HomeListener {
 		void onTotalUsageForecastUpdated(int period, double totalUsageForecast);
