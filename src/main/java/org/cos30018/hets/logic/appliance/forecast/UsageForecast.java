@@ -11,4 +11,5 @@ public abstract class UsageForecast {
 	}
 
 	public abstract double[] calculateForecast(int period, int numberOfPeriods);
+	public abstract double getLastActualUsage(int period, int numberOfPeriods);
 }

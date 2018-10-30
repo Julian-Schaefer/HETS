@@ -10,6 +10,6 @@ public final class WeightedSumFunction implements  InputSummingFunction{
             weightedSum += connection.getWeightedInput();
         }
 
-        return weightedSum;
+        return weightedSum/inputConnections.size();
     }
 }

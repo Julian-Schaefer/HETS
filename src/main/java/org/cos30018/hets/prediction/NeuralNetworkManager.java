@@ -20,9 +20,18 @@ import com.opencsv.CSVReader;
 
 public class NeuralNetworkManager {
 
+	//constants to set neural network structure values
+	public static final int HIDDEN_LAYERS = 1;
+	public static final int HIDDEN_LAYER_SIZE = 16;
+	public static final int TRAINING_SESSIONS = 100;
+	public static final int TOTAL_RECORDS = 35000;
+	public static final int TRAINING_RECORDS = 30000;
+
+
+
 	public double actual;
 	public double lastPrediction;
-	public double discrepency;
+	public double discrepancy;
 	public double newPrediction;
 	public NeuralNetwork neuralNetwork;
 
@@ -52,7 +61,7 @@ public class NeuralNetworkManager {
 		// last predicted reading
 		lastPrediction = 0;
 		// discrepancy
-		discrepency = 0;
+		discrepancy = 0;
 		// new prediction
 		newPrediction = 0;
 
@@ -85,12 +94,12 @@ public class NeuralNetworkManager {
 			// read the first 30,000 data values from the csv file, given the specified
 			// appliance.
 			// Ignores null values
-			for (int i = 0; i < 35000; i++) {
+			for (int i = 0; i < TOTAL_RECORDS; i++) {
 				nextRecord = csvReader.readNext();
 				if (nextRecord != null) {
 					if ((nextRecord[indexToGet] != null) && (indexToGet != -1)) {
 						// get 5,000 results for training and the rest for actual
-						if (i < 30000) {
+						if (i < TRAINING_RECORDS) {
 							dataTrainingElectricity.add(Double.parseDouble(nextRecord[indexToGet]));
 						} else {
 							dataElectricity.add(Double.parseDouble(nextRecord[indexToGet]));
@@ -135,12 +144,12 @@ public class NeuralNetworkManager {
 			// read the first 30,000 data values from the csv file, given the specified
 			// appliance.
 			// Ignores null values
-			for (int i = 0; i < 35000; i++) {
+			for (int i = 0; i < TOTAL_RECORDS; i++) {
 				nextRecord = csvReader.readNext();
 				if (indexToGet != -1) {
 					if (nextRecord[indexToGet] != null && !nextRecord[indexToGet].isEmpty()) {
 						// get 5,000 results for training and the rest for actual
-						if (i < 30000) {
+						if (i < TRAINING_RECORDS) {
 							dataTrainingTemperature.add(Double.parseDouble((nextRecord[indexToGet])));
 							i++;
 							dataTrainingTemperature.add(Double.parseDouble((nextRecord[indexToGet])));
@@ -154,7 +163,7 @@ public class NeuralNetworkManager {
 					// if null, use the last known data point to populate
 					else {
 						Double toAdd;
-						if (i < 30000) {
+						if (i < TRAINING_RECORDS) {
 							toAdd = dataTrainingTemperature.get(dataTrainingTemperature.size() - 1);
 							dataTrainingTemperature.add(toAdd);
 
@@ -183,13 +192,12 @@ public class NeuralNetworkManager {
 		// last predicted reading
 		lastPrediction = 0;
 		// discrepancy
-		discrepency = 0;
+		discrepancy = 0;
 		// new prediction
 		newPrediction = 0;
 
 		// read in global data on the initial run
 		readWorldData();
-		;
 		readLocalData("HPE");
 		neuralNetwork = new NeuralNetwork();
 
@@ -197,7 +205,7 @@ public class NeuralNetworkManager {
 
 		tempData.add(dataElectricity);
 
-		neuralNetwork.Train(dataElectricity, tempData, 0, 0);
+		neuralNetwork.Train(dataElectricity, tempData, HIDDEN_LAYERS, HIDDEN_LAYER_SIZE, TRAINING_SESSIONS);
 
 	}
 
@@ -217,43 +225,38 @@ public class NeuralNetworkManager {
 		// last predicted reading
 		lastPrediction = 0;
 		// discrepancy
-		discrepency = 0;
+		discrepancy = 0;
 		// new prediction
 		newPrediction = 0;
 		readWorldData();
 		readLocalData(applianceTypeCodeMap.get(type));
 		neuralNetwork = new NeuralNetwork();
 
-		List<List<Double>> tempData = new ArrayList<>();
-
-		tempData.add(dataElectricity);
-
-		neuralNetwork.Train(dataElectricity, tempData, 0, 0);
-
+		TrainNeuralNetwork(0,0);
 	}
 
-	public void TrainNeuralNetwork() {
+	public void TrainNeuralNetwork(int hiddenLayers, int layerSize) {
 		List<List<Double>> tempData = new ArrayList<>();
 
 		tempData.add(dataTrainingElectricity);
 		tempData.add(dataTrainingTemperature);
 
-		neuralNetwork.Train(dataElectricity, tempData, 0, 0);
+		neuralNetwork.Train(dataElectricity, tempData, HIDDEN_LAYERS, HIDDEN_LAYER_SIZE, TRAINING_SESSIONS);
 	}
 
 	// test run method
-	public void RunBasic() {
+	public void RunBasic(int time) {
 
 		actual = actual + 1;
 		lastPrediction = newPrediction;
-		discrepency = lastPrediction - newPrediction;
+		discrepancy = lastPrediction - newPrediction;
 		newPrediction = actual + 1;
 	}
 
-	// prediction method where t+1 prediction is the value of t (current)
-	public void RunTPlus() {
+	// prediction method where t+1 prediction is the output of t (current)
+	public void RunTPlus(int time) {
 		actual = dataElectricity.get(indexElectricity);
-		discrepency = actual - newPrediction;
+		discrepancy = actual - newPrediction;
 		lastPrediction = newPrediction;
 
 		newPrediction = actual;
@@ -269,26 +272,25 @@ public class NeuralNetworkManager {
 	public void runNeuralNetwork(int time) {
 		indexElectricity = time;
 		indexWeather = time;
-		actual = dataElectricity.get(indexElectricity);
-		discrepency = actual - newPrediction;
+
+		discrepancy = actual - newPrediction;
 		lastPrediction = newPrediction;
 
 		List<Double> inputList = new ArrayList<>();
 		inputList.add(actual);
-		newPrediction = neuralNetwork.Run(inputList);
+		newPrediction = neuralNetwork.run(inputList);
 		indexElectricity = indexElectricity + 1;
-		time = time + 1;
 
-		if (time == 1440) {
-			time = 0;
-		}
-
-		// iterate weather every hour
 
 		// if all data has been used, start again from index 0
-		// NOTE: Do the same for weather when possible
 		if (indexElectricity == dataElectricity.size()) {
 			indexElectricity = 0;
 		}
+        if (indexWeather == dataTemperature.size()) {
+            indexElectricity = 0;
+        }
+
+		actual = dataElectricity.get(indexElectricity);
+
 	}
 }

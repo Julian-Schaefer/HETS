@@ -3,7 +3,10 @@ package org.cos30018.hets.prediction;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Neuron {
+
+    public static final String ACTIVATION_FUNCTION = "ReLU";
 
     protected String id;
     //list of neuron connections that lead to this one
@@ -14,7 +17,11 @@ public class Neuron {
     protected InputSummingFunction inputSummingFunction;
     protected ActivationFunction activationFunction;
 
-    public double value;
+    public double output;
+
+    public double totalInput;
+
+    public double error;
 
     protected double bias;
 
@@ -23,35 +30,80 @@ public class Neuron {
        inputConnections  = new ArrayList<>();
        outputConnections  = new ArrayList<>();
 
-       activationFunction = new SigmoidFunction();
+       switch (ACTIVATION_FUNCTION)
+       {
+           case "ReLU": activationFunction = new ReLUFunction();
+           break;
+           case "Linear": activationFunction = new LinearActivationFunction();
+           break;
+           case "Sigmoid": activationFunction = new SigmoidFunction();
+       }
+
        inputSummingFunction = new WeightedSumFunction();
+
+       bias = Math.random();
+
     }
 
-    public void SetValue(double v){
-        value = v;
+    public void setValue(double v){
+        output = v;
     }
 
 
-    public void Fire(){
-        double totalInput = inputSummingFunction.getOutput(inputConnections);
+    //Bias getter and setter
+    public double getBias() { return bias; }
 
-        value = activationFunction.calculateOutput(totalInput);
+    public void setBias(double b) { bias = b; }
+
+    public double getError() { return error; }
+
+    public double getTotalInput() { return totalInput; }
+
+    public List<NeuronConnection> getOutputConnections() { return outputConnections; }
+
+    public void fire(){
+        totalInput = inputSummingFunction.getOutput(inputConnections);
+
+        output = activationFunction.calculateOutput(totalInput) + bias;
     }
 
-    public double Final(){
-        double totalInput = inputSummingFunction.getOutput(inputConnections);
-        value = totalInput;
-        return value;
+    public void calculateOutputError(double expected){
+        error = 0;
+        if (outputConnections.isEmpty())
+        {
+            error = (expected - output)*activationFunction.calculateDerivative(output);
+            //System.out.println("Error: "+error);
+            //System.out.println("Output : " + output);
+            //System.out.println("Activation function value: "  +activationFunction.calculateDerivative(output));
+        }
+    }
+
+    public void backPropagateError()
+    {
+        error = 0;
+        for (NeuronConnection n : outputConnections){
+            error += (n.getWeight() * n.getToNeuron().getError()) * activationFunction.calculateDerivative(output);
+            //System.out.println("Weight:" + n.getWeight());
+            //System.out.println("From neuron error value: " + n.getFromNeuron().error);
+        }
+
+        error=error/outputConnections.size();
+    }
+
+    public double finalValue(){
+        totalInput = inputSummingFunction.getOutput(inputConnections);
+        output = totalInput*5 + bias;
+        return output;
     }
 
     //add a connection (note that the new connection should be an INPUT neuron only
-    public void AddInputConnection(Neuron newNeuron){
+    public void addInputConnection(Neuron newNeuron){
         inputConnections.add(new NeuronConnection(newNeuron, this));
-        newNeuron.AddOutputConnection(this);
+        newNeuron.addOutputConnection(this);
     }
 
-    //calls by AddOutputConnection, to the input neuron, adding itself as an output
-    public void AddOutputConnection(Neuron newNeuron){
+    //calls by addOutputConnection, to the input neuron, adding itself as an output
+    public void addOutputConnection(Neuron newNeuron){
         outputConnections.add(new NeuronConnection(this, newNeuron));
     }
 

@@ -15,9 +15,7 @@ public interface Appliance {
 
 	ApplianceType getType();
 
-	double getLastActualUsage();
-
-	List<Double> getPastActualUsages();
+	double getLastActualUsage(int period, int numberOfPeriods);
 
 	double[] getUsageForecast(int period, int numberOfPeriods);
 

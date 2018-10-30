@@ -13,28 +13,61 @@ public class NeuronLayer {
         }
     }
 
-    public List<Neuron> GetNeurons(){
+    public List<Neuron> getNeurons(){
         return neurons;
     }
 
-    public void FireLayer(){
+    public void fireLayer(){
         for(Neuron n : neurons)
         {
-            n.Fire();
+            n.fire();
         }
     }
 
-    public List<Double> Final(){
+    public List<Double> finalValue(){
         List<Double> returnValue = new ArrayList<>();
         for(Neuron n : neurons)
         {
-            returnValue.add(n.Final());
+            returnValue.add(n.finalValue());
         }
         return  returnValue;
     }
 
-    public void UpdateNeuronValue(int index, int value)
+    public void calculateOutputError(double actual)
     {
-        neurons.get(index).SetValue(value);
+        for(Neuron n : neurons)
+        {
+            n.calculateOutputError(actual);
+        }
+    }
+
+    public void backPropagateError()
+    {
+        for(Neuron n : neurons)
+        {
+            n.backPropagateError();
+        }
+    }
+
+    public void trainWeights(double learningRate)
+    {
+        for (Neuron n : neurons){
+            List<NeuronConnection> connections = n.getOutputConnections();
+            for (NeuronConnection c : connections){
+                c.setWeight(c.getWeight() + (learningRate * n.getError() * n.getTotalInput()));
+            }
+        }
+    }
+
+    public void trainBiases(double learningRate)
+    {
+        for (Neuron n : neurons) {
+            n.setBias(n.getBias() + (learningRate * n.getError()) );
+        }
+    }
+
+    public void updateNeuronValue(int index, int value)
+    {
+        neurons.get(index).setValue(value);
     }
 }

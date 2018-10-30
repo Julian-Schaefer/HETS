@@ -11,8 +11,8 @@ public class NeuronConnection {
     {
         this.fromNeuron = lFromNeuron;
         this.toNeuron = lToNeuron;
-        //this.weight = Math.random();
-        this.weight = 2;
+        this.weight = (Math.random());
+        //this.weight = 2;
     }
 
     //alternate weight constructor
@@ -27,14 +27,16 @@ public class NeuronConnection {
         this.weight = lWeight;
     }
 
+    public double getWeight() { return this.weight; }
+
     public double getInput(){
        // return fromNeuron.CalculateOutput();
         return 0;
     }
 
     public double getWeightedInput(){
-        double temp = fromNeuron.value;
-        return fromNeuron.value * weight;
+        double temp = fromNeuron.output;
+        return fromNeuron.output * weight;
     }
 
     public Neuron getFromNeuron(){

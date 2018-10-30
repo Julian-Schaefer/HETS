@@ -45,16 +45,23 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 
 	@Override
 	protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
+		int period = 0;
+		String periodText = request.getContent().replace(ApplianceMessage.FORECAST, "").trim();
+		try {
+			period = Integer.valueOf(periodText);
+		}catch(Exception e){}
+
+
 		if (request.getContent().startsWith(ApplianceMessage.LAST_USAGE)) {
+
 			response.setPerformative(ACLMessage.INFORM);
-			response.setContent(ApplianceMessage.LAST_USAGE + " " + applianceAgent.getLastActualUsage());
+			response.setContent(ApplianceMessage.LAST_USAGE + " " + applianceAgent.getLastActualUsage(period, 1));
 		} else if (request.getContent().startsWith(ApplianceMessage.FORECAST)) {
-			String periodText = request.getContent().replace(ApplianceMessage.FORECAST, "").trim();
-			int period = Integer.valueOf(periodText);
 
 			response.setPerformative(ACLMessage.INFORM);
 			response.setContent(ApplianceMessage.FORECAST + applianceAgent.getUsageForecast(period, 1)[0]);
 		}
+
 		return response;
 	}
 }

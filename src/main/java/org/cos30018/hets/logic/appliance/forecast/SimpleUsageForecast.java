@@ -13,9 +13,15 @@ public class SimpleUsageForecast extends UsageForecast {
 		double[] forecasts = new double[numberOfPeriods];
 
 		for (int p = 0; p < numberOfPeriods; p++) {
-			forecasts[p] = appliance.getLastActualUsage() + period;
+			forecasts[p] = period;
 		}
 
 		return forecasts;
+	}
+
+	@Override
+	public double getLastActualUsage(int period, int numberOfPeriods)
+	{
+		return 0.0;
 	}
 }
