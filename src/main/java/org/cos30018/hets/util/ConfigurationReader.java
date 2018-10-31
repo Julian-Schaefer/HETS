@@ -2,6 +2,8 @@ package org.cos30018.hets.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,6 +18,7 @@ import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.negotiation.strategy.FixedPriceStrategy;
 import org.cos30018.hets.negotiation.strategy.Strategy;
 import org.cos30018.hets.negotiation.strategy.TimeDependentStrategy;
+import org.cos30018.hets.negotiation.tariff.BlockTariff;
 import org.cos30018.hets.negotiation.tariff.RandomTariff;
 import org.cos30018.hets.negotiation.tariff.Tariff;
 import org.cos30018.hets.negotiation.tariff.TimeOfUseTariff;
@@ -54,6 +57,11 @@ public class ConfigurationReader {
 	private static final String ELEMENT_RETAILER_TARIFF_FI_MAX = "feedInRateMaxValue";
 	private static final String ELEMENT_RETAILER_TARIFF_VOLUME_CHARGES = "volumeCharges";
 	private static final String ELEMENT_RETAILER_TARIFF_FEED_IN_RATES = "feedInRates";
+	private static final String ELEMENT_RETAILER_TARIFF_BLOCK_RATES = "blockRates";
+	private static final String ELEMENT_RETAILER_TARIFF_FROM = "from";
+	private static final String ELEMENT_RETAILER_TARIFF_UP_TO = "upTo";
+	private static final String ELEMENT_RETAILER_TARIFF_VOLUME_CHARGE = "volumeCharge";
+	private static final String ELEMENT_RETAILER_TARIFF_FEED_IN_RATE = "feedInRate";
 
 	private static JadeController jadeController = JadeController.getInstance();
 
@@ -234,6 +242,50 @@ public class ConfigurationReader {
 			}
 
 			return new TimeOfUseTariff(volumeCharges, feedInRates);
+		case Tariff.TARIFF_BLOCK:
+			Map<DoubleRange, DoubleRange> blockRates = new HashMap<>();
+
+			NodeList children = element.getChildNodes();
+			for (int child = 0; child < children.getLength(); child++) {
+				Node node = children.item(child);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					Element blockRateElement = (Element) node;
+					if (blockRateElement.getTagName().equals(ELEMENT_RETAILER_TARIFF_BLOCK_RATES)) {
+
+						NodeList blockRatesRoot = blockRateElement
+								.getElementsByTagName(ELEMENT_RETAILER_TARIFF_BLOCK_RATES);
+						for (int i = 0; i < blockRatesRoot.getLength(); i++) {
+							Node blockRateNode = blockRatesRoot.item(i);
+							if (node.getNodeType() == Node.ELEMENT_NODE) {
+								Element blockRate = (Element) blockRateNode;
+
+								String fromValueText = blockRate.getElementsByTagName(ELEMENT_RETAILER_TARIFF_FROM)
+										.item(0).getTextContent();
+								double fromValue = Double.valueOf(fromValueText);
+
+								String upToValueText = blockRate.getElementsByTagName(ELEMENT_RETAILER_TARIFF_UP_TO)
+										.item(0).getTextContent();
+								double upToValue = Double.valueOf(upToValueText);
+
+								String volumeChargeText = blockRate
+										.getElementsByTagName(ELEMENT_RETAILER_TARIFF_VOLUME_CHARGE).item(0)
+										.getTextContent();
+								double volumeCharge = Double.valueOf(volumeChargeText);
+
+								String feedInRateText = blockRate
+										.getElementsByTagName(ELEMENT_RETAILER_TARIFF_FEED_IN_RATE).item(0)
+										.getTextContent();
+								double feedInRate = Double.valueOf(feedInRateText);
+
+								blockRates.put(new DoubleRange(fromValue, upToValue),
+										new DoubleRange(volumeCharge, feedInRate));
+							}
+						}
+					}
+				}
+			}
+
+			return new BlockTariff(blockRates);
 		default:
 			return null;
 		}
