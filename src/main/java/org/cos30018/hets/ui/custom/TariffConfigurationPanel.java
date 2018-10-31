@@ -22,6 +22,7 @@ import org.cos30018.hets.negotiation.tariff.RandomTariff;
 import org.cos30018.hets.negotiation.tariff.Tariff;
 import org.cos30018.hets.negotiation.tariff.TimeOfUseTariff;
 import org.cos30018.hets.util.DoubleRange;
+import org.cos30018.hets.util.GuiUtil;
 
 public class TariffConfigurationPanel extends JPanel implements ActionListener {
 
@@ -44,7 +45,10 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 	private List<JTextField[]> blockRateTextFields;
 	private JPanelList blockTariffList;
 
-	public TariffConfigurationPanel(Tariff tariff) {
+	private boolean isEnabled;
+
+	public TariffConfigurationPanel(Tariff tariff, boolean isEnabled) {
+		this.isEnabled = isEnabled;
 		setLayout(new BorderLayout());
 		setUp(tariff);
 	}
@@ -92,6 +96,8 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 		} else {
 			tariffComboBox.setSelectedItem(Tariff.TARIFF_RANDOM);
 		}
+
+		GuiUtil.setPanelEnabled(this, isEnabled);
 	}
 
 	public Tariff getTariff() {
@@ -249,12 +255,14 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 
 		blockRateTextFields = new ArrayList<>();
 
-		JButton addButton = new JButton("Add Block");
-		addButton.addActionListener((e) -> {
-			addBlockTariffRow(blockTariffList, null);
-		});
+		if (isEnabled) {
+			JButton addButton = new JButton("Add Block");
+			addButton.addActionListener((e) -> {
+				addBlockTariffRow(blockTariffList, null);
+			});
 
-		panel.add(addButton, BorderLayout.SOUTH);
+			panel.add(addButton, BorderLayout.SOUTH);
+		}
 
 		return panel;
 	}

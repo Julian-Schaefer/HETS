@@ -15,6 +15,7 @@ import org.cos30018.hets.negotiation.strategy.FixedPriceStrategy;
 import org.cos30018.hets.negotiation.strategy.ModellingStrategy;
 import org.cos30018.hets.negotiation.strategy.Strategy;
 import org.cos30018.hets.negotiation.strategy.TimeDependentStrategy;
+import org.cos30018.hets.util.GuiUtil;
 
 public class StrategyConfigurationPanel extends JPanel implements ActionListener {
 
@@ -30,7 +31,10 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 	private JTextField reservationValueTextField;
 	private JTextField betaTextField;
 
-	public StrategyConfigurationPanel(Strategy strategy) {
+	private boolean isEnabled;
+
+	public StrategyConfigurationPanel(Strategy strategy, boolean isEnabled) {
+		this.isEnabled = isEnabled;
 		setLayout(new BorderLayout());
 		setUp(strategy);
 	}
@@ -63,6 +67,8 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		} else {
 			strategyComboBox.setSelectedItem(Strategy.STRATEGY_FIXED_PRICE);
 		}
+
+		GuiUtil.setPanelEnabled(this, isEnabled);
 	}
 
 	public Strategy getStrategy() {

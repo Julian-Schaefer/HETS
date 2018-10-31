@@ -14,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.retailer.Retailer;
+import org.cos30018.hets.ui.custom.StrategyConfigurationPanel;
+import org.cos30018.hets.ui.custom.TariffConfigurationPanel;
 import org.cos30018.hets.ui.custom.graph.OfferAndCounterOfferGraph;
 
 import jade.core.AID;
@@ -34,7 +36,7 @@ public class RetailerDetailsWindow extends JFrame {
 		super("Retailer: " + aid.getLocalName());
 		this.retailer = JadeController.getInstance().getRetailer(aid);
 		setLayout(new BorderLayout());
-		setSize(new Dimension(600, 700));
+		setSize(new Dimension(1150, 700));
 		setLocationRelativeTo(null);
 		setUp();
 		update();
@@ -43,27 +45,19 @@ public class RetailerDetailsWindow extends JFrame {
 	}
 
 	private void setUp() {
-		JPanel informationPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+		JPanel informationPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+		informationPanel.setPreferredSize(new Dimension(450, 0));
 		informationPanel.setBackground(Color.WHITE);
 		informationPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-		JLabel negotiationStrategyTitleLbl = new JLabel("Negotiation Strategy: ");
-		negotiationStrategyTitleLbl.setHorizontalAlignment(JLabel.CENTER);
-		informationPanel.add(negotiationStrategyTitleLbl);
+		StrategyConfigurationPanel strategyConfigurationPanel = new StrategyConfigurationPanel(retailer.getStrategy(),
+				false);
+		informationPanel.add(strategyConfigurationPanel);
 
-		JLabel negotiationStrategyLbl = new JLabel(retailer.getStrategy().getName());
-		negotiationStrategyLbl.setHorizontalAlignment(JLabel.CENTER);
-		informationPanel.add(negotiationStrategyLbl);
+		TariffConfigurationPanel tariffConfigurationPanel = new TariffConfigurationPanel(retailer.getTariff(), false);
+		informationPanel.add(tariffConfigurationPanel);
 
-		JLabel pricingStrategyTitleLbl = new JLabel("Pricing Strategy: ");
-		pricingStrategyTitleLbl.setHorizontalAlignment(JLabel.CENTER);
-		informationPanel.add(pricingStrategyTitleLbl);
-
-		JLabel pricingStrategyLbl = new JLabel(retailer.getTariff().getName());
-		pricingStrategyLbl.setHorizontalAlignment(JLabel.CENTER);
-		informationPanel.add(pricingStrategyLbl);
-
-		add(informationPanel, BorderLayout.NORTH);
+		add(informationPanel, BorderLayout.WEST);
 
 		JPanel centerPanel = new JPanel(new GridLayout(2, 1, 0, 20));
 
