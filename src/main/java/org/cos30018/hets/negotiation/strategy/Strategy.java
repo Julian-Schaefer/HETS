@@ -5,6 +5,7 @@ public abstract class Strategy implements Cloneable {
 	public static final String STRATEGY_FIXED_PRICE = "Fixed Price";
 	public static final String STRATEGY_MODELLING = "Modelling";
 	public static final String STRATEGY_TIME_DEPENDENT = "Time-Dependent";
+	public static final String STRATEGY_RESOURCE_DEPENDENT = "Resource-Dependent";
 
 	protected double initialValue;
 	protected double reservationValue;
