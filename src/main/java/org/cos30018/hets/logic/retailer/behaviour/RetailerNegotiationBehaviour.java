@@ -4,6 +4,7 @@ import org.cos30018.hets.logic.retailer.RetailerAgent;
 import org.cos30018.hets.negotiation.Negotiation;
 import org.cos30018.hets.negotiation.Offer;
 import org.cos30018.hets.negotiation.strategy.Strategy;
+import org.cos30018.hets.negotiation.tariff.NotInRangeException;
 import org.cos30018.hets.negotiation.utility.OfferUtility;
 
 import jade.domain.FIPAAgentManagement.FailureException;
@@ -42,6 +43,8 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 
 			OfferUtility utility = new OfferUtility(strategy.getReservationValue(), initialPrice, 0, 1);
 			negotiation = new Negotiation(strategy, utility);
+		} catch (NotInRangeException e) {
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,13 +54,18 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 	protected ACLMessage handleCfp(ACLMessage cfp) throws RefuseException, FailureException, NotUnderstoodException {
 		retailerAgent.addNegotiationMessage(cfp);
 
+		ACLMessage reply = cfp.createReply();
+		reply.setSender(getAgent().getAID());
+		if (negotiation == null) {
+			reply.setPerformative(ACLMessage.REFUSE);
+			retailerAgent.addNegotiationMessage(reply);
+			return reply;
+		}
+
 		try {
 			int round = negotiation.getRound();
 			Offer incomingOffer = (Offer) cfp.getContentObject();
 			Offer counterOffer = negotiation.createCounterOffer(incomingOffer);
-
-			ACLMessage reply = cfp.createReply();
-			reply.setSender(getAgent().getAID());
 
 			if (counterOffer.getStatus() == Offer.Status.REFUSE) {
 				reply.setPerformative(ACLMessage.REFUSE);
