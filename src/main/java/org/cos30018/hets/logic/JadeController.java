@@ -75,6 +75,13 @@ public class JadeController {
 		for (AID retailerAID : home.getRetailers()) {
 			removeAgent(retailerAID);
 		}
+
+		while (home.getAppliances().size() > 0 || home.getRetailers().size() > 0) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 	public void reset() {

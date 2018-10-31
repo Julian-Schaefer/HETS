@@ -35,17 +35,16 @@ public class HomeAgent extends Agent implements Home {
 	private List<AID> applianceAIDs = new ArrayList<>();
 	private List<AID> retailerAIDs = new ArrayList<>();
 
-	private int period = START_PERIOD - 1;
-	private int forecastPeriodCount;
+	private int period;
+	private int forecastPeriodCount = 0;
+	private long intervalPeriod = 5000;
 
 	private Map<Integer, Double> usageForecasts = new HashMap<>();
 	private Map<Integer, Double> actualUsages = new HashMap<>();
 
 	private Map<Integer, Offer> negotiatedOffers = new HashMap<>();
 
-	private long intervalPeriod;
-
-	private Strategy negotiationStrategy;
+	private Strategy negotiationStrategy = new TimeDependentStrategy(20, 50, 1);
 
 	public HomeAgent() {
 		registerO2AInterface(Home.class, this);
@@ -109,12 +108,6 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public void reset() {
 		period = START_PERIOD - 1;
-		forecastPeriodCount = 0;
-		intervalPeriod = 5000;
-		negotiationStrategy = new TimeDependentStrategy(20, 50, 1);
-
-		applianceAIDs.clear();
-		retailerAIDs.clear();
 
 		usageForecasts.clear();
 		actualUsages.clear();
