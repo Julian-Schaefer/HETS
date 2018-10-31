@@ -4,7 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -12,9 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.cos30018.hets.negotiation.tariff.BlockTariff;
 import org.cos30018.hets.negotiation.tariff.RandomTariff;
 import org.cos30018.hets.negotiation.tariff.Tariff;
 import org.cos30018.hets.negotiation.tariff.TimeOfUseTariff;
+import org.cos30018.hets.util.DoubleRange;
 
 public class TariffConfigurationPanel extends JPanel implements ActionListener {
 
@@ -33,6 +40,8 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 
 	private JTextField[] touVolumeChargeTextField = new JTextField[24];
 	private JTextField[] touFeedInRateTextField = new JTextField[24];
+
+	private List<JTextField[]> blockRateTextFields;
 
 	public TariffConfigurationPanel() {
 		setLayout(new BorderLayout());
@@ -78,7 +87,26 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 			}
 
 		case Tariff.TARIFF_BLOCK:
-			throw new RuntimeException("Not supported yet!");
+			Map<DoubleRange, DoubleRange> blockRates = new HashMap<>();
+			try {
+				for (JTextField[] blockRateTextField : blockRateTextFields) {
+					double fromValue = Double.valueOf(blockRateTextField[0].getText());
+					double upToValue = Double.valueOf(blockRateTextField[1].getText());
+					double volumeChargeValue = Double.valueOf(blockRateTextField[2].getText());
+					double feedInRateValue = Double.valueOf(blockRateTextField[3].getText());
+
+					if (fromValue < 0 || upToValue <= 0 || volumeChargeValue <= 0 || feedInRateValue <= 0) {
+						throw new RuntimeException("Please enter a positive numbers for the Block Tariff.");
+					}
+
+					blockRates.put(new DoubleRange(fromValue, upToValue),
+							new DoubleRange(volumeChargeValue, feedInRateValue));
+				}
+
+				return new BlockTariff(blockRates);
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Please enter a valid numbers for the Block Tariff.");
+			}
 		case Tariff.TARIFF_TIME_OF_USE:
 			double[] volumeCharges = new double[24];
 			double[] feedInRates = new double[24];
@@ -111,9 +139,10 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 				tariffSpecificationPanel.add(getFixedPricePanel());
 				break;
 			case Tariff.TARIFF_BLOCK:
+				tariffSpecificationPanel.add(getBlockTariffPanel());
 				break;
 			case Tariff.TARIFF_TIME_OF_USE:
-				tariffSpecificationPanel.add(new JScrollPane(getTimeOfUsePanel()));
+				tariffSpecificationPanel.add(getTimeOfUsePanel());
 				break;
 			default:
 				throw new RuntimeException("Selected Tariff could not be selected.");
@@ -153,13 +182,13 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 		return panel;
 	}
 
-	private JPanel getTimeOfUsePanel() {
+	private JScrollPane getTimeOfUsePanel() {
 		JPanelList list = new JPanelList();
-		JPanel headerPanel = new JPanel(new GridLayout(1, 3, 10, 0));
-		headerPanel.add(new JLabel("Period:"));
-		headerPanel.add(new JLabel("Volume charge:"));
-		headerPanel.add(new JLabel("Feed-in rate:"));
-		list.addJPanel(headerPanel);
+		JPanel headerRow = new JPanel(new GridLayout(1, 3, 10, 0));
+		headerRow.add(new JLabel("Period:"));
+		headerRow.add(new JLabel("Volume charge:"));
+		headerRow.add(new JLabel("Feed-in rate:"));
+		list.addJPanel(headerRow);
 
 		for (int i = 0; i < 24; i++) {
 			JPanel rowPanel = new JPanel(new GridLayout(1, 3, 10, 0));
@@ -175,7 +204,48 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 
 			list.addJPanel(rowPanel);
 		}
-		return list;
+		return new JScrollPane(list);
+	}
+
+	private JPanel getBlockTariffPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+
+		JPanelList list = new JPanelList();
+		JPanel headerRow = new JPanel(new GridLayout(1, 4, 10, 0));
+		headerRow.add(new JLabel("From (kWh):"));
+		headerRow.add(new JLabel("Up to (kWh):"));
+		headerRow.add(new JLabel("Volume charge:"));
+		headerRow.add(new JLabel("Feed-in rate:"));
+		list.addJPanel(headerRow);
+		panel.add(new JScrollPane(list), BorderLayout.CENTER);
+
+		blockRateTextFields = new ArrayList<>();
+
+		JButton addButton = new JButton("Add Block");
+		addButton.addActionListener((e) -> {
+			JPanel rowPanel = new JPanel(new GridLayout(1, 4, 10, 0));
+			JTextField fromTextField = new JTextField(8);
+			JTextField toTextField = new JTextField(8);
+			JTextField volumeChargeTextField = new JTextField(8);
+			JTextField feedInRateTextField = new JTextField(8);
+
+			JTextField[] textFields = new JTextField[4];
+			textFields[0] = fromTextField;
+			textFields[1] = toTextField;
+			textFields[2] = volumeChargeTextField;
+			textFields[3] = feedInRateTextField;
+			blockRateTextFields.add(textFields);
+
+			rowPanel.add(fromTextField);
+			rowPanel.add(toTextField);
+			rowPanel.add(volumeChargeTextField);
+			rowPanel.add(feedInRateTextField);
+			list.addJPanel(rowPanel);
+		});
+
+		panel.add(addButton, BorderLayout.SOUTH);
+
+		return panel;
 	}
 
 	private JPanel addToJPanel(JComponent component) {

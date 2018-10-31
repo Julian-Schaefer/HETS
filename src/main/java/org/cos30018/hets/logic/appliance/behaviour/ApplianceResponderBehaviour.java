@@ -58,6 +58,7 @@ public class ApplianceResponderBehaviour extends AchieveREResponder {
 			response.setPerformative(ACLMessage.INFORM);
 			response.setContent(ApplianceMessage.FORECAST + applianceAgent.getUsageForecast(period, 1)[0]);
 		}
+
 		return response;
 	}
 }

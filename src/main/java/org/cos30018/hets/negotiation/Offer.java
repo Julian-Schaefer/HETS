@@ -30,6 +30,7 @@ public class Offer implements Serializable {
 	public Offer(AID retailerId, double price, double amount, int startPeriod, int numberOfPeriods) {
 		this.retailerId = retailerId;
 		this.price = price;
+		this.amount = amount;
 		this.startPeriod = startPeriod;
 		this.numberOfPeriods = numberOfPeriods;
 		this.status = Status.COUNTEROFFER;

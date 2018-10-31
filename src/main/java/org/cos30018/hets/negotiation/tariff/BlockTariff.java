@@ -2,20 +2,22 @@ package org.cos30018.hets.negotiation.tariff;
 
 import java.util.Map;
 
+import org.cos30018.hets.util.DoubleRange;
+
 public class BlockTariff extends Tariff {
 
-	private Map<BlockRange, Double> blockRates;
+	private Map<DoubleRange, DoubleRange> blockRates;
 
-	public BlockTariff(Map<BlockRange, Double> blockRates) {
+	public BlockTariff(Map<DoubleRange, DoubleRange> blockRates) {
 		this.blockRates = blockRates;
 	}
 
 	@Override
 	public double getVolumeCharge(double requestedAmount, int period) {
-		for (Map.Entry<BlockRange, Double> blockRate : blockRates.entrySet()) {
-			BlockRange range = blockRate.getKey();
-			if (requestedAmount >= range.startCapacity && requestedAmount <= range.endCapacity) {
-				return blockRate.getValue();
+		for (Map.Entry<DoubleRange, DoubleRange> blockRate : blockRates.entrySet()) {
+			DoubleRange range = blockRate.getKey();
+			if (requestedAmount >= range.firstValue && requestedAmount <= range.secondValue) {
+				return blockRate.getValue().firstValue;
 			}
 		}
 
@@ -24,8 +26,14 @@ public class BlockTariff extends Tariff {
 
 	@Override
 	public double getFeedInCharge(double requestedAmount, int period) {
-		// TODO Auto-generated method stub
-		return 0;
+		for (Map.Entry<DoubleRange, DoubleRange> blockRate : blockRates.entrySet()) {
+			DoubleRange range = blockRate.getKey();
+			if (requestedAmount >= range.firstValue && requestedAmount <= range.secondValue) {
+				return blockRate.getValue().secondValue;
+			}
+		}
+
+		throw new NotInRangeException();
 	}
 
 	@Override
@@ -33,8 +41,7 @@ public class BlockTariff extends Tariff {
 		return TARIFF_BLOCK;
 	}
 
-	public static class BlockRange {
-		public double startCapacity;
-		public int endCapacity;
+	public Map<DoubleRange, DoubleRange> getBlockRates() {
+		return blockRates;
 	}
 }
