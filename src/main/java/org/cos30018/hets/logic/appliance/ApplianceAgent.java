@@ -49,6 +49,16 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 	}
 
 	@Override
+	public void reset() {
+		usageForecasts.clear();
+		actualUsages.clear();
+
+		for (ApplianceListener listener : listeners) {
+			listener.onReset();
+		}
+	}
+
+	@Override
 	public void setApplianceType(ApplianceType applianceType) {
 		this.applianceType = applianceType;
 		actualApplianceUsage = new ActualApplianceUsage(applianceType);

@@ -28,7 +28,7 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 		super(retailerAgent, initiationMessage);
 		this.retailerAgent = retailerAgent;
 
-		retailerAgent.clearNegotiationLog();
+		retailerAgent.reset();
 		initNegotiation(initiationMessage);
 	}
 

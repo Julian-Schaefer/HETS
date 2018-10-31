@@ -21,4 +21,9 @@ public class ApplianceDetailsWindowController implements ApplianceListener {
 	public void onNewUsageForecast(int period, double forecast) {
 		applianceDetailsWindow.update();
 	}
+
+	@Override
+	public void onReset() {
+		applianceDetailsWindow.update();
+	}
 }

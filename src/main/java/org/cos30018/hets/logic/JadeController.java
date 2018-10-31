@@ -77,6 +77,18 @@ public class JadeController {
 		}
 	}
 
+	public void reset() {
+		for (AID applianceAID : home.getAppliances()) {
+			getAppliance(applianceAID).reset();
+		}
+
+		for (AID retailerAID : home.getRetailers()) {
+			getRetailer(retailerAID).reset();
+		}
+
+		home.reset();
+	}
+
 	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod,
 			boolean addPrefix) throws StaleProxyException {
 		if (addPrefix) {

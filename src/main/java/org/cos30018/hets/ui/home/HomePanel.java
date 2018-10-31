@@ -70,7 +70,7 @@ public class HomePanel extends JPanel {
 		add(settingsPanel, SETTINGS_PANEL);
 	}
 
-	private void reset() {
+	public void reset() {
 		removeAll();
 		setUp();
 	}
@@ -117,7 +117,7 @@ public class HomePanel extends JPanel {
 		subPeriodContainer.setBackground(Color.WHITE);
 
 		periodContainer.setBorder(new EmptyBorder(5, 20, 20, 15));
-		PeriodControllerPanel periodControllerPanel = new PeriodControllerPanel(home);
+		PeriodControllerPanel periodControllerPanel = new PeriodControllerPanel(home, this);
 		periodControllerPanel.setBackground(Color.WHITE);
 
 		subPeriodContainer.add(periodControllerPanel);

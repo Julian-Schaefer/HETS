@@ -9,6 +9,8 @@ import org.cos30018.hets.negotiation.tariff.Tariff;
 
 public interface Retailer {
 
+	void reset();
+
 	String getLocalName();
 
 	Tariff getTariff();
@@ -25,6 +27,8 @@ public interface Retailer {
 
 	public interface RetailerListener {
 		void onNegotiationMessagesUpdated();
+
+		void onReset();
 	}
 
 }

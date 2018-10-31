@@ -48,13 +48,14 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 		addBehaviour(new RetailerResponderBehaviour(this));
 	}
 
-	public void clearNegotiationLog() {
+	@Override
+	public void reset() {
 		negotiationMessages.clear();
 		outgoingOffers.clear();
 		incomingOffers.clear();
 
 		for (RetailerListener listener : listeners) {
-			listener.onNegotiationMessagesUpdated();
+			listener.onReset();
 		}
 	}
 
