@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cos30018.hets.logic.appliance.behaviour.ApplianceResponderBehaviour;
+import org.cos30018.hets.logic.appliance.forecast.ModerateUsageForecast;
 import org.cos30018.hets.logic.appliance.forecast.NeuralNetworkForecast;
 import org.cos30018.hets.logic.appliance.forecast.SimpleUsageForecast;
 import org.cos30018.hets.logic.appliance.forecast.UsageForecast;
@@ -41,7 +42,8 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 		super.setup();
 
 		Object[] arguments = getArguments();
-		setApplianceType((ApplianceType) arguments[0]);
+		ApplianceType applianceType = (ApplianceType) arguments[0];
+		setApplianceType(applianceType);
 		ForecastingMethod forecastingMethod = (ForecastingMethod) arguments[1];
 		setForecastingMethod(forecastingMethod);
 
@@ -109,10 +111,13 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 		this.forecastingMethod = forecastingMethod;
 		switch (forecastingMethod) {
 		case SIMPLE:
-			usageForecast = new SimpleUsageForecast(this);
+			usageForecast = new SimpleUsageForecast(actualApplianceUsage);
+			break;
+		case MODERATE:
+			usageForecast = new ModerateUsageForecast(actualApplianceUsage);
 			break;
 		case COMPLEX:
-			usageForecast = new NeuralNetworkForecast(this);
+			usageForecast = new NeuralNetworkForecast(applianceType);
 			break;
 		}
 	}
