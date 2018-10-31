@@ -46,7 +46,7 @@ public class RetailerDetailsWindow extends JFrame {
 
 	private void setUp() {
 		JPanel informationPanel = new JPanel(new GridLayout(2, 1, 10, 10));
-		informationPanel.setPreferredSize(new Dimension(450, 0));
+		informationPanel.setPreferredSize(new Dimension(460, 0));
 		informationPanel.setBackground(Color.WHITE);
 		informationPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 

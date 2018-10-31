@@ -3,6 +3,9 @@ package org.cos30018.hets.util;
 import java.awt.Component;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.cos30018.hets.ui.custom.JPanelList;
 
 public class GuiUtil {
 
@@ -14,6 +17,14 @@ public class GuiUtil {
 		for (Component component : components) {
 			if (component instanceof JPanel) {
 				setPanelEnabled((JPanel) component, isEnabled);
+			}
+
+			if (component instanceof JScrollPane) {
+				JScrollPane scrollPane = (JScrollPane) component;
+				Component child = scrollPane.getViewport().getView();
+				if (child instanceof JPanel) {
+					setPanelEnabled((JPanelList) child, isEnabled);
+				}
 			}
 			component.setEnabled(isEnabled);
 		}
