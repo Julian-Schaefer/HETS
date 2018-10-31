@@ -8,7 +8,7 @@ public abstract class Tariff {
 
 	public abstract double getVolumeCharge(double requestedAmount, int period);
 
-	public abstract double getFeedInCharge(double requestedAmount, int period);
+	public abstract double getFeedInRate(double requestedAmount, int period);
 
 	public abstract String getName();
 }

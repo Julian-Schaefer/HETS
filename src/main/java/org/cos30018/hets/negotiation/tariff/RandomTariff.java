@@ -21,7 +21,7 @@ public class RandomTariff extends Tariff {
 	}
 
 	@Override
-	public double getFeedInCharge(double requestedAmount, int period) {
+	public double getFeedInRate(double requestedAmount, int period) {
 		return (Math.random() * (feedInRateMaxValue - feedInRateMinValue)) + feedInRateMinValue;
 	}
 

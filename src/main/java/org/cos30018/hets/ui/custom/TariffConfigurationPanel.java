@@ -5,7 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,22 +33,23 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 	private JComboBox<String> tariffComboBox;
 	private JPanel tariffSpecificationPanel;
 
-	private JTextField fixedPriceVolumeChargeMinTextField;
-	private JTextField fixedPriceVolumeChargeMaxTextField;
-	private JTextField fixedPriceFeedInMinTextField;
-	private JTextField fixedPriceFeedInMaxTextField;
+	private JTextField randomPriceVolumeChargeMinTextField;
+	private JTextField randomPriceVolumeChargeMaxTextField;
+	private JTextField randomPriceFeedInMinTextField;
+	private JTextField randomPriceFeedInMaxTextField;
 
 	private JTextField[] touVolumeChargeTextField = new JTextField[24];
 	private JTextField[] touFeedInRateTextField = new JTextField[24];
 
 	private List<JTextField[]> blockRateTextFields;
+	private JPanelList blockTariffList;
 
-	public TariffConfigurationPanel() {
+	public TariffConfigurationPanel(Tariff tariff) {
 		setLayout(new BorderLayout());
-		setUp();
+		setUp(tariff);
 	}
 
-	private void setUp() {
+	private void setUp(Tariff tariff) {
 		JPanel tariffSelectorPanel = new JPanel(new GridLayout(1, 2, 20, 20));
 		JLabel tariffLabel = new JLabel("Tariff:");
 		tariffSelectorPanel.add(addToJPanel(tariffLabel));
@@ -63,7 +64,34 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 		tariffSpecificationPanel = new JPanel(new BorderLayout());
 		add(tariffSpecificationPanel, BorderLayout.CENTER);
 
-		tariffComboBox.setSelectedItem(Tariff.TARIFF_RANDOM);
+		if (tariff != null) {
+			if (tariff instanceof RandomTariff) {
+				tariffComboBox.setSelectedItem(Tariff.TARIFF_RANDOM);
+
+				RandomTariff randomTariff = (RandomTariff) tariff;
+				randomPriceVolumeChargeMinTextField.setText(String.valueOf(randomTariff.getVolumeChargeMinValue()));
+				randomPriceVolumeChargeMaxTextField.setText(String.valueOf(randomTariff.getVolumeChargeMaxValue()));
+				randomPriceFeedInMinTextField.setText(String.valueOf(randomTariff.getFeedInRateMinValue()));
+				randomPriceFeedInMaxTextField.setText(String.valueOf(randomTariff.getFeedInRateMaxValue()));
+			} else if (tariff instanceof TimeOfUseTariff) {
+				tariffComboBox.setSelectedItem(Tariff.TARIFF_TIME_OF_USE);
+
+				TimeOfUseTariff touTariff = (TimeOfUseTariff) tariff;
+				for (int i = 0; i < 24; i++) {
+					touVolumeChargeTextField[i].setText(String.valueOf(touTariff.getVolumeCharges()[i]));
+					touFeedInRateTextField[i].setText(String.valueOf(touTariff.getFeedInRates()[i]));
+				}
+			} else if (tariff instanceof BlockTariff) {
+				tariffComboBox.setSelectedItem(Tariff.TARIFF_BLOCK);
+
+				BlockTariff blockTariff = (BlockTariff) tariff;
+				for (Map.Entry<DoubleRange, DoubleRange> entry : blockTariff.getBlockRates().entrySet()) {
+					addBlockTariffRow(blockTariffList, entry);
+				}
+			}
+		} else {
+			tariffComboBox.setSelectedItem(Tariff.TARIFF_RANDOM);
+		}
 	}
 
 	public Tariff getTariff() {
@@ -71,10 +99,10 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 		switch (selectedTariff) {
 		case Tariff.TARIFF_RANDOM:
 			try {
-				double minVolumeChargeValue = Double.valueOf(fixedPriceVolumeChargeMinTextField.getText());
-				double maxVolumeChargeValue = Double.valueOf(fixedPriceVolumeChargeMaxTextField.getText());
-				double minFeedInValue = Double.valueOf(fixedPriceFeedInMinTextField.getText());
-				double maxFeedInValue = Double.valueOf(fixedPriceFeedInMaxTextField.getText());
+				double minVolumeChargeValue = Double.valueOf(randomPriceVolumeChargeMinTextField.getText());
+				double maxVolumeChargeValue = Double.valueOf(randomPriceVolumeChargeMaxTextField.getText());
+				double minFeedInValue = Double.valueOf(randomPriceFeedInMinTextField.getText());
+				double maxFeedInValue = Double.valueOf(randomPriceFeedInMaxTextField.getText());
 
 				if (minVolumeChargeValue < 0 || maxVolumeChargeValue <= 0 || minFeedInValue < 0
 						|| maxFeedInValue <= 0) {
@@ -87,7 +115,7 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 			}
 
 		case Tariff.TARIFF_BLOCK:
-			Map<DoubleRange, DoubleRange> blockRates = new HashMap<>();
+			Map<DoubleRange, DoubleRange> blockRates = new LinkedHashMap<>();
 			try {
 				for (JTextField[] blockRateTextField : blockRateTextFields) {
 					double fromValue = Double.valueOf(blockRateTextField[0].getText());
@@ -158,26 +186,26 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 		JLabel fixedPriceVolumeChargeMinTextLbl = new JLabel("Minimum Volume Charge Price:");
 		panel.add(addToJPanel(fixedPriceVolumeChargeMinTextLbl));
 
-		fixedPriceVolumeChargeMinTextField = new JTextField(8);
-		panel.add(addToJPanel(fixedPriceVolumeChargeMinTextField));
+		randomPriceVolumeChargeMinTextField = new JTextField(8);
+		panel.add(addToJPanel(randomPriceVolumeChargeMinTextField));
 
 		JLabel fixedPriceVolumeChargeMaxTextLbl = new JLabel("Maximum Volume Charge Price:");
 		panel.add(addToJPanel(fixedPriceVolumeChargeMaxTextLbl));
 
-		fixedPriceVolumeChargeMaxTextField = new JTextField(8);
-		panel.add(addToJPanel(fixedPriceVolumeChargeMaxTextField));
+		randomPriceVolumeChargeMaxTextField = new JTextField(8);
+		panel.add(addToJPanel(randomPriceVolumeChargeMaxTextField));
 
 		JLabel fixedPriceFeedInMinTextLbl = new JLabel("Minimum Feed-in Price:");
 		panel.add(addToJPanel(fixedPriceFeedInMinTextLbl));
 
-		fixedPriceFeedInMinTextField = new JTextField(8);
-		panel.add(addToJPanel(fixedPriceFeedInMinTextField));
+		randomPriceFeedInMinTextField = new JTextField(8);
+		panel.add(addToJPanel(randomPriceFeedInMinTextField));
 
 		JLabel fixedPriceFeedInMaxTextLbl = new JLabel("Maximum Feed-in Price:");
 		panel.add(addToJPanel(fixedPriceFeedInMaxTextLbl));
 
-		fixedPriceFeedInMaxTextField = new JTextField(8);
-		panel.add(addToJPanel(fixedPriceFeedInMaxTextField));
+		randomPriceFeedInMaxTextField = new JTextField(8);
+		panel.add(addToJPanel(randomPriceFeedInMaxTextField));
 
 		return panel;
 	}
@@ -210,42 +238,53 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 	private JPanel getBlockTariffPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 
-		JPanelList list = new JPanelList();
+		blockTariffList = new JPanelList();
 		JPanel headerRow = new JPanel(new GridLayout(1, 4, 10, 0));
 		headerRow.add(new JLabel("From (kWh):"));
 		headerRow.add(new JLabel("Up to (kWh):"));
 		headerRow.add(new JLabel("Volume charge:"));
 		headerRow.add(new JLabel("Feed-in rate:"));
-		list.addJPanel(headerRow);
-		panel.add(new JScrollPane(list), BorderLayout.CENTER);
+		blockTariffList.addJPanel(headerRow);
+		panel.add(new JScrollPane(blockTariffList), BorderLayout.CENTER);
 
 		blockRateTextFields = new ArrayList<>();
 
 		JButton addButton = new JButton("Add Block");
 		addButton.addActionListener((e) -> {
-			JPanel rowPanel = new JPanel(new GridLayout(1, 4, 10, 0));
-			JTextField fromTextField = new JTextField(8);
-			JTextField toTextField = new JTextField(8);
-			JTextField volumeChargeTextField = new JTextField(8);
-			JTextField feedInRateTextField = new JTextField(8);
-
-			JTextField[] textFields = new JTextField[4];
-			textFields[0] = fromTextField;
-			textFields[1] = toTextField;
-			textFields[2] = volumeChargeTextField;
-			textFields[3] = feedInRateTextField;
-			blockRateTextFields.add(textFields);
-
-			rowPanel.add(fromTextField);
-			rowPanel.add(toTextField);
-			rowPanel.add(volumeChargeTextField);
-			rowPanel.add(feedInRateTextField);
-			list.addJPanel(rowPanel);
+			addBlockTariffRow(blockTariffList, null);
 		});
 
 		panel.add(addButton, BorderLayout.SOUTH);
 
 		return panel;
+	}
+
+	private void addBlockTariffRow(JPanelList list, Map.Entry<DoubleRange, DoubleRange> blockRate) {
+		JPanel rowPanel = new JPanel(new GridLayout(1, 4, 10, 0));
+		JTextField fromTextField = new JTextField(8);
+		JTextField toTextField = new JTextField(8);
+		JTextField volumeChargeTextField = new JTextField(8);
+		JTextField feedInRateTextField = new JTextField(8);
+
+		if (blockRate != null) {
+			fromTextField.setText(String.valueOf(blockRate.getKey().firstValue));
+			toTextField.setText(String.valueOf(blockRate.getKey().secondValue));
+			volumeChargeTextField.setText(String.valueOf(blockRate.getValue().firstValue));
+			feedInRateTextField.setText(String.valueOf(blockRate.getValue().secondValue));
+		}
+
+		JTextField[] textFields = new JTextField[4];
+		textFields[0] = fromTextField;
+		textFields[1] = toTextField;
+		textFields[2] = volumeChargeTextField;
+		textFields[3] = feedInRateTextField;
+		blockRateTextFields.add(textFields);
+
+		rowPanel.add(fromTextField);
+		rowPanel.add(toTextField);
+		rowPanel.add(volumeChargeTextField);
+		rowPanel.add(feedInRateTextField);
+		list.addJPanel(rowPanel);
 	}
 
 	private JPanel addToJPanel(JComponent component) {

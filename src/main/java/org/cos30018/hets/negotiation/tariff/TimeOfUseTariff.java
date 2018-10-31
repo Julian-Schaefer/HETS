@@ -16,7 +16,7 @@ public class TimeOfUseTariff extends Tariff {
 	}
 
 	@Override
-	public double getFeedInCharge(double requestedAmount, int period) {
+	public double getFeedInRate(double requestedAmount, int period) {
 		return feedInRates[period % 24];
 	}
 
