@@ -1,5 +1,7 @@
 package org.cos30018.hets.ui.home.dashboard;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.logic.home.Home.HomeListener;
@@ -34,13 +36,16 @@ public class PeriodControllerPanelController implements PeriodControllerPanelLis
 
 	@Override
 	public void onStartSimulationClicked(double seconds) {
-		simulationThread = new SimulationThread(seconds);
-		simulationThread.start();
+		if (simulationThread == null) {
+			simulationThread = new SimulationThread(seconds);
+			simulationThread.start();
+		}
 	}
 
 	@Override
 	public void onPauseSimulationClicked() {
 		simulationThread.stopSimulation();
+		simulationThread = null;
 	}
 
 	@Override
@@ -78,27 +83,28 @@ public class PeriodControllerPanelController implements PeriodControllerPanelLis
 
 	private class SimulationThread extends Thread {
 
-		private boolean stopped = false;
+		private final AtomicBoolean stopped = new AtomicBoolean(false);
 		private double intervalSeconds;
 
 		public SimulationThread(double intervalSeconds) {
 			this.intervalSeconds = intervalSeconds;
 		}
 
-		public synchronized void stopSimulation() {
-			stopped = true;
+		public void stopSimulation() {
+			stopped.set(true);
+			interrupt();
 		}
 
 		@Override
 		public void run() {
-			while (!stopped) {
-				home.nextPeriod();
-
+			while (!stopped.get()) {
 				try {
+					home.nextPeriod();
 					Thread.sleep((long) (intervalSeconds * 1000.0));
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Thread.currentThread().interrupt();
 				}
+
 			}
 		}
 	}
