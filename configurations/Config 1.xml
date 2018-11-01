@@ -1,0 +1,407 @@
+<Configuration>
+  <home>
+    <appliances>
+      <appliances>
+        <name>appliance_Dishwasher@10.1.4.66:8888/JADE</name>
+        <localName>appliance_Dishwasher</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </appliances>
+      <appliances>
+        <name>appliance_Fridge@10.1.4.66:8888/JADE</name>
+        <localName>appliance_Fridge</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </appliances>
+      <appliances>
+        <name>appliance_Heat pump@10.1.4.66:8888/JADE</name>
+        <localName>appliance_Heat pump</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </appliances>
+      <appliances>
+        <name>appliance_HIFI@10.1.4.66:8888/JADE</name>
+        <localName>appliance_HIFI</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </appliances>
+      <appliances>
+        <name>appliance_Solar Panel@10.1.4.66:8888/JADE</name>
+        <localName>appliance_Solar Panel</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </appliances>
+    </appliances>
+    <retailers>
+      <retailers>
+        <name>retailer_Retailer Fixed@10.1.4.66:8888/JADE</name>
+        <localName>retailer_Retailer Fixed</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </retailers>
+      <retailers>
+        <name>retailer_Retailer Tit for Tat@10.1.4.66:8888/JADE</name>
+        <localName>retailer_Retailer Tit for Tat</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </retailers>
+      <retailers>
+        <name>retailer_Fixed 2@10.1.4.66:8888/JADE</name>
+        <localName>retailer_Fixed 2</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </retailers>
+      <retailers>
+        <name>retailer_Time Dependent@10.1.4.66:8888/JADE</name>
+        <localName>retailer_Time Dependent</localName>
+        <allAddresses>http://10.1.4.66:7778/acc</allAddresses>
+        <hap>10.1.4.66:8888/JADE</hap>
+        <allUserDefinedSlot/>
+        <addressesArray>
+          <addressesArray>http://10.1.4.66:7778/acc</addressesArray>
+        </addressesArray>
+        <resolversArray/>
+      </retailers>
+    </retailers>
+    <excessPrice>100.0</excessPrice>
+    <currentPeriod>0</currentPeriod>
+    <nextPeriod>1</nextPeriod>
+    <forecastPeriodCount>0</forecastPeriodCount>
+    <actualTotalUsages/>
+    <sellingStrategy>
+      <initialValue>18.0</initialValue>
+      <reservationValue>5.0</reservationValue>
+      <round>0</round>
+      <deadline>20</deadline>
+      <factor>3.0</factor>
+      <name>Random Tit-for-tat</name>
+    </sellingStrategy>
+    <buyingStrategy>
+      <initialValue>0.0</initialValue>
+      <reservationValue>25.0</reservationValue>
+      <round>0</round>
+      <deadline>20</deadline>
+      <beta>3.0</beta>
+      <name>Time-Dependent</name>
+    </buyingStrategy>
+    <negotiatedOffers/>
+    <totalUsageForecasts/>
+  </home>
+  <appliances>
+    <appliances>
+      <type>DISHWASHER</type>
+      <localName>appliance_Dishwasher</localName>
+      <usageForecasts/>
+      <forecastingMethod>COMPLEX</forecastingMethod>
+      <actualUsages/>
+    </appliances>
+    <appliances>
+      <type>FRIDGE</type>
+      <localName>appliance_Fridge</localName>
+      <usageForecasts/>
+      <forecastingMethod>COMPLEX</forecastingMethod>
+      <actualUsages/>
+    </appliances>
+    <appliances>
+      <type>HEAT_PUMP</type>
+      <localName>appliance_Heat pump</localName>
+      <usageForecasts/>
+      <forecastingMethod>MODERATE</forecastingMethod>
+      <actualUsages/>
+    </appliances>
+    <appliances>
+      <type>HIFI</type>
+      <localName>appliance_HIFI</localName>
+      <usageForecasts/>
+      <forecastingMethod>COMPLEX</forecastingMethod>
+      <actualUsages/>
+    </appliances>
+    <appliances>
+      <type>SOLARPANEL</type>
+      <localName>appliance_Solar Panel</localName>
+      <usageForecasts/>
+      <forecastingMethod>SIMPLE</forecastingMethod>
+      <actualUsages/>
+    </appliances>
+  </appliances>
+  <retailers>
+    <retailers>
+      <localName>retailer_Retailer Fixed</localName>
+      <buyingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>0.0</reservationValue>
+        <round>0</round>
+        <name>Fixed Price</name>
+      </buyingStrategy>
+      <sellingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>0.0</reservationValue>
+        <round>0</round>
+        <name>Fixed Price</name>
+      </sellingStrategy>
+      <incomingOffers/>
+      <outgoingOffers/>
+      <negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 0.0, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 9.368904419607887, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 11.804079892717086, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 13.512298373430653, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 14.872208731475073, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 16.020601204242485, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 17.024429153145537, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 17.922069412681978, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 18.737808839215774, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 19.488106522945852, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 20.18469268919626, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 20.83625689965481, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 21.44943665249201, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 22.029429947764335, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 22.58039251071507, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 23.105705202885073, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 23.60815978543417, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 24.09009145877434, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 24.553475630853065, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 25.0, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Fixed send a PROPOSE: Price: 30.229016978600246, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a ACCEPT-PROPOSAL:  - </negotiationMessages>
+      </negotiationMessages>
+      <tariff>
+        <volumeChargeMinValue>30.0</volumeChargeMinValue>
+        <volumeChargeMaxValue>35.0</volumeChargeMaxValue>
+        <feedInRateMinValue>10.0</feedInRateMinValue>
+        <feedInRateMaxValue>20.0</feedInRateMaxValue>
+        <name>Random Tariff</name>
+      </tariff>
+    </retailers>
+    <retailers>
+      <localName>retailer_Retailer Tit for Tat</localName>
+      <buyingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>10.0</reservationValue>
+        <round>0</round>
+        <deadline>12</deadline>
+        <beta>4.0</beta>
+        <name>Time-Dependent</name>
+      </buyingStrategy>
+      <sellingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>27.0</reservationValue>
+        <round>0</round>
+        <deadline>20</deadline>
+        <factor>0.5</factor>
+        <name>Random Tit-for-tat</name>
+      </sellingStrategy>
+      <incomingOffers/>
+      <outgoingOffers/>
+      <negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 0.0, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Retailer Tit for Tat send a REFUSE:  - </negotiationMessages>
+      </negotiationMessages>
+      <tariff>
+        <blockRates>
+          <blockRates>
+            <from>0.0</from>
+            <upTo>100.0</upTo>
+            <volumeCharge>20.0</volumeCharge>
+            <feedInRate>14.0</feedInRate>
+          </blockRates>
+          <blockRates>
+            <from>100.0</from>
+            <upTo>150.0</upTo>
+            <volumeCharge>25.0</volumeCharge>
+            <feedInRate>26.0</feedInRate>
+          </blockRates>
+          <blockRates>
+            <from>150.0</from>
+            <upTo>250.0</upTo>
+            <volumeCharge>30.0</volumeCharge>
+            <feedInRate>28.0</feedInRate>
+          </blockRates>
+        </blockRates>
+        <name>Block Tariff</name>
+      </tariff>
+    </retailers>
+    <retailers>
+      <localName>retailer_Fixed 2</localName>
+      <buyingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>0.0</reservationValue>
+        <round>0</round>
+        <name>Fixed Price</name>
+      </buyingStrategy>
+      <sellingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>0.0</reservationValue>
+        <round>0</round>
+        <name>Fixed Price</name>
+      </sellingStrategy>
+      <incomingOffers/>
+      <outgoingOffers/>
+      <negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 0.0, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 9.368904419607887, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 11.804079892717086, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 13.512298373430653, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 14.872208731475073, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 16.020601204242485, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 17.024429153145537, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 17.922069412681978, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 18.737808839215774, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 19.488106522945852, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 20.18469268919626, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 20.83625689965481, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 21.44943665249201, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 22.029429947764335, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 22.58039251071507, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 23.105705202885073, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 23.60815978543417, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 24.09009145877434, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 24.553475630853065, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 25.0, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed 2 send a PROPOSE: Price: 39.764016137899354, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a REJECT-PROPOSAL:  - </negotiationMessages>
+      </negotiationMessages>
+      <tariff>
+        <volumeChargeMinValue>30.0</volumeChargeMinValue>
+        <volumeChargeMaxValue>40.0</volumeChargeMaxValue>
+        <feedInRateMinValue>10.0</feedInRateMinValue>
+        <feedInRateMaxValue>20.0</feedInRateMaxValue>
+        <name>Random Tariff</name>
+      </tariff>
+    </retailers>
+    <retailers>
+      <localName>retailer_Time Dependent</localName>
+      <buyingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>10.0</reservationValue>
+        <round>0</round>
+        <deadline>16</deadline>
+        <beta>3.0</beta>
+        <name>Time-Dependent</name>
+      </buyingStrategy>
+      <sellingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>22.0</reservationValue>
+        <round>0</round>
+        <deadline>12</deadline>
+        <beta>0.5</beta>
+        <name>Time-Dependent</name>
+      </sellingStrategy>
+      <incomingOffers/>
+      <outgoingOffers/>
+      <negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 0.0, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 39.39598289891477, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 9.368904419607887, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 39.25221444520473, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 11.804079892717086, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 38.82090908407461, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 13.512298373430653, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 38.10206681552441, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 14.872208731475073, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 37.095687639554136, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 16.020601204242485, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 35.801771556163786, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 17.024429153145537, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 34.22031856535335, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 17.922069412681978, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 32.351328667122836, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 18.737808839215774, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 30.194801861472243, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 19.488106522945852, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 27.750738148401574, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 20.18469268919626, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 25.01913752791083, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 20.83625689965481, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a PROPOSE: Price: 22.0, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 21.44943665249201, Amount: 577.6273779888853, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Time Dependent send a REFUSE:  - </negotiationMessages>
+      </negotiationMessages>
+      <tariff>
+        <volumeChargeMinValue>30.0</volumeChargeMinValue>
+        <volumeChargeMaxValue>40.0</volumeChargeMaxValue>
+        <feedInRateMinValue>15.0</feedInRateMinValue>
+        <feedInRateMaxValue>20.0</feedInRateMaxValue>
+        <name>Random Tariff</name>
+      </tariff>
+    </retailers>
+  </retailers>
+</Configuration>
