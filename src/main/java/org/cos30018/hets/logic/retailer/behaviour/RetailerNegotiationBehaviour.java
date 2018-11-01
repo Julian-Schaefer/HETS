@@ -34,14 +34,24 @@ public class RetailerNegotiationBehaviour extends SSIteratedContractNetResponder
 
 	private void initNegotiation(ACLMessage initiationMessage) {
 		try {
-			Strategy strategy = (Strategy) retailerAgent.getStrategy().clone();
-
 			Offer initialOffer = (Offer) initiationMessage.getContentObject();
-			double initialPrice = retailerAgent.getTariff().getVolumeCharge(initialOffer.getAmount(),
-					initialOffer.getStartPeriod());
+			double requestedAmount = initialOffer.getAmount();
+
+			Strategy strategy;
+			double initialPrice;
+			if (requestedAmount >= 0) {
+				strategy = (Strategy) retailerAgent.getSellingStrategy().clone();
+				initialPrice = retailerAgent.getTariff().getVolumeCharge(initialOffer.getAmount(),
+						initialOffer.getStartPeriod());
+			} else {
+				strategy = (Strategy) retailerAgent.getBuyingStrategy().clone();
+				initialPrice = retailerAgent.getTariff().getFeedInRate(initialOffer.getAmount(),
+						initialOffer.getStartPeriod());
+			}
+
 			strategy.reset(initialPrice);
 
-			OfferUtility utility = new OfferUtility(strategy.getReservationValue(), initialPrice, 0, 1);
+			OfferUtility utility = new OfferUtility(initialPrice, strategy.getReservationValue(), 1, 0);
 			negotiation = new Negotiation(strategy, utility);
 		} catch (NotInRangeException e) {
 

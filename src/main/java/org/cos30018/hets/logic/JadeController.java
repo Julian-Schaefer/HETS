@@ -115,13 +115,13 @@ public class JadeController {
 		return null;
 	}
 
-	public void addRetailerAgent(String name, Strategy strategy, Tariff tariff, boolean addPrefix)
-			throws StaleProxyException {
+	public void addRetailerAgent(String name, Strategy sellingStrategy, Strategy buyingStrategy, Tariff tariff,
+			boolean addPrefix) throws StaleProxyException {
 		if (addPrefix) {
 			name = "retailer_" + name;
 		}
 
-		addAgent(name, RetailerAgent.class, new Object[] { strategy, tariff });
+		addAgent(name, RetailerAgent.class, new Object[] { sellingStrategy, buyingStrategy, tariff });
 	}
 
 	public Retailer getRetailer(AID aid) {

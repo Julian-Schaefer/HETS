@@ -15,7 +15,9 @@ public interface Retailer {
 
 	Tariff getTariff();
 
-	Strategy getStrategy();
+	Strategy getBuyingStrategy();
+
+	Strategy getSellingStrategy();
 
 	List<String> getNegotiationMessages();
 
