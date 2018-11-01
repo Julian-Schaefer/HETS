@@ -60,6 +60,8 @@ public interface Home {
 	void addListener(HomeListener listener);
 
 	public interface HomeListener {
+		void onNewPeriod();
+
 		void onTotalUsageForecastUpdated(int period, double totalUsageForecast);
 
 		void onActualTotalUsageUpdated(int period, double lastActualTotalUsage);

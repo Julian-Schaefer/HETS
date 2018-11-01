@@ -53,4 +53,8 @@ public class HomeAgentController implements HomeListener {
 	@Override
 	public void onNewNegotiatedOffer(int period, Offer offer) {
 	}
+
+	@Override
+	public void onNewPeriod() {
+	}
 }
