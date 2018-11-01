@@ -16,4 +16,9 @@ public class RetailerDetailsWindowController implements RetailerListener {
 	public void onNegotiationMessagesUpdated() {
 		retailerDetailsWindow.update();
 	}
+
+	@Override
+	public void onReset() {
+		retailerDetailsWindow.update();
+	}
 }

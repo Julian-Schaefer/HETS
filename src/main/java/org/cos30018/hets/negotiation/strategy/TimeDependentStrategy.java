@@ -7,8 +7,8 @@ public class TimeDependentStrategy extends Strategy {
 	private double maxValue;
 	private double beta;
 
-	public TimeDependentStrategy(int deadline, double reservationValue, double beta) {
-		super(reservationValue);
+	public TimeDependentStrategy(int deadline, double initialValue, double reservationValue, double beta) {
+		super(initialValue, reservationValue);
 		this.deadline = deadline;
 		this.minValue = initialValue;
 		this.maxValue = reservationValue;

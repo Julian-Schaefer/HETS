@@ -49,9 +49,13 @@ public interface Home {
 
 	Map<Integer, Offer> getNegotiatedOffers();
 
-	Strategy getNegotiationStrategy();
+	Strategy getBuyingStrategy();
 
-	void setNegotiationStrategy(Strategy strategy);
+	void setBuyingStrategy(Strategy strategy);
+
+	Strategy getSellingStrategy();
+
+	void setSellingStrategy(Strategy strategy);
 
 	void addListener(HomeListener listener);
 

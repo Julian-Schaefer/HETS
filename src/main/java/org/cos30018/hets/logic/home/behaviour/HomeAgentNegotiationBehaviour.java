@@ -35,20 +35,29 @@ public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 		ACLMessage msg = new ACLMessage(ACLMessage.CFP);
 		msg.setProtocol(FIPANames.InteractionProtocol.FIPA_ITERATED_CONTRACT_NET);
 
-		OfferUtility utility = new OfferUtility(0, homeAgent.getNegotiationStrategy().getReservationValue(), 1, 0);
-
 		int period = homeAgent.getNextPeriod();
-		Offer initialOffer = new Offer(0.0, homeAgent.getTotalUsageForecast(period), period, 1);
+		double usageForecast = homeAgent.getTotalUsageForecast(period);
+
+		OfferUtility utility;
+		Strategy strategy;
+		if (usageForecast >= 0) {
+			strategy = homeAgent.getBuyingStrategy();
+			utility = new OfferUtility(strategy.getReservationValue(), strategy.getInitialValue(), 0, 1);
+		} else {
+			strategy = homeAgent.getSellingStrategy();
+			utility = new OfferUtility(strategy.getInitialValue(), strategy.getReservationValue(), 1, 0);
+		}
+
+		Offer initialOffer = new Offer(strategy.getInitialValue(), usageForecast, period, 1);
 
 		Map<AID, Negotiation> negotiations = new HashMap<>();
 		for (AID retailerAID : homeAgent.getRetailers()) {
 			msg.addReceiver(retailerAID);
 
 			try {
-				Strategy strategy = (Strategy) homeAgent.getNegotiationStrategy().clone();
-				strategy.reset(0);
+				Strategy negotiationStrategy = (Strategy) strategy.clone();
 
-				Negotiation negotiation = new Negotiation(strategy, utility);
+				Negotiation negotiation = new Negotiation(negotiationStrategy, utility);
 				negotiation.createCounterOffer(initialOffer);
 				negotiations.put(retailerAID, negotiation);
 			} catch (CloneNotSupportedException e) {

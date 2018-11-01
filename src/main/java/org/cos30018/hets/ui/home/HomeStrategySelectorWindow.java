@@ -11,9 +11,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.cos30018.hets.logic.home.Home;
+import org.cos30018.hets.negotiation.strategy.Strategy;
 import org.cos30018.hets.ui.custom.StrategyConfigurationPanel;
 
-public class NegotiationStrategySelectorWindow extends JFrame {
+public class HomeStrategySelectorWindow extends JFrame {
 
 	/**
 	 * 
@@ -22,10 +23,12 @@ public class NegotiationStrategySelectorWindow extends JFrame {
 
 	private StrategyConfigurationPanel strategyConfigurationPanel;
 	private Home home;
+	private boolean selling;
 
-	public NegotiationStrategySelectorWindow(Home home) {
+	public HomeStrategySelectorWindow(Home home, boolean selling) {
 		super("Negotiation Strategy");
 		this.home = home;
+		this.selling = selling;
 		setLayout(new BorderLayout());
 		setSize(new Dimension(500, 400));
 		setLocationRelativeTo(null);
@@ -34,7 +37,8 @@ public class NegotiationStrategySelectorWindow extends JFrame {
 	}
 
 	private void setUp() {
-		strategyConfigurationPanel = new StrategyConfigurationPanel(home.getNegotiationStrategy());
+		Strategy strategy = selling ? home.getSellingStrategy() : home.getBuyingStrategy();
+		strategyConfigurationPanel = new StrategyConfigurationPanel(strategy, true, true);
 		add(strategyConfigurationPanel, BorderLayout.CENTER);
 
 		JPanel bottomButtonPanel = new JPanel();
@@ -52,7 +56,12 @@ public class NegotiationStrategySelectorWindow extends JFrame {
 
 	private ActionListener onOkButtonClickListener = (actionEvent) -> {
 		try {
-			home.setNegotiationStrategy(strategyConfigurationPanel.getStrategy());
+			if (selling) {
+				home.setSellingStrategy(strategyConfigurationPanel.getStrategy());
+			} else {
+				home.setBuyingStrategy(strategyConfigurationPanel.getStrategy());
+			}
+
 			dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

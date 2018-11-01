@@ -11,12 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.logic.home.Home;
-import org.cos30018.hets.ui.custom.StrategyConfigurationPanel;
-import org.cos30018.hets.ui.custom.button.StyledButtonUI;
 import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
 
 public class SettingsPanel extends JPanel {
@@ -27,20 +24,16 @@ public class SettingsPanel extends JPanel {
 	private static final long serialVersionUID = -1449215169896590692L;
 
 	private SettingsPanelListener listener;
-	private SettingsPanelController controller;
 
 	private JButton homeButton;
 	private JLabel registeredAppliancesLabel;
 	private JLabel registeredRetailersLabel;
-	private StrategyConfigurationPanel strategyConfigurationPanel;
-	private JTextField periodIntervalTextField;
-	private JTextField forecastPeriodsTextField;
 
 	private Home home;
 
 	public SettingsPanel(Home home) {
 		this.home = home;
-		this.controller = new SettingsPanelController(this, home);
+		new SettingsPanelController(this, home);
 		setUp();
 		update();
 	}
@@ -68,33 +61,29 @@ public class SettingsPanel extends JPanel {
 
 		add(topPanel, BorderLayout.NORTH);
 
-		JPanel centerPanel = new JPanel(new GridLayout(5, 2));
+		JPanel centerPanel = new JPanel(new GridLayout(4, 2));
 		centerPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		centerPanel.setBackground(Color.white);
 
-		JLabel negotiationStrategyLbl = new JLabel("Negotiation Strategy");
-		negotiationStrategyLbl.setFont(new Font("Raleway", Font.PLAIN, 16));
-		centerPanel.add(addToPanel(negotiationStrategyLbl));
+		JLabel buyingStrategyLbl = new JLabel("Buying Strategy");
+		buyingStrategyLbl.setFont(new Font("Raleway", Font.PLAIN, 16));
+		centerPanel.add(addToPanel(buyingStrategyLbl));
 
-		JButton negotiationStrategyChangeButton = new JButton("Change Strategy");
-		negotiationStrategyChangeButton.addActionListener((e) -> {
-			new NegotiationStrategySelectorWindow(home);
+		JButton buyingStrategyChangeButton = new JButton("Change Strategy");
+		buyingStrategyChangeButton.addActionListener((e) -> {
+			new HomeStrategySelectorWindow(home, false);
 		});
-		centerPanel.add(addToPanel(negotiationStrategyChangeButton));
+		centerPanel.add(addToPanel(buyingStrategyChangeButton));
 
-		JLabel lblTimeInterval = new JLabel("Current Time Interval (seconds)");
-		lblTimeInterval.setFont(new Font("Raleway", Font.PLAIN, 16));
-		centerPanel.add(addToPanel(lblTimeInterval));
+		JLabel sellingStrategyLbl = new JLabel("Selling Strategy");
+		sellingStrategyLbl.setFont(new Font("Raleway", Font.PLAIN, 16));
+		centerPanel.add(addToPanel(sellingStrategyLbl));
 
-		periodIntervalTextField = new JTextField(8);
-		centerPanel.add(addToPanel(periodIntervalTextField));
-
-		JLabel lblForecast = new JLabel("Forecast for the next n periods");
-		lblForecast.setFont(new Font("Raleway", Font.PLAIN, 16));
-		centerPanel.add(addToPanel(lblForecast));
-
-		forecastPeriodsTextField = new JTextField(8);
-		centerPanel.add(addToPanel(forecastPeriodsTextField));
+		JButton sellingStrategyChangeButton = new JButton("Change Strategy");
+		sellingStrategyChangeButton.addActionListener((e) -> {
+			new HomeStrategySelectorWindow(home, true);
+		});
+		centerPanel.add(addToPanel(sellingStrategyChangeButton));
 
 		JLabel lblRegisterApps = new JLabel("Currently Registered Appliances");
 		lblRegisterApps.setFont(new Font("Raleway", Font.PLAIN, 16));
@@ -111,18 +100,6 @@ public class SettingsPanel extends JPanel {
 		centerPanel.add(addToPanel(registeredRetailersLabel));
 
 		add(centerPanel, BorderLayout.CENTER);
-
-		JPanel bottomPanel = new JPanel();
-		bottomPanel.setBackground(Color.white);
-		JButton changeButton = new JButton("Change");
-		changeButton.setBackground(new Color(0x2dce98));
-		changeButton.setFont(new Font("Raleway", Font.BOLD, 14));
-		changeButton.setForeground(Color.white);
-		changeButton.setUI(new StyledButtonUI());
-		changeButton.addActionListener(controller);
-		bottomPanel.add(changeButton);
-
-		add(bottomPanel, BorderLayout.SOUTH);
 	}
 
 	private JPanel addToPanel(JComponent component) {
@@ -134,24 +111,6 @@ public class SettingsPanel extends JPanel {
 	public void update() {
 		registeredAppliancesLabel.setText(String.valueOf(home.getAppliances().size()));
 		registeredRetailersLabel.setText(String.valueOf(home.getRetailers().size()));
-
-		String forecastPeriod = String.valueOf(home.getForecastPeriodCount());
-		if (!forecastPeriod.equals(forecastPeriodsTextField.getText()) && !forecastPeriodsTextField.hasFocus()) {
-			forecastPeriodsTextField.setText(forecastPeriod);
-		}
-
-		String periodInterval = String.valueOf(home.getIntervalPeriod() / 1000);
-		if (!periodInterval.equals(periodIntervalTextField.getText()) && !periodIntervalTextField.hasFocus()) {
-			periodIntervalTextField.setText(periodInterval);
-		}
-	}
-
-	public JTextField getPeriodIntervalTextField() {
-		return periodIntervalTextField;
-	}
-
-	public JTextField getForecastPeriodsTextField() {
-		return forecastPeriodsTextField;
 	}
 
 	public void setSettingsPanelListener(SettingsPanelListener listener) {

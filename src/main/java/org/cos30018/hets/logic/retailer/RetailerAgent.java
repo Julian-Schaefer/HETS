@@ -30,7 +30,8 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 	private Map<Integer, Offer> incomingOffers = new HashMap<>();
 
 	private Tariff tariff;
-	private Strategy strategy;
+	private Strategy buyingStrategy;
+	private Strategy sellingStrategy;
 
 	public RetailerAgent() {
 		super(HomeAgent.HOME_AGENT_SERVICE, RetailerMessage.REGISTER, RetailerMessage.UNREGISTER);
@@ -42,19 +43,21 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 		super.setup();
 
 		Object[] arguments = getArguments();
-		strategy = (Strategy) arguments[0];
-		tariff = (Tariff) arguments[1];
+		sellingStrategy = (Strategy) arguments[0];
+		buyingStrategy = (Strategy) arguments[1];
+		tariff = (Tariff) arguments[2];
 
 		addBehaviour(new RetailerResponderBehaviour(this));
 	}
 
-	public void clearNegotiationLog() {
+	@Override
+	public void reset() {
 		negotiationMessages.clear();
 		outgoingOffers.clear();
 		incomingOffers.clear();
 
 		for (RetailerListener listener : listeners) {
-			listener.onNegotiationMessagesUpdated();
+			listener.onReset();
 		}
 	}
 
@@ -104,8 +107,13 @@ public class RetailerAgent extends RegisteringAgent implements Retailer {
 	}
 
 	@Override
-	public Strategy getStrategy() {
-		return strategy;
+	public Strategy getBuyingStrategy() {
+		return buyingStrategy;
+	}
+
+	@Override
+	public Strategy getSellingStrategy() {
+		return sellingStrategy;
 	}
 
 	@Override

@@ -75,6 +75,25 @@ public class JadeController {
 		for (AID retailerAID : home.getRetailers()) {
 			removeAgent(retailerAID);
 		}
+
+		while (home.getAppliances().size() > 0 || home.getRetailers().size() > 0) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+
+	public void reset() {
+		for (AID applianceAID : home.getAppliances()) {
+			getAppliance(applianceAID).reset();
+		}
+
+		for (AID retailerAID : home.getRetailers()) {
+			getRetailer(retailerAID).reset();
+		}
+
+		home.reset();
 	}
 
 	public void addApplianceAgent(String name, ApplianceType applianceType, ForecastingMethod forecastingMethod,
@@ -96,13 +115,13 @@ public class JadeController {
 		return null;
 	}
 
-	public void addRetailerAgent(String name, Strategy strategy, Tariff tariff, boolean addPrefix)
-			throws StaleProxyException {
+	public void addRetailerAgent(String name, Strategy sellingStrategy, Strategy buyingStrategy, Tariff tariff,
+			boolean addPrefix) throws StaleProxyException {
 		if (addPrefix) {
 			name = "retailer_" + name;
 		}
 
-		addAgent(name, RetailerAgent.class, new Object[] { strategy, tariff });
+		addAgent(name, RetailerAgent.class, new Object[] { sellingStrategy, buyingStrategy, tariff });
 	}
 
 	public Retailer getRetailer(AID aid) {

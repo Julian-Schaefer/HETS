@@ -11,6 +11,8 @@ public interface Appliance {
 		SIMPLE, MODERATE, COMPLEX
 	}
 
+	void reset();
+
 	String getLocalName();
 
 	void setApplianceType(ApplianceType applianceType);
@@ -35,5 +37,7 @@ public interface Appliance {
 		void onNewActualUsage(int period, double usage);
 
 		void onNewUsageForecast(int period, double forecast);
+
+		void onReset();
 	}
 }

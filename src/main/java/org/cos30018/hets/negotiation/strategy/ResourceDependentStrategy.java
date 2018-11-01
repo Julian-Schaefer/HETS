@@ -2,8 +2,8 @@ package org.cos30018.hets.negotiation.strategy;
 
 public class ResourceDependentStrategy extends Strategy {
 
-	public ResourceDependentStrategy(double reservationValue) {
-		super(reservationValue);
+	public ResourceDependentStrategy(double initialValue, double reservationValue) {
+		super(initialValue, reservationValue);
 	}
 
 	@Override

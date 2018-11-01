@@ -1,5 +1,6 @@
 package org.cos30018.hets.ui.home.dashboard;
 
+import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.ui.home.dashboard.PeriodControllerPanel.PeriodControllerPanelListener;
 
@@ -18,5 +19,11 @@ public class PeriodControllerPanelController implements PeriodControllerPanelLis
 	public void onNextPeriodButtonClicked() {
 		home.nextPeriod();
 		periodControllerPanel.update();
+	}
+
+	@Override
+	public void onResetButtonClicked() {
+		JadeController.getInstance().reset();
+		periodControllerPanel.getHomePanel().reset();
 	}
 }

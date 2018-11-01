@@ -12,12 +12,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.ui.custom.StrategyConfigurationPanel;
 import org.cos30018.hets.ui.custom.TariffConfigurationPanel;
+import org.cos30018.hets.util.GuiUtil;
 
 public class AddRetailerWindow extends JFrame {
 
@@ -28,13 +30,14 @@ public class AddRetailerWindow extends JFrame {
 
 	private JTextField nameTextField;
 
-	private StrategyConfigurationPanel strategyConfigurationPanel;
+	private StrategyConfigurationPanel sellingStrategyConfigurationPanel;
+	private StrategyConfigurationPanel buyingStrategyConfigurationPanel;
 	private TariffConfigurationPanel tariffConfigurationPanel;
 
 	public AddRetailerWindow() {
 		super("Add Retailer");
 		setLayout(new BorderLayout());
-		setSize(new Dimension(500, 500));
+		setSize(new Dimension(550, 700));
 		setLocationRelativeTo(null);
 		setUp();
 		setVisible(true);
@@ -52,15 +55,22 @@ public class AddRetailerWindow extends JFrame {
 
 		add(generalPanel, BorderLayout.NORTH);
 
-		JPanel strategyAndTariffPanel = new JPanel(new GridLayout(2, 1));
+		JPanel strategiesAndTariffPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+		strategiesAndTariffPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		strategiesAndTariffPanel.setPreferredSize(new Dimension(0, 700));
 
-		strategyConfigurationPanel = new StrategyConfigurationPanel(null);
-		strategyAndTariffPanel.add(strategyConfigurationPanel);
+		sellingStrategyConfigurationPanel = new StrategyConfigurationPanel(null, false, true);
+		strategiesAndTariffPanel.add(GuiUtil.getCardPanel("Selling Strategy", sellingStrategyConfigurationPanel));
 
-		tariffConfigurationPanel = new TariffConfigurationPanel();
-		strategyAndTariffPanel.add(tariffConfigurationPanel);
+		buyingStrategyConfigurationPanel = new StrategyConfigurationPanel(null, false, true);
+		strategiesAndTariffPanel.add(GuiUtil.getCardPanel("Buying Strategy", buyingStrategyConfigurationPanel));
 
-		add(strategyAndTariffPanel, BorderLayout.CENTER);
+		tariffConfigurationPanel = new TariffConfigurationPanel(null, true);
+		strategiesAndTariffPanel.add(GuiUtil.getCardPanel("Tariff", tariffConfigurationPanel));
+
+		JScrollPane scrollPane = new JScrollPane(strategiesAndTariffPanel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		add(scrollPane, BorderLayout.CENTER);
 
 		JPanel bottomButtonPanel = new JPanel();
 
@@ -79,7 +89,8 @@ public class AddRetailerWindow extends JFrame {
 		if (!nameTextField.getText().isEmpty()) {
 			try {
 				JadeController.getInstance().addRetailerAgent(nameTextField.getText(),
-						strategyConfigurationPanel.getStrategy(), tariffConfigurationPanel.getTariff(), true);
+						sellingStrategyConfigurationPanel.getStrategy(), buyingStrategyConfigurationPanel.getStrategy(),
+						tariffConfigurationPanel.getTariff(), true);
 
 				dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 			} catch (Exception e) {

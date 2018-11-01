@@ -51,15 +51,17 @@ public class ConfigurationWriter {
 				throws IOException {
 			gen.writeStartObject();
 			gen.writeFieldName("blockRates");
-
 			gen.writeStartArray();
+
 			for (Map.Entry<DoubleRange, DoubleRange> entry : value.entrySet()) {
-				gen.writeStartObject();
-				gen.writeNumberField("from", entry.getKey().firstValue);
-				gen.writeNumberField("upTo", entry.getKey().secondValue);
-				gen.writeNumberField("volumeCharge", entry.getValue().firstValue);
-				gen.writeNumberField("feedInRate", entry.getValue().secondValue);
-				gen.writeEndObject();
+				if (entry.getKey() instanceof DoubleRange && entry.getValue() instanceof DoubleRange) {
+					gen.writeStartObject();
+					gen.writeNumberField("from", entry.getKey().firstValue);
+					gen.writeNumberField("upTo", entry.getKey().secondValue);
+					gen.writeNumberField("volumeCharge", entry.getValue().firstValue);
+					gen.writeNumberField("feedInRate", entry.getValue().secondValue);
+					gen.writeEndObject();
+				}
 			}
 
 			gen.writeEndArray();

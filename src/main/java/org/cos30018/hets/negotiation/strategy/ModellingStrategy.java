@@ -9,8 +9,8 @@ public class ModellingStrategy extends Strategy {
 	private Offer lastIncomingOffer;
 	private Offer lastCounterOffer;
 
-	public ModellingStrategy(int deadline, double reservationValue) {
-		super(reservationValue);
+	public ModellingStrategy(int deadline, double initialValue, double reservationValue) {
+		super(initialValue, reservationValue);
 		this.deadline = deadline;
 		this.reservationValue = reservationValue;
 	}

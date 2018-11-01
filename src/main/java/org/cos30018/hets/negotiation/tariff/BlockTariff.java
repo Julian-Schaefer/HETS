@@ -25,7 +25,7 @@ public class BlockTariff extends Tariff {
 	}
 
 	@Override
-	public double getFeedInCharge(double requestedAmount, int period) {
+	public double getFeedInRate(double requestedAmount, int period) {
 		for (Map.Entry<DoubleRange, DoubleRange> blockRate : blockRates.entrySet()) {
 			DoubleRange range = blockRate.getKey();
 			if (requestedAmount >= range.firstValue && requestedAmount <= range.secondValue) {

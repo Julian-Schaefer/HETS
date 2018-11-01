@@ -41,10 +41,13 @@ public class ConfigurationReader {
 	private static final String ELEMENT_APPLIANCE_TYPE = "type";
 	private static final String ELEMENT_APPLIANCE_FORECASTING_METHOD = "forecastingMethod";
 
-	private static final String ELEMENT_HOME_NEGOTIATION_STRATEGY = "negotiationStrategy";
+	private static final String ELEMENT_HOME_BUYING_STRATEGY = "buyingStrategy";
+	private static final String ELEMENT_HOME_SELLING_STRATEGY = "sellingStrategy";
 
-	private static final String ELEMENT_RETAILER_STRATEGY = "strategy";
+	private static final String ELEMENT_RETAILER_SELLING_STRATEGY = "sellingStrategy";
+	private static final String ELEMENT_RETAILER_BUYING_STRATEGY = "buyingStrategy";
 	private static final String ELEMENT_RETAILER_STRATEGY_NAME = "name";
+	private static final String ELEMENT_RETAILER_STRATEGY_INITIAL_VALUE = "initialValue";
 	private static final String ELEMENT_RETAILER_STRATEGY_RESERVATION_VALUE = "reservationValue";
 	private static final String ELEMENT_RETAILER_STRATEGY_DEADLINE = "deadline";
 	private static final String ELEMENT_RETAILER_STRATEGY_BETA = "beta";
@@ -110,12 +113,16 @@ public class ConfigurationReader {
 	}
 
 	private static void loadHome(Element homeRoot) {
-		Element strategyElement = (Element) homeRoot.getElementsByTagName(ELEMENT_HOME_NEGOTIATION_STRATEGY).item(0);
-		Strategy strategy = getStrategy(strategyElement);
+		Element buyingStrategyElement = (Element) homeRoot.getElementsByTagName(ELEMENT_HOME_BUYING_STRATEGY).item(0);
+		Strategy buyingStrategy = getStrategy(buyingStrategyElement);
+
+		Element sellingStrategyElement = (Element) homeRoot.getElementsByTagName(ELEMENT_HOME_SELLING_STRATEGY).item(0);
+		Strategy sellingStrategy = getStrategy(sellingStrategyElement);
 
 		Home home = jadeController.getHome();
 		home.reset();
-		home.setNegotiationStrategy(strategy);
+		home.setBuyingStrategy(buyingStrategy);
+		home.setSellingStrategy(sellingStrategy);
 	}
 
 	private static void loadAppliances(Element applianceRoot) {
@@ -150,14 +157,19 @@ public class ConfigurationReader {
 				Element element = (Element) node;
 
 				String name = element.getElementsByTagName(ELEMENT_LOCALNAME).item(0).getTextContent();
-				Element strategyElement = (Element) element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY).item(0);
-				Strategy strategy = getStrategy(strategyElement);
+				Element sellingStrategyElement = (Element) element
+						.getElementsByTagName(ELEMENT_RETAILER_SELLING_STRATEGY).item(0);
+				Strategy sellingStrategy = getStrategy(sellingStrategyElement);
+
+				Element buyingStrategyElement = (Element) element.getElementsByTagName(ELEMENT_RETAILER_BUYING_STRATEGY)
+						.item(0);
+				Strategy buyingStrategy = getStrategy(buyingStrategyElement);
 
 				Element tariffElement = (Element) element.getElementsByTagName(ELEMENT_RETAILER_TARIFF).item(0);
 				Tariff tariff = getTariff(tariffElement);
 
 				try {
-					jadeController.addRetailerAgent(name, strategy, tariff, false);
+					jadeController.addRetailerAgent(name, sellingStrategy, buyingStrategy, tariff, false);
 				} catch (StaleProxyException e) {
 					e.printStackTrace();
 				}
@@ -172,6 +184,10 @@ public class ConfigurationReader {
 		case Strategy.STRATEGY_FIXED_PRICE:
 			return new FixedPriceStrategy();
 		case Strategy.STRATEGY_TIME_DEPENDENT:
+			String initialValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_INITIAL_VALUE).item(0)
+					.getTextContent();
+			double initialValue = Double.valueOf(initialValueText);
+
 			String reservationValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_RESERVATION_VALUE)
 					.item(0).getTextContent();
 			double reservationValue = Double.valueOf(reservationValueText);
@@ -183,7 +199,7 @@ public class ConfigurationReader {
 			String betaText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_BETA).item(0).getTextContent();
 			double beta = Double.valueOf(betaText);
 
-			return new TimeDependentStrategy(deadline, reservationValue, beta);
+			return new TimeDependentStrategy(deadline, initialValue, reservationValue, beta);
 		default:
 			return null;
 		}

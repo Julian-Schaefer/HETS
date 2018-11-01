@@ -9,11 +9,15 @@ import org.cos30018.hets.negotiation.tariff.Tariff;
 
 public interface Retailer {
 
+	void reset();
+
 	String getLocalName();
 
 	Tariff getTariff();
 
-	Strategy getStrategy();
+	Strategy getBuyingStrategy();
+
+	Strategy getSellingStrategy();
 
 	List<String> getNegotiationMessages();
 
@@ -25,6 +29,8 @@ public interface Retailer {
 
 	public interface RetailerListener {
 		void onNegotiationMessagesUpdated();
+
+		void onReset();
 	}
 
 }

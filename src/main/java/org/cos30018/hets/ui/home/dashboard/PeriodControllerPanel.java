@@ -1,14 +1,15 @@
 package org.cos30018.hets.ui.home.dashboard;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.ui.custom.button.StyledButtonUI;
-import org.cos30018.hets.ui.custom.button.StyledRoundButtonUI;
-
-import java.awt.*;
+import org.cos30018.hets.ui.home.HomePanel;
 
 public class PeriodControllerPanel extends JPanel {
 
@@ -22,9 +23,11 @@ public class PeriodControllerPanel extends JPanel {
 	private Home home;
 
 	private JLabel currentPeriodLbl;
+	private HomePanel homePanel;
 
-	public PeriodControllerPanel(Home home) {
+	public PeriodControllerPanel(Home home, HomePanel homePanel) {
 		this.home = home;
+		this.homePanel = homePanel;
 		new PeriodControllerPanelController(this, home);
 		setUp();
 		update();
@@ -48,6 +51,16 @@ public class PeriodControllerPanel extends JPanel {
 			listener.onNextPeriodButtonClicked();
 		});
 		add(nextPeriodButton);
+
+		JButton resetButton = new JButton("Reset");
+		resetButton.setFont(new Font("Raleway", Font.BOLD, 14));
+		resetButton.setBackground(new Color(0x2dce98));
+		resetButton.setForeground(Color.white);
+		resetButton.setUI(new StyledButtonUI());
+		resetButton.addActionListener((e) -> {
+			listener.onResetButtonClicked();
+		});
+		add(resetButton);
 	}
 
 	public void update() {
@@ -64,7 +77,13 @@ public class PeriodControllerPanel extends JPanel {
 		this.listener = listener;
 	}
 
+	public HomePanel getHomePanel() {
+		return homePanel;
+	}
+
 	public interface PeriodControllerPanelListener {
 		void onNextPeriodButtonClicked();
+
+		void onResetButtonClicked();
 	}
 }
