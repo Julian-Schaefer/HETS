@@ -162,7 +162,8 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 	}
 
 	private JPanel getTimeDependentPanel() {
-		JPanel panel = new JPanel(new GridLayout(3, 2));
+		int rows = showInitialValue ? 4 : 3;
+		JPanel panel = new JPanel(new GridLayout(rows, 2));
 
 		JLabel deadlineTextLbl = new JLabel("Deadline (Rounds):");
 		panel.add(addToJPanel(deadlineTextLbl));
