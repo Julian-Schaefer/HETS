@@ -6,7 +6,7 @@ public class SolarPanelUsage implements ActualUsage {
 	private static double AREA = 10;
 
 	// efficiency of the solar panel
-	private static double EFFICIENCY = 0.40;
+	private static double EFFICIENCY = 30;
 
 	private double area;
 	private double efficiency;
@@ -27,7 +27,7 @@ public class SolarPanelUsage implements ActualUsage {
 
 		if ((time >= 7) && (time <= 17)) {
 			// solar panel returns a negative value
-			return -1 * WATTAGE_PER_SQ_METRE * area * efficiency;
+			return -1 * WATTAGE_PER_SQ_METRE / 1000 * area * efficiency;
 		} else {
 			return 0;
 		}
