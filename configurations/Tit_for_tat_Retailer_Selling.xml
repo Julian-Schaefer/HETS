@@ -1,0 +1,154 @@
+<Configuration>
+  <home>
+    <retailers>
+      <retailers>
+        <name>retailer_Fixed@192.168.152.1:8888/JADE</name>
+        <localName>retailer_Fixed</localName>
+        <hap>192.168.152.1:8888/JADE</hap>
+        <allAddresses>http://DTMcJSCHAEFER.cbcdtm.intern:7778/acc</allAddresses>
+        <allUserDefinedSlot/>
+        <resolversArray/>
+        <addressesArray>
+          <addressesArray>http://DTMcJSCHAEFER.cbcdtm.intern:7778/acc</addressesArray>
+        </addressesArray>
+      </retailers>
+      <retailers>
+        <name>retailer_Tit for Tat@192.168.152.1:8888/JADE</name>
+        <localName>retailer_Tit for Tat</localName>
+        <hap>192.168.152.1:8888/JADE</hap>
+        <allAddresses>http://DTMcJSCHAEFER.cbcdtm.intern:7778/acc</allAddresses>
+        <allUserDefinedSlot/>
+        <resolversArray/>
+        <addressesArray>
+          <addressesArray>http://DTMcJSCHAEFER.cbcdtm.intern:7778/acc</addressesArray>
+        </addressesArray>
+      </retailers>
+    </retailers>
+    <appliances>
+      <appliances>
+        <name>appliance_Fridge@192.168.152.1:8888/JADE</name>
+        <localName>appliance_Fridge</localName>
+        <hap>192.168.152.1:8888/JADE</hap>
+        <allAddresses>http://DTMcJSCHAEFER.cbcdtm.intern:7778/acc</allAddresses>
+        <allUserDefinedSlot/>
+        <resolversArray/>
+        <addressesArray>
+          <addressesArray>http://DTMcJSCHAEFER.cbcdtm.intern:7778/acc</addressesArray>
+        </addressesArray>
+      </appliances>
+    </appliances>
+    <sellingStrategy>
+      <initialValue>30.0</initialValue>
+      <reservationValue>0.0</reservationValue>
+      <round>0</round>
+      <deadline>20</deadline>
+      <beta>1.0</beta>
+      <name>Time-Dependent</name>
+    </sellingStrategy>
+    <buyingStrategy>
+      <initialValue>0.0</initialValue>
+      <reservationValue>50.0</reservationValue>
+      <round>0</round>
+      <deadline>20</deadline>
+      <beta>1.0</beta>
+      <name>Time-Dependent</name>
+    </buyingStrategy>
+    <negotiatedOffers/>
+    <actualTotalUsages/>
+    <forecastPeriodCount>0</forecastPeriodCount>
+    <totalUsageForecasts/>
+    <excessPrice>150.0</excessPrice>
+    <currentPeriod>5</currentPeriod>
+    <nextPeriod>6</nextPeriod>
+  </home>
+  <appliances>
+    <appliances>
+      <type>FRIDGE</type>
+      <localName>appliance_Fridge</localName>
+      <actualUsages/>
+      <usageForecasts/>
+      <forecastingMethod>COMPLEX</forecastingMethod>
+    </appliances>
+  </appliances>
+  <retailers>
+    <retailers>
+      <localName>retailer_Fixed</localName>
+      <sellingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>0.0</reservationValue>
+        <round>0</round>
+        <name>Fixed Price</name>
+      </sellingStrategy>
+      <buyingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>0.0</reservationValue>
+        <round>0</round>
+        <name>Fixed Price</name>
+      </buyingStrategy>
+      <tariff>
+        <volumeChargeMinValue>50.0</volumeChargeMinValue>
+        <volumeChargeMaxValue>60.0</volumeChargeMaxValue>
+        <feedInRateMinValue>10.0</feedInRateMinValue>
+        <feedInRateMaxValue>20.0</feedInRateMaxValue>
+        <name>Random Tariff</name>
+      </tariff>
+      <negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 0.0, Amount: 67.49737545767175, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed send a PROPOSE: Price: 58.98981574521801, Amount: 67.49737545767175, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 2.631578947368421, Amount: 67.49737545767175, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Fixed send a PROPOSE: Price: 58.98981574521801, Amount: 67.49737545767175, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a ACCEPT-PROPOSAL:  - </negotiationMessages>
+      </negotiationMessages>
+      <incomingOffers/>
+      <outgoingOffers/>
+    </retailers>
+    <retailers>
+      <localName>retailer_Tit for Tat</localName>
+      <sellingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>28.0</reservationValue>
+        <round>0</round>
+        <deadline>18</deadline>
+        <factor>3.0</factor>
+        <name>Random Tit-for-tat</name>
+      </sellingStrategy>
+      <buyingStrategy>
+        <initialValue>0.0</initialValue>
+        <reservationValue>0.0</reservationValue>
+        <round>0</round>
+        <name>Fixed Price</name>
+      </buyingStrategy>
+      <tariff>
+        <blockRates>
+          <blockRates>
+            <from>0.0</from>
+            <upTo>200.0</upTo>
+            <volumeCharge>30.0</volumeCharge>
+            <feedInRate>18.0</feedInRate>
+          </blockRates>
+          <blockRates>
+            <from>200.0</from>
+            <upTo>800.0</upTo>
+            <volumeCharge>34.0</volumeCharge>
+            <feedInRate>16.0</feedInRate>
+          </blockRates>
+          <blockRates>
+            <from>800.0</from>
+            <upTo>1200.0</upTo>
+            <volumeCharge>37.0</volumeCharge>
+            <feedInRate>14.0</feedInRate>
+          </blockRates>
+        </blockRates>
+        <name>Block Tariff</name>
+      </tariff>
+      <negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 0.0, Amount: 67.49737545767175, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Tit for Tat send a PROPOSE: Price: 30.0, Amount: 67.49737545767175, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>homeAgent send a CFP: Price: 2.631578947368421, Amount: 67.49737545767175, Number of Periods: 1, Status:COUNTEROFFER</negotiationMessages>
+        <negotiationMessages>retailer_Tit for Tat send a REFUSE:  - </negotiationMessages>
+      </negotiationMessages>
+      <incomingOffers/>
+      <outgoingOffers/>
+    </retailers>
+  </retailers>
+</Configuration>

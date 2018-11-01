@@ -31,18 +31,12 @@ public class RandomTitForTatStrategy extends Strategy {
 
 			if (initialValue > reservationValue) {
 				lastOutgoingValue -= difference + randomness;
-				if (lastOutgoingValue < reservationValue) {
-					throw new DeadlineExceededException();
-				}
 			} else {
 				lastOutgoingValue += difference + randomness;
-				if (lastOutgoingValue > reservationValue) {
-					throw new DeadlineExceededException();
-				}
 			}
-			lastIncomingValue = incomingValue;
 		}
 
+		lastIncomingValue = incomingValue;
 		round++;
 		return lastOutgoingValue;
 	}
