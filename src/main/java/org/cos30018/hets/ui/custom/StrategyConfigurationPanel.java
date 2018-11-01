@@ -65,6 +65,9 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 				TimeDependentStrategy timeDependentStrategy = (TimeDependentStrategy) strategy;
 				deadLineTextField.setText(String.valueOf(timeDependentStrategy.getDeadline()));
+				if (showInitialValue) {
+					initialValueTextField.setText(String.valueOf(timeDependentStrategy.getInitialValue()));
+				}
 				reservationValueTextField.setText(String.valueOf(timeDependentStrategy.getReservationValue()));
 				betaTextField.setText(String.valueOf(timeDependentStrategy.getBeta()));
 			}

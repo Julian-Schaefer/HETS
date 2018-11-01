@@ -12,6 +12,7 @@ public abstract class Strategy implements Cloneable {
 	protected int round;
 
 	public Strategy(double initialValue, double reservationValue) {
+		this.initialValue = initialValue;
 		this.reservationValue = reservationValue;
 	}
 
