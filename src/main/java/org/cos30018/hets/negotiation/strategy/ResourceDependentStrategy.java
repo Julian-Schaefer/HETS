@@ -7,7 +7,7 @@ public class ResourceDependentStrategy extends Strategy {
 	}
 
 	@Override
-	public double getNewValue() throws DeadlineExceededException {
+	public double getNewValue(double resources) throws DeadlineExceededException {
 		return 0;
 	}
 
@@ -15,5 +15,4 @@ public class ResourceDependentStrategy extends Strategy {
 	public String getName() {
 		return Strategy.STRATEGY_RESOURCE_DEPENDENT;
 	}
-
 }

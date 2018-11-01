@@ -16,6 +16,7 @@ import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
 import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
 import org.cos30018.hets.logic.home.Home;
 import org.cos30018.hets.negotiation.strategy.FixedPriceStrategy;
+import org.cos30018.hets.negotiation.strategy.RandomTitForTatStrategy;
 import org.cos30018.hets.negotiation.strategy.Strategy;
 import org.cos30018.hets.negotiation.strategy.TimeDependentStrategy;
 import org.cos30018.hets.negotiation.tariff.BlockTariff;
@@ -51,6 +52,7 @@ public class ConfigurationReader {
 	private static final String ELEMENT_RETAILER_STRATEGY_RESERVATION_VALUE = "reservationValue";
 	private static final String ELEMENT_RETAILER_STRATEGY_DEADLINE = "deadline";
 	private static final String ELEMENT_RETAILER_STRATEGY_BETA = "beta";
+	private static final String ELEMENT_RETAILER_STRATEGY_FACTOR = "factor";
 
 	private static final String ELEMENT_RETAILER_TARIFF = "tariff";
 	private static final String ELEMENT_RETAILER_TARIFF_NAME = "name";
@@ -181,13 +183,13 @@ public class ConfigurationReader {
 		String name = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_NAME).item(0).getTextContent();
 
 		switch (name) {
-		case Strategy.STRATEGY_FIXED_PRICE:
-			String fixedPriceInitialValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_INITIAL_VALUE)
-					.item(0).getTextContent();
-			double fixedPriceInitialValue = Double.valueOf(fixedPriceInitialValueText);
-			return new FixedPriceStrategy(fixedPriceInitialValue);
-
-		case Strategy.STRATEGY_TIME_DEPENDENT:
+		case Strategy.STRATEGY_FIXED_PRICE: {
+			String initialValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_INITIAL_VALUE).item(0)
+					.getTextContent();
+			double initialValue = Double.valueOf(initialValueText);
+			return new FixedPriceStrategy(initialValue);
+		}
+		case Strategy.STRATEGY_TIME_DEPENDENT: {
 			String initialValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_INITIAL_VALUE).item(0)
 					.getTextContent();
 			double initialValue = Double.valueOf(initialValueText);
@@ -204,6 +206,25 @@ public class ConfigurationReader {
 			double beta = Double.valueOf(betaText);
 
 			return new TimeDependentStrategy(deadline, initialValue, reservationValue, beta);
+		}
+		case Strategy.STRATEGY_RANDOM_TIT_FOR_TAT: {
+			String initialValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_INITIAL_VALUE).item(0)
+					.getTextContent();
+			double initialValue = Double.valueOf(initialValueText);
+
+			String reservationValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_RESERVATION_VALUE)
+					.item(0).getTextContent();
+			double reservationValue = Double.valueOf(reservationValueText);
+
+			String deadlineText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_DEADLINE).item(0)
+					.getTextContent();
+			int deadline = Integer.valueOf(deadlineText);
+
+			String factorText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_FACTOR).item(0).getTextContent();
+			double factor = Double.valueOf(factorText);
+
+			return new RandomTitForTatStrategy(deadline, initialValue, reservationValue, factor);
+		}
 		default:
 			return null;
 		}

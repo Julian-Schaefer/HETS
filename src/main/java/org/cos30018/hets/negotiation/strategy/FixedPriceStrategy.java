@@ -7,7 +7,7 @@ public class FixedPriceStrategy extends Strategy {
 	}
 
 	@Override
-	public double getNewValue() {
+	public double getNewValue(double unused) {
 		round++;
 		return initialValue;
 	}

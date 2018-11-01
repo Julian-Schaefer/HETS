@@ -16,7 +16,7 @@ public class TimeDependentStrategy extends Strategy {
 	}
 
 	@Override
-	public double getNewValue() throws DeadlineExceededException {
+	public double getNewValue(double unused) throws DeadlineExceededException {
 		if (round == deadline) {
 			throw new DeadlineExceededException();
 		}
