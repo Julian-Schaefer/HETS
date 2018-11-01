@@ -25,5 +25,13 @@ in Java using JADE and GUI using Java Swing framework.
  * OpenCSV:  is an easy-to-use CSV (comma-separated values) parser library for Java.
  * Jackson-XML
 
+ ## Build
+ Make sure you have Java 8 set up correctly. Then run:
+ 
+ 1. ./mvnw clean package
+ 2. java -jar target/hets-1.0-SNAPSHOT-jar-with-dependencies.jar
+ or 
+ 2. java -jar target/hets-1.0-SNAPSHOT-jar-with-dependencies.jar show-jade-gui 
+ to also launch the JADE GUI
 	
 

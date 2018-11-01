@@ -37,11 +37,13 @@ public class JadeController {
 		return instance;
 	}
 
-	public void launchPlattform() {
+	public void launchPlattform(boolean showGui) {
 		System.out.println(getClass().getSimpleName() + ": Launching the Main Platform container...");
 
 		Profile pMain = new ProfileImpl(null, 8888, null);
-		pMain.setParameter(Profile.GUI, "true");
+		if (showGui) {
+			pMain.setParameter(Profile.GUI, "true");
+		}
 
 		mainContainer = runtime.createMainContainer(pMain);
 
