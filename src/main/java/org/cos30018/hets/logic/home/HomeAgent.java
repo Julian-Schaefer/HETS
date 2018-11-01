@@ -44,7 +44,8 @@ public class HomeAgent extends Agent implements Home {
 
 	private Map<Integer, Offer> negotiatedOffers = new HashMap<>();
 
-	private Strategy negotiationStrategy = new TimeDependentStrategy(20, 50, 1);
+	private Strategy buyingStrategy = new TimeDependentStrategy(20, 0, 50, 1);
+	private Strategy sellingStrategy = new TimeDependentStrategy(20, 30, 0, 1);
 
 	public HomeAgent() {
 		registerO2AInterface(Home.class, this);
@@ -227,13 +228,23 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public Strategy getNegotiationStrategy() {
-		return negotiationStrategy;
+	public Strategy getBuyingStrategy() {
+		return buyingStrategy;
 	}
 
 	@Override
-	public void setNegotiationStrategy(Strategy strategy) {
-		this.negotiationStrategy = strategy;
+	public void setBuyingStrategy(Strategy strategy) {
+		this.buyingStrategy = strategy;
+	}
+
+	@Override
+	public Strategy getSellingStrategy() {
+		return sellingStrategy;
+	}
+
+	@Override
+	public void setSellingStrategy(Strategy strategy) {
+		this.sellingStrategy = strategy;
 	}
 
 	@Override

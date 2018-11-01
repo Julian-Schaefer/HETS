@@ -11,7 +11,7 @@ public abstract class Strategy implements Cloneable {
 	protected double reservationValue;
 	protected int round;
 
-	public Strategy(double reservationValue) {
+	public Strategy(double initialValue, double reservationValue) {
 		this.reservationValue = reservationValue;
 	}
 
@@ -23,6 +23,10 @@ public abstract class Strategy implements Cloneable {
 	}
 
 	public abstract String getName();
+
+	public double getInitialValue() {
+		return initialValue;
+	}
 
 	public double getReservationValue() {
 		return reservationValue;
