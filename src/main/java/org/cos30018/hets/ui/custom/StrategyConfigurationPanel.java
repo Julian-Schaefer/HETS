@@ -28,12 +28,15 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 	private JPanel strategySpecificationPanel;
 
 	private JTextField deadLineTextField;
+	private JTextField initialValueTextField;
 	private JTextField reservationValueTextField;
 	private JTextField betaTextField;
 
+	private boolean showInitialValue;
 	private boolean isEnabled;
 
-	public StrategyConfigurationPanel(Strategy strategy, boolean isEnabled) {
+	public StrategyConfigurationPanel(Strategy strategy, boolean showInitialValue, boolean isEnabled) {
+		this.showInitialValue = showInitialValue;
 		this.isEnabled = isEnabled;
 		setLayout(new BorderLayout());
 		setUp(strategy);
@@ -83,18 +86,26 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		case Strategy.STRATEGY_MODELLING:
 			try {
 				int deadline = Integer.valueOf(deadLineTextField.getText());
+				double initialValue = 0;
+				if (showInitialValue) {
+					initialValue = Double.valueOf(initialValueTextField.getText());
+				}
 				double reservationValue = Double.valueOf(reservationValueTextField.getText());
 				if (deadline <= 0 || reservationValue < 0) {
 					throw new RuntimeException("Please enter a positive numbers for the Modelling Strategy.");
 				}
 
-				return new ModellingStrategy(deadline, reservationValue);
+				return new ModellingStrategy(deadline, initialValue, reservationValue);
 			} catch (NumberFormatException e) {
 				throw new RuntimeException("Please enter a valid numbers for the Modelling Strategy.");
 			}
 		case Strategy.STRATEGY_TIME_DEPENDENT:
 			try {
 				int deadline = Integer.valueOf(deadLineTextField.getText());
+				double initialValue = 0;
+				if (showInitialValue) {
+					initialValue = Double.valueOf(initialValueTextField.getText());
+				}
 				double reservationValue = Double.valueOf(reservationValueTextField.getText());
 				double beta = Double.valueOf(betaTextField.getText());
 
@@ -102,7 +113,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 					throw new RuntimeException("Please enter a positive numbers for the Time-dependent Strategy.");
 				}
 
-				return new TimeDependentStrategy(deadline, reservationValue, beta);
+				return new TimeDependentStrategy(deadline, initialValue, reservationValue, beta);
 			} catch (NumberFormatException e) {
 				throw new RuntimeException("Please enter a valid numbers for the Time-dependent Strategy.");
 			}
@@ -159,8 +170,16 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		deadLineTextField = new JTextField(8);
 		panel.add(addToJPanel(deadLineTextField));
 
-		JLabel minimumValueLbl = new JLabel("Reservation Value:");
-		panel.add(addToJPanel(minimumValueLbl));
+		if (showInitialValue) {
+			JLabel initialValueLbl = new JLabel("Initial Value:");
+			panel.add(addToJPanel(initialValueLbl));
+
+			initialValueTextField = new JTextField(8);
+			panel.add(addToJPanel(initialValueTextField));
+		}
+
+		JLabel reservationValueLbl = new JLabel("Reservation Value:");
+		panel.add(addToJPanel(reservationValueLbl));
 
 		reservationValueTextField = new JTextField(8);
 		panel.add(addToJPanel(reservationValueTextField));
