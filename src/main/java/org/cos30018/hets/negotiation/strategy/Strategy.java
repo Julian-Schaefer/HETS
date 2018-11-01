@@ -1,5 +1,11 @@
 package org.cos30018.hets.negotiation.strategy;
 
+/**
+ * This class is the base class for every strategy that can be used in a
+ * negotiation. It provides a simple method "getNewValue" to get the next value
+ * independently from the actual implementation.
+ *
+ */
 public abstract class Strategy implements Cloneable {
 
 	public static final String STRATEGY_FIXED_PRICE = "Fixed Price";
@@ -16,6 +22,9 @@ public abstract class Strategy implements Cloneable {
 		this.reservationValue = reservationValue;
 	}
 
+	/**
+	 * This method has to be overriden by actual implementations of a strategy.
+	 */
 	public abstract double getNewValue(double constraints) throws DeadlineExceededException;
 
 	public void reset(double initialValue) {
