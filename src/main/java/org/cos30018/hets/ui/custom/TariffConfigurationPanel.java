@@ -201,13 +201,13 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 		randomPriceVolumeChargeMaxTextField = new JTextField(8);
 		panel.add(addToJPanel(randomPriceVolumeChargeMaxTextField));
 
-		JLabel fixedPriceFeedInMinTextLbl = new JLabel("Minimum Feed-in Price:");
+		JLabel fixedPriceFeedInMinTextLbl = new JLabel("Minimum Feed-in Rate Price:");
 		panel.add(addToJPanel(fixedPriceFeedInMinTextLbl));
 
 		randomPriceFeedInMinTextField = new JTextField(8);
 		panel.add(addToJPanel(randomPriceFeedInMinTextField));
 
-		JLabel fixedPriceFeedInMaxTextLbl = new JLabel("Maximum Feed-in Price:");
+		JLabel fixedPriceFeedInMaxTextLbl = new JLabel("Maximum Feed-in Rate Price:");
 		panel.add(addToJPanel(fixedPriceFeedInMaxTextLbl));
 
 		randomPriceFeedInMaxTextField = new JTextField(8);

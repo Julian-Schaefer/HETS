@@ -1,6 +1,7 @@
 package org.cos30018.hets.ui.custom;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -139,6 +140,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 				break;
 			}
 
+			GuiUtil.setPanelBackground(strategySpecificationPanel, Color.WHITE);
 			updateUI();
 		}
 	}
