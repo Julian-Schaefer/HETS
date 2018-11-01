@@ -10,7 +10,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.cos30018.hets.logic.home.Home;
@@ -26,6 +28,7 @@ public class SettingsPanel extends JPanel {
 	private SettingsPanelListener listener;
 
 	private JButton homeButton;
+	private JTextField excessPriceTextField;
 	private JLabel registeredAppliancesLabel;
 	private JLabel registeredRetailersLabel;
 
@@ -61,7 +64,7 @@ public class SettingsPanel extends JPanel {
 
 		add(topPanel, BorderLayout.NORTH);
 
-		JPanel centerPanel = new JPanel(new GridLayout(4, 2));
+		JPanel centerPanel = new JPanel(new GridLayout(5, 2));
 		centerPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		centerPanel.setBackground(Color.white);
 
@@ -84,6 +87,27 @@ public class SettingsPanel extends JPanel {
 			new HomeStrategySelectorWindow(home, true);
 		});
 		centerPanel.add(addToPanel(sellingStrategyChangeButton));
+
+		JLabel excessPriceLbl = new JLabel("Excess price");
+		excessPriceLbl.setFont(new Font("Raleway", Font.PLAIN, 16));
+		centerPanel.add(addToPanel(excessPriceLbl));
+
+		JPanel excessPricePanel = new JPanel(new BorderLayout());
+		excessPriceTextField = new JTextField(8);
+		excessPricePanel.add(excessPriceTextField, BorderLayout.CENTER);
+
+		JButton changeExcessPriceButton = new JButton("Change");
+		changeExcessPriceButton.addActionListener((e) -> {
+			try {
+				double excessPrice = Double.parseDouble(excessPriceTextField.getText());
+				home.setExcessPrice(excessPrice);
+				update();
+			} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(null, "Please enter a valid price.", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		excessPricePanel.add(changeExcessPriceButton, BorderLayout.EAST);
+		centerPanel.add(addToPanel(excessPricePanel));
 
 		JLabel lblRegisterApps = new JLabel("Currently Registered Appliances");
 		lblRegisterApps.setFont(new Font("Raleway", Font.PLAIN, 16));
@@ -111,6 +135,7 @@ public class SettingsPanel extends JPanel {
 	public void update() {
 		registeredAppliancesLabel.setText(String.valueOf(home.getAppliances().size()));
 		registeredRetailersLabel.setText(String.valueOf(home.getRetailers().size()));
+		excessPriceTextField.setText(String.valueOf(home.getExcessPrice()));
 	}
 
 	public void setSettingsPanelListener(SettingsPanelListener listener) {

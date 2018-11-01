@@ -37,7 +37,7 @@ public class HomeAgent extends Agent implements Home {
 
 	private int period;
 	private int forecastPeriodCount = 0;
-	private long intervalPeriod = 5000;
+	private double excessPrice = 150.0;
 
 	private Map<Integer, Double> usageForecasts = new HashMap<>();
 	private Map<Integer, Double> actualUsages = new HashMap<>();
@@ -123,16 +123,6 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public List<AID> getRetailers() {
 		return retailerAIDs;
-	}
-
-	@Override
-	public void setIntervalPeriod(long period) {
-		this.intervalPeriod = period;
-	}
-
-	@Override
-	public long getIntervalPeriod() {
-		return intervalPeriod;
 	}
 
 	@Override
@@ -249,6 +239,16 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public void setSellingStrategy(Strategy strategy) {
 		this.sellingStrategy = strategy;
+	}
+
+	@Override
+	public void setExcessPrice(double price) {
+		this.excessPrice = price;
+	}
+
+	@Override
+	public double getExcessPrice() {
+		return excessPrice;
 	}
 
 	@Override

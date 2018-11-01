@@ -17,6 +17,7 @@ public class App {
 			jadeController.launchPlattform(showGui);
 			new HomeAgentController(jadeController.getHome());
 		} catch (Exception e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Unable to start HETS. Maybe it is already running?", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			System.exit(1);

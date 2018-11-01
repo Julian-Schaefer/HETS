@@ -60,7 +60,7 @@ public class HomeDashboardPanelController implements HomeListener {
 
 			if (forecastedUsage < actualUsage) {
 				double difference = actualUsage - forecastedUsage;
-				double differencePrice = difference * currentNegotiatedOffer.getExcessPrice();
+				double differencePrice = difference * home.getExcessPrice();
 				negotiatedAndActualPriceGraph.addActualValue(home.getCurrentPeriod(), actualPrice);
 				negotiatedAndActualPriceGraph.addDifferenceValue(home.getCurrentPeriod(), differencePrice);
 			} else {

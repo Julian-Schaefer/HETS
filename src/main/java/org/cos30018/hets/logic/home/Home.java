@@ -25,10 +25,6 @@ public interface Home {
 
 	List<AID> getRetailers();
 
-	void setIntervalPeriod(long period);
-
-	long getIntervalPeriod();
-
 	void setForecastPeriodCount(int forecastPeriodCount);
 
 	int getForecastPeriodCount();
@@ -56,6 +52,10 @@ public interface Home {
 	Strategy getSellingStrategy();
 
 	void setSellingStrategy(Strategy strategy);
+
+	double getExcessPrice();
+
+	void setExcessPrice(double price);
 
 	void addListener(HomeListener listener);
 

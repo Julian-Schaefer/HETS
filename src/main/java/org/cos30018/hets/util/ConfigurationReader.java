@@ -44,6 +44,7 @@ public class ConfigurationReader {
 
 	private static final String ELEMENT_HOME_BUYING_STRATEGY = "buyingStrategy";
 	private static final String ELEMENT_HOME_SELLING_STRATEGY = "sellingStrategy";
+	private static final String ELEMENT_HOME_EXCESS_PRICE = "excessPrice";
 
 	private static final String ELEMENT_RETAILER_SELLING_STRATEGY = "sellingStrategy";
 	private static final String ELEMENT_RETAILER_BUYING_STRATEGY = "buyingStrategy";
@@ -121,10 +122,14 @@ public class ConfigurationReader {
 		Element sellingStrategyElement = (Element) homeRoot.getElementsByTagName(ELEMENT_HOME_SELLING_STRATEGY).item(0);
 		Strategy sellingStrategy = getStrategy(sellingStrategyElement);
 
+		String excessPriceText = homeRoot.getElementsByTagName(ELEMENT_HOME_EXCESS_PRICE).item(0).getTextContent();
+		double excessPrice = Double.valueOf(excessPriceText);
+
 		Home home = jadeController.getHome();
 		home.reset();
 		home.setBuyingStrategy(buyingStrategy);
 		home.setSellingStrategy(sellingStrategy);
+		home.setExcessPrice(excessPrice);
 	}
 
 	private static void loadAppliances(Element applianceRoot) {
