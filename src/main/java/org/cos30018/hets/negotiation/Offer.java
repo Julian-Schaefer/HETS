@@ -5,7 +5,9 @@ import java.io.Serializable;
 import jade.core.AID;
 
 /**
- * @author JSchaefer
+ * This class is just a model object without actual logic. It contains the
+ * offers and can be serialized. That way, we can easily send ACLMessages
+ * between different agents by leveraging the Serializable Interface
  *
  */
 public class Offer implements Serializable {

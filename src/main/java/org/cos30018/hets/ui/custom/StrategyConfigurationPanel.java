@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.cos30018.hets.negotiation.strategy.FixedPriceStrategy;
-import org.cos30018.hets.negotiation.strategy.ModellingStrategy;
+import org.cos30018.hets.negotiation.strategy.RandomTitForTatStrategy;
 import org.cos30018.hets.negotiation.strategy.Strategy;
 import org.cos30018.hets.negotiation.strategy.TimeDependentStrategy;
 import org.cos30018.hets.util.GuiUtil;
@@ -31,6 +31,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 	private JTextField deadLineTextField;
 	private JTextField initialValueTextField;
 	private JTextField reservationValueTextField;
+	private JTextField factorTextField;
 	private JTextField betaTextField;
 
 	private boolean showInitialValue;
@@ -48,7 +49,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		JLabel strategyLabel = new JLabel("Negotiation Strategy:");
 		strategySelectorPanel.add(addToJPanel(strategyLabel));
 
-		String[] strategies = { Strategy.STRATEGY_FIXED_PRICE, Strategy.STRATEGY_MODELLING,
+		String[] strategies = { Strategy.STRATEGY_FIXED_PRICE, Strategy.STRATEGY_RANDOM_TIT_FOR_TAT,
 				Strategy.STRATEGY_TIME_DEPENDENT };
 		strategyComboBox = new JComboBox<>(strategies);
 		strategyComboBox.addActionListener(this);
@@ -60,7 +61,14 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		add(strategySpecificationPanel, BorderLayout.CENTER);
 
 		if (strategy != null) {
-			if (strategy instanceof TimeDependentStrategy) {
+			if (strategy instanceof FixedPriceStrategy) {
+				strategyComboBox.setSelectedItem(Strategy.STRATEGY_FIXED_PRICE);
+
+				if (showInitialValue) {
+					initialValueTextField.setText(String.valueOf(strategy.getInitialValue()));
+				}
+
+			} else if (strategy instanceof TimeDependentStrategy) {
 				strategyComboBox.setSelectedItem(Strategy.STRATEGY_TIME_DEPENDENT);
 
 				TimeDependentStrategy timeDependentStrategy = (TimeDependentStrategy) strategy;
@@ -70,6 +78,16 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 				}
 				reservationValueTextField.setText(String.valueOf(timeDependentStrategy.getReservationValue()));
 				betaTextField.setText(String.valueOf(timeDependentStrategy.getBeta()));
+			} else if (strategy instanceof RandomTitForTatStrategy) {
+				strategyComboBox.setSelectedItem(Strategy.STRATEGY_RANDOM_TIT_FOR_TAT);
+
+				RandomTitForTatStrategy randomTitForTatStrategy = (RandomTitForTatStrategy) strategy;
+				deadLineTextField.setText(String.valueOf(randomTitForTatStrategy.getDeadline()));
+				if (showInitialValue) {
+					initialValueTextField.setText(String.valueOf(randomTitForTatStrategy.getInitialValue()));
+				}
+				factorTextField.setText(String.valueOf(randomTitForTatStrategy.getFactor()));
+				reservationValueTextField.setText(String.valueOf(randomTitForTatStrategy.getReservationValue()));
 			}
 		} else {
 			strategyComboBox.setSelectedItem(Strategy.STRATEGY_FIXED_PRICE);
@@ -86,8 +104,17 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 		switch (selectedStrategy) {
 		case Strategy.STRATEGY_FIXED_PRICE:
-			return new FixedPriceStrategy();
-		case Strategy.STRATEGY_MODELLING:
+			try {
+				double initialValue = 0;
+				if (showInitialValue) {
+					initialValue = Double.valueOf(initialValueTextField.getText());
+				}
+
+				return new FixedPriceStrategy(initialValue);
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Please enter a valid numbers for the Fixed Price Strategy.");
+			}
+		case Strategy.STRATEGY_RANDOM_TIT_FOR_TAT:
 			try {
 				int deadline = Integer.valueOf(deadLineTextField.getText());
 				double initialValue = 0;
@@ -96,12 +123,13 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 				}
 				double reservationValue = Double.valueOf(reservationValueTextField.getText());
 				if (deadline <= 0 || reservationValue < 0) {
-					throw new RuntimeException("Please enter a positive numbers for the Modelling Strategy.");
+					throw new RuntimeException("Please enter a positive numbers for the Random Tit-for-tat Strategy.");
 				}
+				double factor = Double.valueOf(factorTextField.getText());
 
-				return new ModellingStrategy(deadline, initialValue, reservationValue);
+				return new RandomTitForTatStrategy(deadline, initialValue, reservationValue, factor);
 			} catch (NumberFormatException e) {
-				throw new RuntimeException("Please enter a valid numbers for the Modelling Strategy.");
+				throw new RuntimeException("Please enter a valid numbers for the Random Tit-for-tat Strategy.");
 			}
 		case Strategy.STRATEGY_TIME_DEPENDENT:
 			try {
@@ -133,8 +161,11 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 			String selectedStrategy = (String) strategyComboBox.getSelectedItem();
 			switch (selectedStrategy) {
-			case Strategy.STRATEGY_MODELLING:
-				strategySpecificationPanel.add(getModellingPanel());
+			case Strategy.STRATEGY_FIXED_PRICE:
+				strategySpecificationPanel.add(getFixedPricePanel());
+				break;
+			case Strategy.STRATEGY_RANDOM_TIT_FOR_TAT:
+				strategySpecificationPanel.add(getRandomTitForTatPanel());
 				break;
 			case Strategy.STRATEGY_TIME_DEPENDENT:
 				strategySpecificationPanel.add(getTimeDependentPanel());
@@ -148,8 +179,23 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		}
 	}
 
-	private JPanel getModellingPanel() {
-		JPanel panel = new JPanel(new GridLayout(2, 2));
+	private JPanel getFixedPricePanel() {
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+
+		if (showInitialValue) {
+			JLabel initialValueLbl = new JLabel("Initial Value:");
+			panel.add(addToJPanel(initialValueLbl));
+
+			initialValueTextField = new JTextField(8);
+			panel.add(addToJPanel(initialValueTextField));
+		}
+
+		return panel;
+	}
+
+	private JPanel getRandomTitForTatPanel() {
+		int rows = showInitialValue ? 4 : 3;
+		JPanel panel = new JPanel(new GridLayout(rows, 2));
 
 		JLabel deadlineTextLbl = new JLabel("Deadline (Rounds):");
 		panel.add(addToJPanel(deadlineTextLbl));
@@ -157,11 +203,25 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		deadLineTextField = new JTextField(8);
 		panel.add(addToJPanel(deadLineTextField));
 
+		if (showInitialValue) {
+			JLabel initialValueLbl = new JLabel("Initial Value:");
+			panel.add(addToJPanel(initialValueLbl));
+
+			initialValueTextField = new JTextField(8);
+			panel.add(addToJPanel(initialValueTextField));
+		}
+
 		JLabel reservationValueTextLbl = new JLabel("Reservation Value:");
 		panel.add(addToJPanel(reservationValueTextLbl));
 
 		reservationValueTextField = new JTextField(8);
 		panel.add(addToJPanel(reservationValueTextField));
+
+		JLabel factorTextLbl = new JLabel("Random Factor (x times randomness):");
+		panel.add(addToJPanel(factorTextLbl));
+
+		factorTextField = new JTextField(8);
+		panel.add(addToJPanel(factorTextField));
 
 		return panel;
 	}
