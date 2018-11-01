@@ -6,10 +6,6 @@ public class FixedPriceStrategy extends Strategy {
 		super(initialValue, 0);
 	}
 
-	public FixedPriceStrategy() {
-		this(0);
-	}
-
 	@Override
 	public double getNewValue() {
 		round++;

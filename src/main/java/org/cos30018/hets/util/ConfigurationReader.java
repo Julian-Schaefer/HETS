@@ -182,7 +182,11 @@ public class ConfigurationReader {
 
 		switch (name) {
 		case Strategy.STRATEGY_FIXED_PRICE:
-			return new FixedPriceStrategy();
+			String fixedPriceInitialValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_INITIAL_VALUE)
+					.item(0).getTextContent();
+			double fixedPriceInitialValue = Double.valueOf(fixedPriceInitialValueText);
+			return new FixedPriceStrategy(fixedPriceInitialValue);
+
 		case Strategy.STRATEGY_TIME_DEPENDENT:
 			String initialValueText = element.getElementsByTagName(ELEMENT_RETAILER_STRATEGY_INITIAL_VALUE).item(0)
 					.getTextContent();

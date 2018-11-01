@@ -60,7 +60,14 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 		add(strategySpecificationPanel, BorderLayout.CENTER);
 
 		if (strategy != null) {
-			if (strategy instanceof TimeDependentStrategy) {
+			if (strategy instanceof FixedPriceStrategy) {
+				strategyComboBox.setSelectedItem(Strategy.STRATEGY_FIXED_PRICE);
+
+				if (showInitialValue) {
+					initialValueTextField.setText(String.valueOf(strategy.getInitialValue()));
+				}
+
+			} else if (strategy instanceof TimeDependentStrategy) {
 				strategyComboBox.setSelectedItem(Strategy.STRATEGY_TIME_DEPENDENT);
 
 				TimeDependentStrategy timeDependentStrategy = (TimeDependentStrategy) strategy;
@@ -86,7 +93,16 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 		switch (selectedStrategy) {
 		case Strategy.STRATEGY_FIXED_PRICE:
-			return new FixedPriceStrategy();
+			try {
+				double initialValue = 0;
+				if (showInitialValue) {
+					initialValue = Double.valueOf(initialValueTextField.getText());
+				}
+
+				return new FixedPriceStrategy(initialValue);
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Please enter a valid numbers for the Fixed Price Strategy.");
+			}
 		case Strategy.STRATEGY_MODELLING:
 			try {
 				int deadline = Integer.valueOf(deadLineTextField.getText());
@@ -133,6 +149,9 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 
 			String selectedStrategy = (String) strategyComboBox.getSelectedItem();
 			switch (selectedStrategy) {
+			case Strategy.STRATEGY_FIXED_PRICE:
+				strategySpecificationPanel.add(getFixedPricePanel());
+				break;
 			case Strategy.STRATEGY_MODELLING:
 				strategySpecificationPanel.add(getModellingPanel());
 				break;
@@ -146,6 +165,20 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 			GuiUtil.setPanelBackground(strategySpecificationPanel, Color.WHITE);
 			updateUI();
 		}
+	}
+
+	private JPanel getFixedPricePanel() {
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+
+		if (showInitialValue) {
+			JLabel initialValueLbl = new JLabel("Initial Value:");
+			panel.add(addToJPanel(initialValueLbl));
+
+			initialValueTextField = new JTextField(8);
+			panel.add(addToJPanel(initialValueTextField));
+		}
+
+		return panel;
 	}
 
 	private JPanel getModellingPanel() {
