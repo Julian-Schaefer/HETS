@@ -92,4 +92,8 @@ public class HomeDashboardPanelController implements HomeListener {
 	public void onRetailerRemoved(AID retailerAID) {
 		homeDashboardPanel.update();
 	}
+
+	@Override
+	public void onNewPeriod() {
+	}
 }

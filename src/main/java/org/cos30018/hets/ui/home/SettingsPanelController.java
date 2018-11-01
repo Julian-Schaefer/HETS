@@ -48,4 +48,8 @@ public class SettingsPanelController implements HomeListener {
 	public void onRetailerRemoved(AID retailerAID) {
 		settingsPanel.update();
 	}
+
+	@Override
+	public void onNewPeriod() {
+	}
 }

@@ -210,6 +210,10 @@ public class HomeAgent extends Agent implements Home {
 			addBehaviour(ApplianceUsageRequestBehaviour.create(this, getAppliances()));
 		}
 		addBehaviour(ApplianceForecastRequestBehaviour.create(this, getAppliances()));
+
+		for (HomeListener listener : listeners) {
+			listener.onNewPeriod();
+		}
 	}
 
 	@Override

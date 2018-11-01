@@ -27,18 +27,21 @@ public class AppliancePanelController implements AppliancePanelListener, AgentPa
 
 		Object[] dialogComponents = { "Name", applianceNameField, "Type", typeCombo, "Forecast Method", forecastCombo };
 
-		JOptionPane.showConfirmDialog(null, dialogComponents, "Add Appliance", JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(null, dialogComponents, "Add Appliance",
+				JOptionPane.OK_CANCEL_OPTION);
 
-		if (!applianceNameField.getText().isEmpty()) {
-			try {
-				JadeController.getInstance().addApplianceAgent(applianceNameField.getText(),
-						(ApplianceType) typeCombo.getSelectedItem(),
-						(ForecastingMethod) forecastCombo.getSelectedItem(), true);
-			} catch (StaleProxyException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		if (result == JOptionPane.OK_OPTION) {
+			if (!applianceNameField.getText().isEmpty()) {
+				try {
+					JadeController.getInstance().addApplianceAgent(applianceNameField.getText(),
+							(ApplianceType) typeCombo.getSelectedItem(),
+							(ForecastingMethod) forecastCombo.getSelectedItem(), true);
+				} catch (StaleProxyException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Appliance name is empty.");
 			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Appliance name is empty.");
 		}
 	}
 
