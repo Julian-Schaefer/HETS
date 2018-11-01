@@ -48,9 +48,18 @@ public class NeuralNetworkManager {
 	// Global data, read and stored only once
 	private static List<Double> dataTrainingTemperature = new ArrayList<>();
 	private static List<Double> dataTemperature = new ArrayList<>();
-
-	// current index of the weather lists (hourly)
+	// current index of the weather lists (half-hourly)
 	private int indexWeather = 0;
+
+	private static List<Double> dataTrainingTime = new ArrayList<>();
+	private static List<Double> dataTime = new ArrayList<>();
+	private int indexTime = 0;
+
+	private static List<Double> dataTrainingDay = new ArrayList<>();
+	private static List<Double> dataDay = new ArrayList<>();
+	private int indexDay = 0;
+
+
 
 	// time in minutes, 24 hour (resets at 1140)
 	private int time = 0;
@@ -151,12 +160,20 @@ public class NeuralNetworkManager {
 						// get 5,000 results for training and the rest for actual
 						if (i < TRAINING_RECORDS) {
 							dataTrainingTemperature.add(Double.parseDouble((nextRecord[indexToGet])));
+							dataTrainingTime.add(periodToTime(i));
+							dataTrainingDay.add(periodToDay(i));
 							i++;
 							dataTrainingTemperature.add(Double.parseDouble((nextRecord[indexToGet])));
+							dataTrainingTime.add(periodToTime(i));
+							dataTrainingDay.add(periodToDay(i));
 						} else {
 							dataTemperature.add(Double.parseDouble(nextRecord[indexToGet]));
+							dataTime.add(periodToTime(i));
+							dataDay.add(periodToDay(i));
 							i++;
 							dataTemperature.add(Double.parseDouble(nextRecord[indexToGet]));
+							dataTime.add(periodToTime(i));
+							dataDay.add(periodToDay(i));
 						}
 					}
 
@@ -166,15 +183,22 @@ public class NeuralNetworkManager {
 						if (i < TRAINING_RECORDS) {
 							toAdd = dataTrainingTemperature.get(dataTrainingTemperature.size() - 1);
 							dataTrainingTemperature.add(toAdd);
-
+							dataTrainingTime.add(periodToTime(i));
+							dataTrainingDay.add(periodToDay(i));
 							i++;
 							dataTrainingTemperature.add(toAdd);
+							dataTrainingTime.add(periodToTime(i));
+							dataTrainingDay.add(periodToDay(i));
 						} else {
 							toAdd = dataTemperature.get(dataTemperature.size() - 1);
 							dataTemperature.add(toAdd);
+							dataTime.add(periodToTime(i));
+							dataDay.add(periodToDay(i));
 
 							i++;
 							dataTemperature.add(toAdd);
+							dataTime.add(periodToTime(i));
+							dataDay.add(periodToDay(i));
 						}
 
 					}
@@ -205,11 +229,11 @@ public class NeuralNetworkManager {
 
 		tempData.add(dataElectricity);
 
-		neuralNetwork.Train(dataElectricity, tempData, HIDDEN_LAYERS, HIDDEN_LAYER_SIZE, TRAINING_SESSIONS);
+		neuralNetwork.train(dataElectricity, tempData, HIDDEN_LAYERS, HIDDEN_LAYER_SIZE, TRAINING_SESSIONS);
 
 	}
 
-	public NeuralNetworkManager(Appliance.ApplianceType type) {
+	public NeuralNetworkManager(Appliance.ApplianceType type, boolean toTrain) {
 		// DISHWASHER, FRIDGE, WASHING_MACHINE,DRYER, HEAT_PUMP, HOT_WATER_SYSTEM, HIFI
 		// Setup dictionary values
 		applianceTypeCodeMap.put(DISHWASHER, "DWE");
@@ -232,7 +256,11 @@ public class NeuralNetworkManager {
 		readLocalData(applianceTypeCodeMap.get(type));
 		neuralNetwork = new NeuralNetwork();
 
-		TrainNeuralNetwork(0,0);
+		if (toTrain)
+		{
+			TrainNeuralNetwork(0,0);
+		}
+
 	}
 
 	public void TrainNeuralNetwork(int hiddenLayers, int layerSize) {
@@ -240,8 +268,10 @@ public class NeuralNetworkManager {
 
 		tempData.add(dataTrainingElectricity);
 		tempData.add(dataTrainingTemperature);
+		tempData.add(dataTrainingTime);
+		tempData.add(dataTrainingDay);
 
-		neuralNetwork.Train(dataElectricity, tempData, HIDDEN_LAYERS, HIDDEN_LAYER_SIZE, TRAINING_SESSIONS);
+		neuralNetwork.train(dataElectricity, tempData, HIDDEN_LAYERS, HIDDEN_LAYER_SIZE, TRAINING_SESSIONS);
 	}
 
 	// test run method
@@ -269,32 +299,91 @@ public class NeuralNetworkManager {
 
 	}
 
-	public void runNeuralNetwork(int time) {
-		indexElectricity = time;
-		indexWeather = time;
+	//current period to thirty minute time interval
+	public static double periodToTime(int period)
+	{
+		return period%48;
+	}
+
+	public static double periodToDay(int period)
+	{
+		int day = 0;
+		int time = period%336;
+
+		if ((time >= 0 ) && (time < 48))
+		{
+			day = 1;
+		}
+		if ((time >= 48 ) && (time < 96))
+		{
+			day = 2;
+		}
+		if ((time >= 96 ) && (time < 144))
+		{
+			day = 3;
+		}
+		if ((time >= 148 ) && (time < 192))
+		{
+			day = 4;
+		}
+		if ((time >= 192 ) && (time < 240))
+		{
+			day = 5;
+		}
+		if ((time >= 240 ) && (time < 288))
+		{
+			day = 6;
+		}
+		if ((time >= 288 ) && (time < 336))
+		{
+			day = 7;
+		}
+
+		return day;
+	}
+
+	public void runNeuralNetwork(int period) {
+		indexElectricity = period*2;
+		indexWeather = period*2;
+		indexTime = period*2;
+		indexDay = period*2;
+
+
 
 		discrepancy = actual - newPrediction;
 		lastPrediction = newPrediction;
 
 		List<Double> inputList = new ArrayList<>();
 		inputList.add(actual);
+		inputList.add(dataTemperature.get(indexWeather));
+		inputList.add(dataTime.get(indexTime));
+		inputList.add(dataDay.get(indexDay));
+		//inputList.add(time);
+		//inputList.add(day);
+
 		newPrediction = neuralNetwork.run(inputList);
 		indexElectricity = indexElectricity + 1;
 
 
 		// if all data has been used, start again from index 0
-		if (indexElectricity == dataElectricity.size()) {
+		if (indexElectricity >= dataElectricity.size()) {
 			indexElectricity = 0;
 		}
-        if (indexWeather == dataTemperature.size()) {
+        if (indexWeather >= dataTemperature.size()) {
             indexElectricity = 0;
         }
+		if (indexTime >= dataTime.size()) {
+			indexTime = 0;
+		}
+		if(indexDay >= dataDay.size()){
+			indexDay = 0;
+		}
 
 		actual = dataElectricity.get(indexElectricity);
 
 	}
 
 	public double getActualUsage(int period) {
-		return dataElectricity.get(period);
+		return dataElectricity.get(period*2);
 	}
 }

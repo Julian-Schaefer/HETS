@@ -6,9 +6,8 @@ import java.util.List;
 
 public class Neuron {
 
-    public static final String ACTIVATION_FUNCTION = "ReLU";
+    private static final String ACTIVATION_FUNCTION = "ReLU";
 
-    protected String id;
     //list of neuron connections that lead to this one
     protected List<NeuronConnection> inputConnections;
     //list of neuron connections that this one leads to
@@ -17,13 +16,13 @@ public class Neuron {
     protected InputSummingFunction inputSummingFunction;
     protected ActivationFunction activationFunction;
 
-    public double output;
+    protected double output;
 
-    public double totalInput;
+    protected double totalInput;
 
-    public double error;
+    private double error;
 
-    protected double bias;
+    private double bias;
 
     public Neuron()
     {
@@ -92,7 +91,7 @@ public class Neuron {
 
     public double finalValue(){
         totalInput = inputSummingFunction.getOutput(inputConnections);
-        output = totalInput*5 + bias;
+        output = totalInput*10 + bias;
         return output;
     }
 

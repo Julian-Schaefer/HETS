@@ -8,7 +8,7 @@ public class NeuralNetworkForecast implements UsageForecast {
 	private NeuralNetworkManager neuralNetworkManager;
 
 	public NeuralNetworkForecast(ApplianceType applianceType) {
-		neuralNetworkManager = new NeuralNetworkManager(applianceType);
+		neuralNetworkManager = new NeuralNetworkManager(applianceType, true);
 	}
 
 	@Override

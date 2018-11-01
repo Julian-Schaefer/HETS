@@ -3,22 +3,22 @@ package org.cos30018.hets.logic.appliance.forecast;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.cos30018.hets.logic.appliance.ActualApplianceUsage;
+import org.cos30018.hets.logic.appliance.usage.ActualUsage;
 
 public class ModerateUsageForecast implements UsageForecast {
 
-	private ActualApplianceUsage actualApplianceUsage;
+	private ActualUsage actualUsage;
 	private List<Double> actualUsages = new LinkedList<>();
 
-	public ModerateUsageForecast(ActualApplianceUsage actualApplianceUsage) {
-		this.actualApplianceUsage = actualApplianceUsage;
+	public ModerateUsageForecast(ActualUsage actualUsage) {
+		this.actualUsage = actualUsage;
 	}
 
 	@Override
 	public double[] calculateForecast(int period, int numberOfPeriods) {
 		double[] forecasts = new double[numberOfPeriods];
 
-		double lastUsage = actualApplianceUsage.getActualUsage(period - 1);
+		double lastUsage = actualUsage.getActualUsage(period - 1);
 		actualUsages.add(lastUsage);
 
 		double sum = 0;

@@ -10,6 +10,9 @@ import org.cos30018.hets.logic.appliance.forecast.ModerateUsageForecast;
 import org.cos30018.hets.logic.appliance.forecast.NeuralNetworkForecast;
 import org.cos30018.hets.logic.appliance.forecast.SimpleUsageForecast;
 import org.cos30018.hets.logic.appliance.forecast.UsageForecast;
+import org.cos30018.hets.logic.appliance.usage.ActualApplianceUsage;
+import org.cos30018.hets.logic.appliance.usage.ActualUsage;
+import org.cos30018.hets.logic.appliance.usage.SolarPanelUsage;
 import org.cos30018.hets.logic.common.RegisteringAgent;
 import org.cos30018.hets.logic.home.HomeAgent;
 
@@ -27,7 +30,7 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 	private ForecastingMethod forecastingMethod;
 	private ApplianceType applianceType;
 	private UsageForecast usageForecast;
-	private ActualApplianceUsage actualApplianceUsage;
+	private ActualUsage actualUsage;
 
 	private Map<Integer, Double> usageForecasts = new HashMap<>();
 	private Map<Integer, Double> actualUsages = new HashMap<>();
@@ -63,7 +66,11 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 	@Override
 	public void setApplianceType(ApplianceType applianceType) {
 		this.applianceType = applianceType;
-		actualApplianceUsage = new ActualApplianceUsage(applianceType);
+		if (applianceType == ApplianceType.SOLARPANEL) {
+			actualUsage = new SolarPanelUsage();
+		} else {
+			actualUsage = new ActualApplianceUsage(applianceType);
+		}
 	}
 
 	@Override
@@ -73,13 +80,13 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 
 	@Override
 	public double getActualUsage(int period) {
-		double actualUsage = actualApplianceUsage.getActualUsage(period);
-		actualUsages.put(period, actualUsage);
+		double usage = actualUsage.getActualUsage(period);
+		actualUsages.put(period, usage);
 		for (ApplianceListener listener : listeners) {
-			listener.onNewActualUsage(period, actualUsage);
+			listener.onNewActualUsage(period, usage);
 		}
 
-		return actualUsage;
+		return usage;
 	}
 
 	@Override
@@ -111,10 +118,10 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 		this.forecastingMethod = forecastingMethod;
 		switch (forecastingMethod) {
 		case SIMPLE:
-			usageForecast = new SimpleUsageForecast(actualApplianceUsage);
+			usageForecast = new SimpleUsageForecast(actualUsage);
 			break;
 		case MODERATE:
-			usageForecast = new ModerateUsageForecast(actualApplianceUsage);
+			usageForecast = new ModerateUsageForecast(actualUsage);
 			break;
 		case COMPLEX:
 			usageForecast = new NeuralNetworkForecast(applianceType);
