@@ -8,12 +8,10 @@ public class NeuralNetwork {
     private List<Double> trainingDataActual;
     private List<List<Double>> input;
 
-    private List<List<Double>> CostValues = new ArrayList<>();
-
     public static final double LEARNING_RATE = 0.000001;
 
 
-    public void Train(List<Double> lTrainingData, List<List<Double>> lInput, int hiddenLayers, int layerSize, int sessions){
+    public void train(List<Double> lTrainingData, List<List<Double>> lInput, int hiddenLayers, int layerSize, int sessions){
         //reset the neural network
         trainingDataActual = new ArrayList<>();
         input = new ArrayList<>();

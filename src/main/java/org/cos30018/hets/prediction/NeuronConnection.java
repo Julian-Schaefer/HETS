@@ -11,16 +11,15 @@ public class NeuronConnection {
     {
         this.fromNeuron = lFromNeuron;
         this.toNeuron = lToNeuron;
-        this.weight = (Math.random());
-        //this.weight = 2;
+        this.weight = Math.random();
     }
 
     //alternate weight constructor
-    public NeuronConnection(Neuron lFromNeuron, Neuron lToNeuron, double lWeight)
+    public NeuronConnection(Neuron fromNeuron, Neuron toNeuron, double weight)
     {
-        this.fromNeuron = lFromNeuron;
-        this.toNeuron = lToNeuron;
-        this.weight = lWeight;
+        this.fromNeuron = fromNeuron;
+        this.toNeuron = toNeuron;
+        this.weight = weight;
     }
 
     public void setWeight(double lWeight){
