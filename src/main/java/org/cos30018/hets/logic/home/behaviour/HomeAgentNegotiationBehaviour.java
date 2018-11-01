@@ -42,7 +42,7 @@ public class HomeAgentNegotiationBehaviour extends ContractNetInitiator {
 		Strategy strategy;
 		if (usageForecast >= 0) {
 			strategy = homeAgent.getBuyingStrategy();
-			utility = new OfferUtility(strategy.getReservationValue(), strategy.getInitialValue(), 1, 0);
+			utility = new OfferUtility(strategy.getReservationValue(), strategy.getInitialValue(), 0, 1);
 		} else {
 			strategy = homeAgent.getSellingStrategy();
 			utility = new OfferUtility(strategy.getInitialValue(), strategy.getReservationValue(), 1, 0);
