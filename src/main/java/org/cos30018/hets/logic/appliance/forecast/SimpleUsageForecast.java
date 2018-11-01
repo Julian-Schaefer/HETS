@@ -2,7 +2,7 @@ package org.cos30018.hets.logic.appliance.forecast;
 
 import org.cos30018.hets.logic.appliance.ActualApplianceUsage;
 
-public class SimpleUsageForecast extends UsageForecast {
+public class SimpleUsageForecast implements UsageForecast {
 
 	private ActualApplianceUsage actualApplianceUsage;
 

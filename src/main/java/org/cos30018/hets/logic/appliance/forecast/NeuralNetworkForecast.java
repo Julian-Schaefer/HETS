@@ -3,7 +3,7 @@ package org.cos30018.hets.logic.appliance.forecast;
 import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
 import org.cos30018.hets.prediction.NeuralNetworkManager;
 
-public class NeuralNetworkForecast extends UsageForecast {
+public class NeuralNetworkForecast implements UsageForecast {
 
 	private NeuralNetworkManager neuralNetworkManager;
 

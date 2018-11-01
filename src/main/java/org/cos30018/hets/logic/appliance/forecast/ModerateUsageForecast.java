@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.cos30018.hets.logic.appliance.ActualApplianceUsage;
 
-public class ModerateUsageForecast extends UsageForecast {
+public class ModerateUsageForecast implements UsageForecast {
 
 	private ActualApplianceUsage actualApplianceUsage;
 	private List<Double> actualUsages = new LinkedList<>();
