@@ -1,7 +1,6 @@
 package org.cos30018.hets.ui.retailer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -20,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 import org.cos30018.hets.logic.JadeController;
 import org.cos30018.hets.ui.custom.StrategyConfigurationPanel;
 import org.cos30018.hets.ui.custom.TariffConfigurationPanel;
-import org.cos30018.hets.ui.custom.button.StyledJPanelUI;
 import org.cos30018.hets.util.GuiUtil;
 
 public class AddRetailerWindow extends JFrame {
@@ -62,13 +60,13 @@ public class AddRetailerWindow extends JFrame {
 		strategiesAndTariffPanel.setPreferredSize(new Dimension(0, 700));
 
 		sellingStrategyConfigurationPanel = new StrategyConfigurationPanel(null, false, true);
-		strategiesAndTariffPanel.add(getCardPanel("Selling Strategy", sellingStrategyConfigurationPanel));
+		strategiesAndTariffPanel.add(GuiUtil.getCardPanel("Selling Strategy", sellingStrategyConfigurationPanel));
 
 		buyingStrategyConfigurationPanel = new StrategyConfigurationPanel(null, false, true);
-		strategiesAndTariffPanel.add(getCardPanel("Buying Strategy", buyingStrategyConfigurationPanel));
+		strategiesAndTariffPanel.add(GuiUtil.getCardPanel("Buying Strategy", buyingStrategyConfigurationPanel));
 
 		tariffConfigurationPanel = new TariffConfigurationPanel(null, true);
-		strategiesAndTariffPanel.add(getCardPanel("Tariff", tariffConfigurationPanel));
+		strategiesAndTariffPanel.add(GuiUtil.getCardPanel("Tariff", tariffConfigurationPanel));
 
 		JScrollPane scrollPane = new JScrollPane(strategiesAndTariffPanel);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -85,24 +83,6 @@ public class AddRetailerWindow extends JFrame {
 		bottomButtonPanel.add(cancelButton);
 
 		add(bottomButtonPanel, BorderLayout.SOUTH);
-	}
-
-	private JPanel getCardPanel(String title, JPanel child) {
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.setUI(new StyledJPanelUI());
-		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		JLabel titleLbl = new JLabel(title);
-		titleLbl.setHorizontalAlignment(JLabel.LEFT);
-		panel.add(titleLbl, BorderLayout.NORTH);
-
-		JPanel cardPanel = new JPanel(new BorderLayout());
-		cardPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-		cardPanel.add(child);
-		panel.add(cardPanel);
-
-		GuiUtil.setPanelBackground(panel, Color.WHITE);
-		return panel;
 	}
 
 	private ActionListener onOkButtonClickListener = (actionEvent) -> {

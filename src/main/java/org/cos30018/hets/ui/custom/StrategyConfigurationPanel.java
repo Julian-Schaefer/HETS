@@ -72,7 +72,7 @@ public class StrategyConfigurationPanel extends JPanel implements ActionListener
 			strategyComboBox.setSelectedItem(Strategy.STRATEGY_FIXED_PRICE);
 		}
 
-		GuiUtil.setPanelEnabled(this, isEnabled);
+		GuiUtil.setComponentsInPanelEnabled(this, isEnabled);
 	}
 
 	public Strategy getStrategy() {

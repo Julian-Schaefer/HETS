@@ -97,7 +97,7 @@ public class TariffConfigurationPanel extends JPanel implements ActionListener {
 			tariffComboBox.setSelectedItem(Tariff.TARIFF_RANDOM);
 		}
 
-		GuiUtil.setPanelEnabled(this, isEnabled);
+		GuiUtil.setComponentsInPanelEnabled(this, isEnabled);
 	}
 
 	public Tariff getTariff() {

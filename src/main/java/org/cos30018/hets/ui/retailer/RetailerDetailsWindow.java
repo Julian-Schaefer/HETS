@@ -1,7 +1,6 @@
 package org.cos30018.hets.ui.retailer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -17,6 +16,7 @@ import org.cos30018.hets.logic.retailer.Retailer;
 import org.cos30018.hets.ui.custom.StrategyConfigurationPanel;
 import org.cos30018.hets.ui.custom.TariffConfigurationPanel;
 import org.cos30018.hets.ui.custom.graph.OfferAndCounterOfferGraph;
+import org.cos30018.hets.util.GuiUtil;
 
 import jade.core.AID;
 
@@ -45,17 +45,20 @@ public class RetailerDetailsWindow extends JFrame {
 	}
 
 	private void setUp() {
-		JPanel informationPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+		JPanel informationPanel = new JPanel(new GridLayout(3, 1, 10, 10));
 		informationPanel.setPreferredSize(new Dimension(460, 0));
-		informationPanel.setBackground(Color.WHITE);
 		informationPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-		StrategyConfigurationPanel strategyConfigurationPanel = new StrategyConfigurationPanel(retailer.getStrategy(),
-				false);
-		informationPanel.add(strategyConfigurationPanel);
+		StrategyConfigurationPanel sellingStrategyConfigurationPanel = new StrategyConfigurationPanel(
+				retailer.getSellingStrategy(), false, false);
+		informationPanel.add(GuiUtil.getCardPanel("Selling Strategy", sellingStrategyConfigurationPanel));
+
+		StrategyConfigurationPanel buyingStrategyConfigurationPanel = new StrategyConfigurationPanel(
+				retailer.getBuyingStrategy(), false, false);
+		informationPanel.add(GuiUtil.getCardPanel("Buying Strategy", buyingStrategyConfigurationPanel));
 
 		TariffConfigurationPanel tariffConfigurationPanel = new TariffConfigurationPanel(retailer.getTariff(), false);
-		informationPanel.add(tariffConfigurationPanel);
+		informationPanel.add(GuiUtil.getCardPanel("Tariff", tariffConfigurationPanel));
 
 		add(informationPanel, BorderLayout.WEST);
 
