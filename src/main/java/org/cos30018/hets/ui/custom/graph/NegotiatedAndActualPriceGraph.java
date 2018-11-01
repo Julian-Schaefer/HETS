@@ -71,7 +71,7 @@ public class NegotiatedAndActualPriceGraph extends JPanel {
 			forecast.add(forecastValue.getKey(), forecastValue.getValue());
 		}
 
-		XYSeries difference = new XYSeries("Actual Price to pay");
+		XYSeries difference = new XYSeries("Excess Price to pay");
 		for (Map.Entry<Integer, Double> differenceValue : differenceValues.entrySet()) {
 			difference.add(differenceValue.getKey(), differenceValue.getValue());
 		}
