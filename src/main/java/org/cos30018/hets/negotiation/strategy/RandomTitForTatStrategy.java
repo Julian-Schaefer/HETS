@@ -27,21 +27,23 @@ public class RandomTitForTatStrategy extends Strategy {
 			double difference = incomingValue - lastIncomingValue;
 			difference *= difference < 1 ? -1 : 1;
 
-			double randomness = (Math.random() * difference) * factor;
+			double randomness = Math.random() * factor;
 
 			if (initialValue > reservationValue) {
 				lastOutgoingValue -= difference + randomness;
+				if (lastOutgoingValue < reservationValue) {
+					throw new DeadlineExceededException();
+				}
 			} else {
 				lastOutgoingValue += difference + randomness;
+				if (lastOutgoingValue > reservationValue) {
+					throw new DeadlineExceededException();
+				}
 			}
-		}
-
-		if (lastOutgoingValue < reservationValue) {
-			throw new DeadlineExceededException();
+			lastIncomingValue = incomingValue;
 		}
 
 		round++;
-		lastIncomingValue = incomingValue;
 		return lastOutgoingValue;
 	}
 
