@@ -209,7 +209,7 @@ public class NeuralNetworkManager {
 
 	}
 
-	public NeuralNetworkManager(Appliance.ApplianceType type) {
+	public NeuralNetworkManager(Appliance.ApplianceType type, boolean toTrain) {
 		// DISHWASHER, FRIDGE, WASHING_MACHINE,DRYER, HEAT_PUMP, HOT_WATER_SYSTEM, HIFI
 		// Setup dictionary values
 		applianceTypeCodeMap.put(DISHWASHER, "DWE");
@@ -232,7 +232,11 @@ public class NeuralNetworkManager {
 		readLocalData(applianceTypeCodeMap.get(type));
 		neuralNetwork = new NeuralNetwork();
 
-		TrainNeuralNetwork(0,0);
+		if (toTrain)
+		{
+			TrainNeuralNetwork(0,0);
+		}
+
 	}
 
 	public void TrainNeuralNetwork(int hiddenLayers, int layerSize) {
@@ -269,24 +273,75 @@ public class NeuralNetworkManager {
 
 	}
 
-	public void runNeuralNetwork(int time) {
-		indexElectricity = time;
-		indexWeather = time;
+	//current period to thirty minute time interval
+	public int periodToTime(int period)
+	{
+		return period%48;
+	}
+
+	public int periodToDay(int period)
+	{
+		int day = 0;
+		int time = period%336;
+
+		if ((time >= 0 ) && (time < 48))
+		{
+			day = 1;
+		}
+		if ((time >= 48 ) && (time < 96))
+		{
+			day = 2;
+		}
+		if ((time >= 96 ) && (time < 144))
+		{
+			day = 3;
+		}
+		if ((time >= 148 ) && (time < 192))
+		{
+			day = 4;
+		}
+		if ((time >= 192 ) && (time < 240))
+		{
+			day = 5;
+		}
+		if ((time >= 240 ) && (time < 288))
+		{
+			day = 6;
+		}
+		if ((time >= 288 ) && (time < 336))
+		{
+			day = 7;
+		}
+
+		return day;
+	}
+
+	public void runNeuralNetwork(int period) {
+		indexElectricity = period*2;
+		indexWeather = period*2;
+
+		int time = periodToTime(period*2);
+		int day = periodToDay(period*2);
+
 
 		discrepancy = actual - newPrediction;
 		lastPrediction = newPrediction;
 
 		List<Double> inputList = new ArrayList<>();
 		inputList.add(actual);
+		inputList.add(dataTemperature.get(indexWeather));
+		//inputList.add(time);
+		//inputList.add(day);
+
 		newPrediction = neuralNetwork.run(inputList);
 		indexElectricity = indexElectricity + 1;
 
 
 		// if all data has been used, start again from index 0
-		if (indexElectricity == dataElectricity.size()) {
+		if (indexElectricity >= dataElectricity.size()) {
 			indexElectricity = 0;
 		}
-        if (indexWeather == dataTemperature.size()) {
+        if (indexWeather >= dataTemperature.size()) {
             indexElectricity = 0;
         }
 
@@ -295,6 +350,6 @@ public class NeuralNetworkManager {
 	}
 
 	public double getActualUsage(int period) {
-		return dataElectricity.get(period);
+		return dataElectricity.get(period*2);
 	}
 }

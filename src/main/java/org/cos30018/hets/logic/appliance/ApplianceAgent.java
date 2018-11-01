@@ -8,6 +8,7 @@ import java.util.Map;
 import org.cos30018.hets.logic.appliance.behaviour.ApplianceResponderBehaviour;
 import org.cos30018.hets.logic.appliance.forecast.NeuralNetworkForecast;
 import org.cos30018.hets.logic.appliance.forecast.SimpleUsageForecast;
+import org.cos30018.hets.logic.appliance.forecast.SolarPanelForecast;
 import org.cos30018.hets.logic.appliance.forecast.UsageForecast;
 import org.cos30018.hets.logic.common.RegisteringAgent;
 import org.cos30018.hets.logic.home.HomeAgent;
@@ -98,12 +99,14 @@ public class ApplianceAgent extends RegisteringAgent implements Appliance {
 	public void setForecastingMethod(ForecastingMethod forecastingMethod) {
 		this.forecastingMethod = forecastingMethod;
 		switch (forecastingMethod) {
-		case SIMPLE:
-			usageForecast = new SimpleUsageForecast(this);
-			break;
-		case COMPLEX:
-			usageForecast = new NeuralNetworkForecast(this);
-			break;
+			case SIMPLE:
+				usageForecast = new SimpleUsageForecast(this);
+				break;
+			case COMPLEX:
+				usageForecast = new NeuralNetworkForecast(this);
+				break;
+			case SOLARPANEL:
+				usageForecast = new SolarPanelForecast(this);
 		}
 	}
 

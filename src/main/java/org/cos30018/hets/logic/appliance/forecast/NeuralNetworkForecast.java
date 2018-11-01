@@ -9,7 +9,7 @@ public class NeuralNetworkForecast extends UsageForecast {
 
 	public NeuralNetworkForecast(Appliance appliance) {
 		super(appliance);
-		neuralNetworkManager = new NeuralNetworkManager(appliance.getType());
+		neuralNetworkManager = new NeuralNetworkManager(appliance.getType(), true);
 	}
 
 	@Override

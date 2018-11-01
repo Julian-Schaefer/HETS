@@ -4,11 +4,11 @@ import java.util.Map;
 
 public interface Appliance {
 	public enum ApplianceType {
-		DISHWASHER, FRIDGE, WASHING_MACHINE, DRYER, HEAT_PUMP, HOT_WATER_SYSTEM, HIFI
+		DISHWASHER, FRIDGE, WASHING_MACHINE, DRYER, HEAT_PUMP, HOT_WATER_SYSTEM, HIFI, SOLARPANEL
 	}
 
 	public enum ForecastingMethod {
-		SIMPLE, MODERATE, COMPLEX
+		SIMPLE, MODERATE, COMPLEX, SOLARPANEL
 	}
 
 	String getLocalName();

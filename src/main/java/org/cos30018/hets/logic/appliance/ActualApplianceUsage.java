@@ -8,7 +8,8 @@ public class ActualApplianceUsage {
 	private NeuralNetworkManager neuralNetworkManager;
 
 	public ActualApplianceUsage(ApplianceType applianceType) {
-		neuralNetworkManager = new NeuralNetworkManager(applianceType);
+		neuralNetworkManager = new NeuralNetworkManager(applianceType, false);
+
 	}
 
 	public double getActualUsage(int period) {
