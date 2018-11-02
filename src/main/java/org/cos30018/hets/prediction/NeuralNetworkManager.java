@@ -8,7 +8,9 @@ import static org.cos30018.hets.logic.appliance.Appliance.ApplianceType.HIFI;
 import static org.cos30018.hets.logic.appliance.Appliance.ApplianceType.HOT_WATER_SYSTEM;
 import static org.cos30018.hets.logic.appliance.Appliance.ApplianceType.WASHING_MACHINE;
 
-import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,14 +22,12 @@ import com.opencsv.CSVReader;
 
 public class NeuralNetworkManager {
 
-	//constants to set neural network structure values
+	// constants to set neural network structure values
 	public static final int HIDDEN_LAYERS = 1;
 	public static final int HIDDEN_LAYER_SIZE = 16;
 	public static final int TRAINING_SESSIONS = 100;
 	public static final int TOTAL_RECORDS = 35000;
 	public static final int TRAINING_RECORDS = 30000;
-
-
 
 	public double actual;
 	public double lastPrediction;
@@ -59,8 +59,6 @@ public class NeuralNetworkManager {
 	private static List<Double> dataDay = new ArrayList<>();
 	private int indexDay = 0;
 
-
-
 	// time in minutes, 24 hour (resets at 1140)
 	private int time = 0;
 
@@ -81,9 +79,13 @@ public class NeuralNetworkManager {
 		int indexToGet = -1;
 
 		// read data from csv file
+
+		CSVReader csvReader = null;
+
 		try {
-			FileReader filereader = new FileReader("Electricity_P_DS.csv");
-			CSVReader csvReader = new CSVReader(filereader);
+			InputStream in = getClass().getResourceAsStream("/data/Electricity_P_DS.csv");
+
+			csvReader = new CSVReader(new InputStreamReader(in));
 			String[] nextRecord;
 			String[] header = csvReader.readNext();
 
@@ -123,7 +125,7 @@ public class NeuralNetworkManager {
 		}
 	}
 
-	public static void readWorldData() {
+	public void readWorldData() {
 		// name of appliance (according to csv file)
 		String dataToGet = "Temp (C)";
 
@@ -131,9 +133,12 @@ public class NeuralNetworkManager {
 		int indexToGet = -1;
 
 		// read data from csv file
+		CSVReader csvReader = null;
+
 		try {
-			FileReader filereader = new FileReader("Climate_HourlyWeather.csv");
-			CSVReader csvReader = new CSVReader(filereader);
+			InputStream in = getClass().getResourceAsStream("/data/Climate_HourlyWeather.csv");
+
+			csvReader = new CSVReader(new InputStreamReader(in));
 			String[] nextRecord;
 			String[] header = csvReader.readNext();
 
@@ -207,6 +212,14 @@ public class NeuralNetworkManager {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if (csvReader != null) {
+				try {
+					csvReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -256,9 +269,8 @@ public class NeuralNetworkManager {
 		readLocalData(applianceTypeCodeMap.get(type));
 		neuralNetwork = new NeuralNetwork();
 
-		if (toTrain)
-		{
-			TrainNeuralNetwork(0,0);
+		if (toTrain) {
+			TrainNeuralNetwork(0, 0);
 		}
 
 	}
@@ -299,43 +311,34 @@ public class NeuralNetworkManager {
 
 	}
 
-	//current period to thirty minute time interval
-	public static double periodToTime(int period)
-	{
-		return period%48;
+	// current period to thirty minute time interval
+	public static double periodToTime(int period) {
+		return period % 48;
 	}
 
-	public static double periodToDay(int period)
-	{
+	public static double periodToDay(int period) {
 		int day = 0;
-		int time = period%336;
+		int time = period % 336;
 
-		if ((time >= 0 ) && (time < 48))
-		{
+		if ((time >= 0) && (time < 48)) {
 			day = 1;
 		}
-		if ((time >= 48 ) && (time < 96))
-		{
+		if ((time >= 48) && (time < 96)) {
 			day = 2;
 		}
-		if ((time >= 96 ) && (time < 144))
-		{
+		if ((time >= 96) && (time < 144)) {
 			day = 3;
 		}
-		if ((time >= 148 ) && (time < 192))
-		{
+		if ((time >= 148) && (time < 192)) {
 			day = 4;
 		}
-		if ((time >= 192 ) && (time < 240))
-		{
+		if ((time >= 192) && (time < 240)) {
 			day = 5;
 		}
-		if ((time >= 240 ) && (time < 288))
-		{
+		if ((time >= 240) && (time < 288)) {
 			day = 6;
 		}
-		if ((time >= 288 ) && (time < 336))
-		{
+		if ((time >= 288) && (time < 336)) {
 			day = 7;
 		}
 
@@ -343,12 +346,10 @@ public class NeuralNetworkManager {
 	}
 
 	public void runNeuralNetwork(int period) {
-		indexElectricity = period*2;
-		indexWeather = period*2;
-		indexTime = period*2;
-		indexDay = period*2;
-
-
+		indexElectricity = period * 2;
+		indexWeather = period * 2;
+		indexTime = period * 2;
+		indexDay = period * 2;
 
 		discrepancy = actual - newPrediction;
 		lastPrediction = newPrediction;
@@ -358,24 +359,23 @@ public class NeuralNetworkManager {
 		inputList.add(dataTemperature.get(indexWeather));
 		inputList.add(dataTime.get(indexTime));
 		inputList.add(dataDay.get(indexDay));
-		//inputList.add(time);
-		//inputList.add(day);
+		// inputList.add(time);
+		// inputList.add(day);
 
 		newPrediction = neuralNetwork.run(inputList);
 		indexElectricity = indexElectricity + 1;
-
 
 		// if all data has been used, start again from index 0
 		if (indexElectricity >= dataElectricity.size()) {
 			indexElectricity = 0;
 		}
-        if (indexWeather >= dataTemperature.size()) {
-            indexElectricity = 0;
-        }
+		if (indexWeather >= dataTemperature.size()) {
+			indexElectricity = 0;
+		}
 		if (indexTime >= dataTime.size()) {
 			indexTime = 0;
 		}
-		if(indexDay >= dataDay.size()){
+		if (indexDay >= dataDay.size()) {
 			indexDay = 0;
 		}
 
@@ -384,6 +384,6 @@ public class NeuralNetworkManager {
 	}
 
 	public double getActualUsage(int period) {
-		return dataElectricity.get(period*2);
+		return dataElectricity.get(period * 2);
 	}
 }
