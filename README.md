@@ -15,7 +15,20 @@ in Java using JADE and GUI using Java Swing framework.
 
 ## Set Up
 
+### Build
+
+Make sure you have Java 8 set up correctly. Then run:
+ 
+1. ./mvnw clean package
+2. java -jar target/hets-1.0-SNAPSHOT-jar-with-dependencies.jar OR
+3. java -jar target/hets-1.0-SNAPSHOT-jar-with-dependencies.jar show-jade-gui to also launch the JADE GUI
+
 ### Configuration for Testing
+
+* Once the application is running, you can run different scenarios by loading pre-defined xml files located in [configurations](configurations) folder.
+* On the GUI, click on the file add Button next to Settings and choose Load file option. 
+* Select the scenario file from [configurations](configurations)
+* Test the scenario with simulation panel which gives the option to start, pause and reset a simulation.
 
 
 ## Libraries Used
@@ -25,13 +38,6 @@ in Java using JADE and GUI using Java Swing framework.
  * OpenCSV:  is an easy-to-use CSV (comma-separated values) parser library for Java.
  * Jackson-XML
 
- ## Build
- Make sure you have Java 8 set up correctly. Then run:
- 
- 1. ./mvnw clean package
- 2. java -jar target/hets-1.0-SNAPSHOT-jar-with-dependencies.jar
- or 
- 2. java -jar target/hets-1.0-SNAPSHOT-jar-with-dependencies.jar show-jade-gui 
- to also launch the JADE GUI
+
 	
 
