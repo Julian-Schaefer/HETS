@@ -17,11 +17,14 @@ in Java using JADE and GUI using Java Swing framework.
 
 ### Build
 
-Make sure you have Java 8 set up correctly. Then run:
+Make sure you have Java 8 set up correctly with all its environment variables. Then run:
  
 1. ./mvnw clean package
 2. java -jar target/hets-1.0-SNAPSHOT-jar-with-dependencies.jar OR
 3. java -jar target/hets-1.0-SNAPSHOT-jar-with-dependencies.jar show-jade-gui to also launch the JADE GUI
+
+## Run
+This Repo also contains the last executable as a .jar file that is located in the "executables" folder.
 
 ### Configuration for Testing
 
