@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.cos30018.hets.logic.home.behaviour.ApplianceForecastRequestBehaviour;
 import org.cos30018.hets.logic.home.behaviour.ApplianceUsageRequestBehaviour;
@@ -65,26 +66,22 @@ public class HomeAgent extends Agent implements Home {
 
 	public void registerAppliance(AID applianceAID) {
 		applianceAIDs.add(applianceAID);
-		for (HomeListener listener : listeners)
-			listener.onApplianceAdded(applianceAID);
+		notifyListeners(listener -> listener.onApplianceAdded(applianceAID));
 	}
 
 	public void unregisterAppliance(AID applianceAID) {
 		applianceAIDs.remove(applianceAID);
-		for (HomeListener listener : listeners)
-			listener.onApplianceRemoved(applianceAID);
+		notifyListeners(listener -> listener.onApplianceRemoved(applianceAID));
 	}
 
 	public void registerRetailer(AID retailerAID) {
 		retailerAIDs.add(retailerAID);
-		for (HomeListener listener : listeners)
-			listener.onRetailerAdded(retailerAID);
+		notifyListeners(listener -> listener.onRetailerAdded(retailerAID));
 	}
 
 	public void unregisterRetailer(AID retailerAID) {
 		retailerAIDs.remove(retailerAID);
-		for (HomeListener listener : listeners)
-			listener.onRetailerRemoved(retailerAID);
+		notifyListeners(listener -> listener.onRetailerRemoved(retailerAID));
 	}
 
 	private void register(ServiceDescription serviceDescription) {
@@ -138,9 +135,8 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public void setTotalUsageForecast(int period, double totalUsageForecast) {
 		usageForecasts.put(period, totalUsageForecast);
-		for (HomeListener listener : listeners) {
-			listener.onTotalUsageForecastUpdated(period, totalUsageForecast);
-		}
+		notifyListeners(listener -> listener.onTotalUsageForecastUpdated(period, totalUsageForecast));
+
 		addBehaviour(HomeAgentNegotiationBehaviour.create(this));
 	}
 
@@ -161,9 +157,7 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public void setActualTotalUsage(int period, double lastActualTotalUsage) {
 		actualUsages.put(period, lastActualTotalUsage);
-		for (HomeListener listener : listeners) {
-			listener.onActualTotalUsageUpdated(period, lastActualTotalUsage);
-		}
+		notifyListeners(listener -> listener.onActualTotalUsageUpdated(period, lastActualTotalUsage));
 	}
 
 	@Override
@@ -183,9 +177,7 @@ public class HomeAgent extends Agent implements Home {
 	@Override
 	public void setNegotiatedOffer(int period, Offer offer) {
 		negotiatedOffers.put(period, offer);
-		for (HomeListener listener : listeners) {
-			listener.onNewNegotiatedOffer(period, offer);
-		}
+		notifyListeners(listener -> listener.onNewNegotiatedOffer(period, offer));
 	}
 
 	@Override
@@ -201,9 +193,7 @@ public class HomeAgent extends Agent implements Home {
 		}
 		addBehaviour(ApplianceForecastRequestBehaviour.create(this, getAppliances()));
 
-		for (HomeListener listener : listeners) {
-			listener.onNewPeriod();
-		}
+		notifyListeners(listener -> listener.onNewPeriod());
 	}
 
 	@Override
@@ -252,7 +242,11 @@ public class HomeAgent extends Agent implements Home {
 	}
 
 	@Override
-	public void addListener(HomeListener listener) {
+	public synchronized void addListener(HomeListener listener) {
 		listeners.add(listener);
+	}
+
+	private synchronized void notifyListeners(Consumer<? super HomeListener> consumer) {
+		listeners.forEach(listener -> consumer.accept(listener));
 	}
 }
