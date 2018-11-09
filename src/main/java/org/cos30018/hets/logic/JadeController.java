@@ -1,6 +1,7 @@
 package org.cos30018.hets.logic;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.cos30018.hets.logic.appliance.Appliance;
 import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
@@ -72,14 +73,18 @@ public class JadeController {
 	}
 
 	public void killAllAgents() {
-		Iterator<AID> applianceIterator = home.getAppliances().iterator();
-		while (applianceIterator.hasNext()) {
-			removeAgent(applianceIterator.next());
+		List<AID> toRemoveAIDs = new ArrayList<>();
+
+		for (AID applianceAID : home.getAppliances()) {
+			toRemoveAIDs.add(applianceAID);
 		}
 
-		Iterator<AID> retailerIterator = home.getRetailers().iterator();
-		while (retailerIterator.hasNext()) {
-			removeAgent(retailerIterator.next());
+		for (AID retailerAID : home.getRetailers()) {
+			toRemoveAIDs.add(retailerAID);
+		}
+
+		for (AID removeAID : toRemoveAIDs) {
+			removeAgent(removeAID);
 		}
 
 		while (home.getAppliances().size() > 0 || home.getRetailers().size() > 0) {
