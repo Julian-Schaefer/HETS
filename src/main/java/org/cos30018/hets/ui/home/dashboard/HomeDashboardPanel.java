@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 import org.cos30018.hets.logic.JadeController;
@@ -68,8 +69,10 @@ public class HomeDashboardPanel extends JPanel {
 	}
 
 	public void update() {
-		applianceInformationPanel.update();
-		retailerInformationPanel.update();
+		SwingUtilities.invokeLater(() -> {
+			applianceInformationPanel.update();
+			retailerInformationPanel.update();
+		});
 	}
 
 	public ForecastAndActualGraph getForecastAndActualGraph() {
