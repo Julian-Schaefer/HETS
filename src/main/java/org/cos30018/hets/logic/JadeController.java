@@ -1,5 +1,7 @@
 package org.cos30018.hets.logic;
 
+import java.util.Iterator;
+
 import org.cos30018.hets.logic.appliance.Appliance;
 import org.cos30018.hets.logic.appliance.Appliance.ApplianceType;
 import org.cos30018.hets.logic.appliance.Appliance.ForecastingMethod;
@@ -70,12 +72,14 @@ public class JadeController {
 	}
 
 	public void killAllAgents() {
-		for (AID applianceAID : home.getAppliances()) {
-			removeAgent(applianceAID);
+		Iterator<AID> applianceIterator = home.getAppliances().iterator();
+		while (applianceIterator.hasNext()) {
+			removeAgent(applianceIterator.next());
 		}
 
-		for (AID retailerAID : home.getRetailers()) {
-			removeAgent(retailerAID);
+		Iterator<AID> retailerIterator = home.getRetailers().iterator();
+		while (retailerIterator.hasNext()) {
+			removeAgent(retailerIterator.next());
 		}
 
 		while (home.getAppliances().size() > 0 || home.getRetailers().size() > 0) {
