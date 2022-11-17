@@ -1,4 +1,4 @@
-# Home Energy Trading System (COS30018-HETS)
+# Home Energy Trading System
 
 
 * [Introduction](#introduction)
@@ -7,7 +7,7 @@
 
 ## Introduction
 
-In this project, we implemented a Home Energy Trading System that is able to forecast its energy demand
+In this project, a Home Energy Trading System has been implemented that is able to forecast its energy demand
 and then negotiate with different retailers to buy or sell energy. Main objective of the system is to
 minimize the cost of energy for your home by using smart forecasts and energy usage predictions of the
 home appliances to negotiate the best offers/prices with multiple retailers. This project is implemented
